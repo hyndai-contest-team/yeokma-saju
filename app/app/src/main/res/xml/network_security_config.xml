@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 개발용: 에뮬레이터에서 이 Mac의 로컬 서버(wrangler dev)에 http로 붙는다. 배포 서버는 https만 쓴다 -->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">10.0.2.2</domain>
+    </domain-config>
+</network-security-config>

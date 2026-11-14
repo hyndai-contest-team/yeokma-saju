@@ -1,0 +1,16 @@
+name = "yeokma-saju"
+main = "build/worker/shim.mjs"
+compatibility_date = "2026-11-01"
+
+[build]
+command = "worker-build --release"
+
+[vars]
+# 모델은 이 값 하나로 바꾼다
+MODEL = "deepseek/deepseek-v4.1-flash-1017"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "yeokma-saju"
+database_id = "00000000-0000-0000-0000-000000000000" # 배포할 때 wrangler d1 create 결과로 바꾼다
+migrations_dir = "migrations"

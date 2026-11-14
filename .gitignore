@@ -1,0 +1,23 @@
+# 공통
+.DS_Store
+*.log
+
+# 안드로이드 앱
+app/.gradle/
+app/build/
+app/app/build/
+app/local.properties
+app/.idea/
+app/.kotlin/
+*.iml
+*.keystore
+
+# 서버
+server/target/
+server/build/
+server/node_modules/
+server/.wrangler/
+# 비밀 값은 절대 올리지 않는다
+server/.dev.vars
+server/.dev.vars.*
+.env*
