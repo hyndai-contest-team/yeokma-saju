@@ -148,7 +148,7 @@ fun LoadingScreen(done: Boolean, failed: String?, onRetry: () -> Unit, onHome: (
             Box(Modifier.align(Alignment.BottomStart).fillMaxWidth(progress.value).height(2.dp).background(Gold))
         } else {
             Column(
-                Modifier.align(Alignment.BottomCenter).padding(bottom = 36.dp).clip(RoundedCornerShape(20.dp)).background(Ink.copy(alpha = .78f)).padding(24.dp),
+                Modifier.align(Alignment.Center).clip(RoundedCornerShape(20.dp)).background(Ink.copy(alpha = .78f)).padding(24.dp), // 실패 안내는 화면 가운데
                 horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
                 Text(failed, color = Paper, fontSize = 19.sp)
