@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -169,8 +170,8 @@ fun AskScreen(
 private fun Pill(label: String, onClick: () -> Unit) = OutlinedButton(
     onClick = onClick, border = BorderStroke(1.dp, Paper.copy(alpha = .35f)),
     colors = ButtonDefaults.outlinedButtonColors(containerColor = Ink.copy(alpha = .45f), contentColor = Paper),
-    modifier = Modifier.height(48.dp).width(120.dp),
-) { Text(label, fontSize = 17.sp) }
+    modifier = Modifier.height(48.dp).widthIn(min = 120.dp),
+) { Text(label, fontSize = 17.sp, maxLines = 1, softWrap = false) }
 
 @Composable
 private fun Orb(mode: AskMode, count: Float, onClick: () -> Unit) {

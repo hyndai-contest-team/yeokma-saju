@@ -3,7 +3,7 @@ package com.yeokma.saju.input
 import androidx.compose.ui.text.input.KeyboardType
 import com.yeokma.saju.data.Profile
 
-enum class StepId { Name, Gender, Birth, Time, Place, Email, Worry }
+enum class StepId { Name, Gender, Birth, Time, Place, Email, EmailAddress, Worry }
 
 data class Step(
     val id: StepId,
@@ -15,12 +15,15 @@ data class Step(
 
 val PROFILE_STEPS = listOf(
     Step(StepId.Name, "성함이 어떻게 되세요?", "이름", KeyboardType.Text),
-    Step(StepId.Gender, "성별을 알려 주세요", "여성 또는 남성", KeyboardType.Text),
+    Step(StepId.Gender, "성별을 알려 주세요", "여자 또는 남자", KeyboardType.Text),
     Step(StepId.Birth, "언제 태어나셨어요?", "예: 1994.03.07", KeyboardType.Number),
     Step(StepId.Time, "몇 시쯤 태어나셨어요?", "예: 13:30 (모르면 모름)", KeyboardType.Number),
     Step(StepId.Place, "어디서 태어나셨어요?", "시, 군, 구", KeyboardType.Text),
     Step(StepId.Email, "풀이를 메일로도 받아 보시겠어요?", "name@example.com (선택)", KeyboardType.Email, optional = true),
 )
+
+/** 메일을 받겠다고 하면 이어서 묻는 주소 */
+val EMAIL_ADDRESS_STEP = Step(StepId.EmailAddress, "메일 주소를 알려 주세요", "name@example.com", KeyboardType.Email, optional = true)
 
 val WORRY_STEP = Step(StepId.Worry, "지금 고민거리가 뭐예요?", "지금 고민을 적어 주세요", KeyboardType.Text)
 
@@ -33,9 +36,32 @@ val WORRY_EXAMPLES = listOf(
 
 /** 말하거나 친 답을 저장할 값으로 바꾼다. 알아듣지 못하면 null. */
 object Parse {
-    fun gender(t: String): String? = when {
-        t.contains("여") -> "여성"
-        t.contains("남") -> "남성"
+    private val FEMALE = listOf("여자", "여성", "여인", "여", "녀", "걸", "우먼", "레이디", "아가씨", "woman", "female", "girl", "lady", "f")
+    private val MALE = listOf("남자", "남성", "사나이", "남", "맨", "보이", "man", "male", "boy", "m")
+
+    /** "여자예요", "여성이에요", "걸", "woman" → 여자 / "남자이에요", "남성", "맨", "male" → 남자. 둘 다 나오면 먼저 말한 쪽 */
+    fun gender(raw: String): String? {
+        val t = raw.lowercase().replace(Regex("\\s+"), " ").trim()
+        fun first(keys: List<String>, s: String) = keys.mapNotNull { k ->
+            val i = if (k.length == 1 && k[0] in 'a'..'z') Regex("\\b$k\\b").find(s)?.range?.first else s.indexOf(k).takeIf { it >= 0 }
+            i
+        }.minOrNull()
+        val f = first(FEMALE, t)
+        // woman·female 안의 man·male은 남자로 세지 않는다
+        val m = first(MALE, t.replace("woman", "     ").replace("female", "      "))
+        return when {
+            f == null && m == null -> null
+            m == null -> "여자"
+            f == null -> "남자"
+            f <= m -> "여자"
+            else -> "남자"
+        }
+    }
+
+    /** 메일을 받을지: 받겠다 true, 안 받겠다 false, 모르겠으면 null */
+    fun emailWant(t: String): Boolean? = when {
+        Regex("않|아니|안\\s*받|싫|괜찮|됐|건너|없어|필요\\s*없|no").containsMatchIn(t.lowercase()) -> false
+        Regex("받을|받아|받고|보내|좋아|그래|네|예|응|yes|ok").containsMatchIn(t.lowercase()) -> true
         else -> null
     }
 
@@ -128,7 +154,9 @@ object Parse {
             }
             StepId.Time -> time(t)?.let { p.copy(time = it) to it }
             StepId.Place -> place(t)?.let { p.copy(place = it) to it }
-            StepId.Email -> email(t)?.let { p.copy(email = it) to it.ifEmpty { "메일은 받지 않을게요" } }
+            StepId.Email -> email(t)?.takeIf { it.isNotEmpty() }?.let { p.copy(email = it) to it } // 주소를 바로 말하면 그대로
+                ?: emailWant(t)?.takeIf { !it }?.let { p.copy(email = "") to "메일은 받지 않을게요" }
+            StepId.EmailAddress -> email(t)?.let { p.copy(email = it) to it.ifEmpty { "메일은 받지 않을게요" } }
             StepId.Worry -> null
         }
     }

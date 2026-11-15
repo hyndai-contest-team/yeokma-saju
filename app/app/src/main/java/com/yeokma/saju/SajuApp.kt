@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +40,7 @@ import com.yeokma.saju.input.Parse
 import com.yeokma.saju.input.StepId
 import com.yeokma.saju.input.WORRY_EXAMPLES
 import com.yeokma.saju.input.WORRY_STEP
+import com.yeokma.saju.input.EMAIL_ADDRESS_STEP
 import com.yeokma.saju.intro.IntroFlow
 import com.yeokma.saju.car.LocalCarMood
 import com.yeokma.saju.car.rememberCarMood
@@ -80,6 +85,7 @@ fun SajuApp() {
     var failed by remember { mutableStateOf<String?>(null) }
     var attempt by remember { mutableIntStateOf(0) }
     var fromSaved by remember { mutableStateOf(false) }
+    var emailWanted by remember { mutableStateOf(false) }
     val places = remember { com.yeokma.saju.data.Places.get(ctx) }
     var placeOptions by remember { mutableStateOf(emptyList<com.yeokma.saju.data.Places.Place>()) }
     var placeAsk by remember { mutableStateOf("") }
@@ -125,6 +131,7 @@ fun SajuApp() {
             Screen.Intro -> {}
             Screen.Profiles -> screen = Screen.Intro
             Screen.Input -> when {
+                PROFILE_STEPS[step].id == StepId.Email && emailWanted -> emailWanted = false
                 backToConfirm -> screen = Screen.Confirm
                 step > 0 -> step -= 1
                 else -> screen = Screen.Profiles
@@ -161,27 +168,40 @@ fun SajuApp() {
                 Screen.Profiles -> ProfilesScreen(
                     saved = saved,
                     onPick = { profile = it; worry = ""; fromSaved = true; screen = Screen.Worry },
-                    onNew = { profile = Profile(); step = 0; backToConfirm = false; fromSaved = false; placeOptions = emptyList(); province = null; placeAsk = ""; screen = Screen.Input },
+                    onNew = { profile = Profile(); step = 0; backToConfirm = false; fromSaved = false; placeOptions = emptyList(); province = null; placeAsk = ""; emailWanted = false; screen = Screen.Input },
                 )
                 Screen.Input -> {
-                    val st = PROFILE_STEPS[i]
+                    val st = PROFILE_STEPS[i].let { if (it.id == StepId.Email && emailWanted) EMAIL_ADDRESS_STEP else it }
                     AskScreen(
                         step = st, progress = i to PROFILE_STEPS.size, autoListen = voiceMode,
-                        submit = { raw -> if (st.id == StepId.Place) submitPlace(raw) else Parse.apply(st.id, raw, profile)?.let { (p, shown) -> profile = p; shown } },
-                        rejectHint = { if (st.id == StepId.Place && placeAsk.isNotEmpty()) placeAsk else null },
+                        submit = { raw ->
+                            when {
+                                st.id == StepId.Place -> submitPlace(raw)
+                                st.id == StepId.Email && Parse.email(raw).isNullOrEmpty() && Parse.emailWant(raw) == true -> { emailWanted = true; null }
+                                else -> Parse.apply(st.id, raw, profile)?.let { (p, shown) -> profile = p; shown }
+                            }
+                        },
+                        rejectHint = {
+                            when {
+                                st.id == StepId.Place && placeAsk.isNotEmpty() -> placeAsk
+                                st.id == StepId.Email -> "받으실지 골라 주세요"
+                                else -> null
+                            }
+                        },
                         onNext = { usedVoice ->
                             voiceMode = usedVoice
                             if (backToConfirm || i == PROFILE_STEPS.lastIndex) screen = Screen.Confirm else step = i + 1
                         },
                         onSkip = when (st.id) {
-                            StepId.Email -> ({ profile = profile.copy(email = ""); screen = Screen.Confirm })
+                            StepId.EmailAddress -> ({ profile = profile.copy(email = ""); screen = Screen.Confirm })
                             StepId.Time -> ({ profile = profile.copy(time = "모름"); if (backToConfirm) screen = Screen.Confirm else step = i + 1 })
                             else -> null
                         },
-                        skipLabel = if (st.id == StepId.Time) "모름" else "건너뛸게요",
+                        skipLabel = when (st.id) { StepId.Time -> "모름"; StepId.EmailAddress -> "받지 않을게요"; else -> "건너뛸게요" },
                         extra = { pick ->
                             when (st.id) {
-                                StepId.Gender -> Choices(listOf("여성", "남성"), pick)
+                                StepId.Gender -> Choices(listOf("여자", "남자"), pick)
+                                StepId.Email -> EmailChoice(pick)
                                 StepId.Birth -> Choices(listOf("양력", "음력"), { profile = profile.copy(lunar = it == "음력") }, selected = if (profile.lunar) "음력" else "양력")
                                 StepId.Place -> if (placeOptions.isNotEmpty()) PlaceChoices(placeOptions.map { it.label }, pick)
                                 else -> {}
@@ -191,7 +211,7 @@ fun SajuApp() {
                 }
                 Screen.Confirm -> ConfirmScreen(
                     p = profile,
-                    onEdit = { idx -> step = idx; backToConfirm = true; voiceMode = false; screen = Screen.Input },
+                    onEdit = { idx -> step = idx; backToConfirm = true; voiceMode = false; emailWanted = false; screen = Screen.Input },
                     onOk = { store.save(profile); saved = store.all(); worry = ""; fromSaved = false; screen = Screen.Worry },
                 )
                 Screen.Worry -> AskScreen(
@@ -279,4 +299,31 @@ private fun PlaceChoices(options: List<String>, pick: (String) -> Unit) = androi
                 .padding(horizontal = 26.dp, vertical = 12.dp),
         )
     }
+}
+
+/** 메일 받기/안 받기. 5초 동안 고르지 않으면 받지 않는 쪽으로 넘어간다(받지 않을게요 버튼 안의 게이지로 남은 시간 표시) */
+@Composable
+private fun EmailChoice(pick: (String) -> Unit) = Column(horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    val left = remember { androidx.compose.animation.core.Animatable(1f) }
+    LaunchedEffect(Unit) {
+        left.animateTo(0f, tween(5000, easing = androidx.compose.animation.core.LinearEasing))
+        pick("받지 않을게요")
+    }
+    Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+        listOf("받을게요", "받지 않을게요").forEachIndexed { k, o ->
+            val dflt = k == 1
+            Box(
+                Modifier.clip(RoundedCornerShape(26.dp)).background(if (dflt) Ink.copy(alpha = .5f) else Gold)
+                    .border(1.dp, Gold.copy(alpha = .6f), RoundedCornerShape(26.dp)).clickable { pick(o) },
+                contentAlignment = androidx.compose.ui.Alignment.CenterStart,
+            ) {
+                // 받지 않는 쪽 버튼 안에 남은 시간을 채운다
+                if (dflt) Box(Modifier.matchParentSize().padding(0.dp)) {
+                    Box(Modifier.fillMaxHeight().fillMaxWidth(left.value).background(Gold.copy(alpha = .28f)))
+                }
+                Text(o, color = if (dflt) Paper else Ink, fontSize = 20.sp, modifier = Modifier.padding(horizontal = 30.dp, vertical = 12.dp))
+            }
+        }
+    }
+    Text("${kotlin.math.ceil(left.value * 5).toInt()}초 뒤 받지 않는 쪽으로 넘어가요", color = Paper.copy(alpha = .7f), fontSize = 16.sp)
 }

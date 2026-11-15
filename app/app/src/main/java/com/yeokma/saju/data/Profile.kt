@@ -40,7 +40,7 @@ class ProfileStore(context: Context) {
         .put("time", time).put("place", place).put("email", email)
 
     private fun JSONObject.toProfile() = Profile(
-        optString("name"), optString("gender"), optString("birth"), optBoolean("lunar"),
+        optString("name"), optString("gender").replace("여성", "여자").replace("남성", "남자"), optString("birth"), optBoolean("lunar"),
         optString("time"), optString("place"), optString("email"),
     )
 

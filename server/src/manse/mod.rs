@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize, Clone, Debug)]
 pub struct BirthInput {
     pub name: Option<String>,
-    /// "여성" | "남성"
+    /// "여자" | "남자" (예전 값 "여성" | "남성"도 같음. '남'이 들어 있으면 남자)
     pub gender: String,
     /// "yyyy.MM.dd"
     pub birth: String,
