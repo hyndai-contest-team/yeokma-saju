@@ -106,12 +106,12 @@ private fun IntroArtwork(images: Map<Int, ImageBitmap>, onStart: () -> Unit) {
         // Invisible / fading-in controls cannot start boarding or receive accessibility focus.
         if (detailsAlpha >= .999f) {
             val touchWidth = maxOf(360f * scale, 48f)
-            val touchHeight = maxOf(86.3f * scale, 48f)
+            val touchHeight = maxOf(96f * scale, 48f)
             Box(
                 Modifier
                     .offset(
                         x = (1060f * scale - touchWidth / 2f).dp,
-                        y = (997.15f * scale - touchHeight / 2f).dp,
+                        y = (1002f * scale - touchHeight / 2f).dp,
                     )
                     .size(touchWidth.dp, touchHeight.dp)
                     .semantics { contentDescription = "탑승하기" }
