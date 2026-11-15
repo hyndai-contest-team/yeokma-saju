@@ -66,10 +66,17 @@ private fun IntroArtwork(images: Map<Int, ImageBitmap>, onStart: () -> Unit) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
         // 1920×1080 배치를 화면 안에 다 들어오게 줄이고, 가로는 가운데·세로는 아래에 붙인다(영상의 아래쪽에 글씨가 오게)
         val scale = minOf(maxWidth.value / 1920f, maxHeight.value / 1080f)
-        val ox = (maxWidth.value - 1920f * scale) / 2f
+        // 가운데 문구·버튼 묶음(디자인 좌표 가운데 x=1060)을 화면 정중앙에 맞춘다
+        val ox = maxWidth.value / 2f - DETAIL_CENTER_X * scale
         val oy = maxHeight.value - 1080f * scale
-        // 세로 한자 제목은 원래 디자인처럼 화면 높이 전체에 걸치게 높이 기준으로 맞추고 왼쪽에 붙인다
-        val titleScale = maxHeight.value / 1080f
+        // 세로 한자 제목: 화면 높이 기준 크기의 48%로, 화면 가로 가운데·세로 가운데보다 화면 높이 8%만큼 위에 둔다
+        val titleScale = maxHeight.value / 1080f * 0.48f
+        val tMinX = IntroTitleImages.minOf { it.x }
+        val tMaxX = IntroTitleImages.maxOf { it.x + it.width }
+        val tMinY = IntroTitleImages.minOf { it.y }
+        val tMaxY = IntroTitleImages.maxOf { it.y + it.height }
+        val tx = (maxWidth.value - (tMaxX - tMinX) * titleScale) / 2f - tMinX * titleScale
+        val ty = (maxHeight.value - (tMaxY - tMinY) * titleScale) / 2f - tMinY * titleScale - maxHeight.value * 0.08f
         Box(
             Modifier.fillMaxSize().background(
                 Brush.verticalGradient(
@@ -87,7 +94,7 @@ private fun IntroArtwork(images: Map<Int, ImageBitmap>, onStart: () -> Unit) {
                     animationSpec = tween(durationMillis = 680, delayMillis = 180 + index * 310),
                     label = "introTitle$index",
                 )
-                IntroAsset(asset, images.getValue(asset.resource), titleScale, 0f, 0f, alpha)
+                IntroAsset(asset, images.getValue(asset.resource), titleScale, tx, ty, alpha)
             }
         }
         Box(
@@ -109,7 +116,7 @@ private fun IntroArtwork(images: Map<Int, ImageBitmap>, onStart: () -> Unit) {
             Box(
                 Modifier
                     .offset(
-                        x = (ox + 1060f * scale - touchWidth / 2f).dp,
+                        x = (ox + DETAIL_CENTER_X * scale - touchWidth / 2f).dp,
                         y = (oy + 1002f * scale - touchHeight / 2f).dp,
                     )
                     .size(touchWidth.dp, touchHeight.dp)
@@ -132,3 +139,6 @@ private fun IntroAsset(asset: IntroImage, bitmap: ImageBitmap, scale: Float, ox:
             .graphicsLayer { this.alpha = alpha },
     )
 }
+
+/** 가운데 문구(660~1460)와 버튼(845~1275)의 가로 가운데. 디자인 좌표 */
+private const val DETAIL_CENTER_X = 1060f
