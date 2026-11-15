@@ -284,6 +284,6 @@ flowchart LR
 | 플랫폼 방향 | 현대차그룹은 2030년까지 플레오스 커넥트 탑재 차량 약 2,000만 대를 확보하고 앱 마켓을 게임·엔터테인먼트로 넓힐 계획입니다. 역마사주는 그 엔터테인먼트 영역에 들어갈 차량 전용 콘텐츠입니다 |
 | 수익 모델 | 풀이 1회 990P(990원). 9,900원 11회, 99,000원 115회 묶음. 동승 궁합도 같은 가격 |
 
-예상 MAU와 매출 계산은 [기획서 6번 기대효과](기획서.md#6-기대효과-및-발전-가능성)에 있습니다.
+예상 MAU(2030년 국내 기본 약 8,600명, 낙관 약 3만 1,500명), 재이용률 기준치, 수수료·LLM 비용을 뺀 순수익 계산은 [기획서 6번 기대효과](기획서.md#6-기대효과-및-발전-가능성)에 있습니다.
 
 <sub>출처: [1](https://www.hankyung.com/article/2026021070861), [2](https://v.daum.net/v/20250909112824410), [3](https://blog.hanabank.com/501979), [4](https://v.daum.net/v/20260213173831600), [5](https://www.sedaily.com/article/20078817), [6](https://m.etnews.com/20260807000281), [7](https://www.kmjournal.net/news/articleView.html?idxno=8593), [8](https://www.sentv.co.kr/article/view/sentv202610230113)</sub>
