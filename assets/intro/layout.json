@@ -1,0 +1,596 @@
+{
+  "version": 3,
+  "canvas": {
+    "width": 1920,
+    "height": 1080
+  },
+  "lines": [
+    {
+      "key": "story",
+      "text": "역마살의 운명을 타고난",
+      "width": 951,
+      "height": 125,
+      "glyphs": [
+        {
+          "char": "역",
+          "file": "assets/intro/characters/intro_story_01.png",
+          "x": 5,
+          "y": 0,
+          "width": 78,
+          "height": 125,
+          "sourceBox": [
+            525,
+            90,
+            603,
+            215
+          ]
+        },
+        {
+          "char": "마",
+          "file": "assets/intro/characters/intro_story_02.png",
+          "x": 88,
+          "y": 0,
+          "width": 93,
+          "height": 125,
+          "sourceBox": [
+            608,
+            90,
+            701,
+            215
+          ]
+        },
+        {
+          "char": "살",
+          "file": "assets/intro/characters/intro_story_03.png",
+          "x": 180,
+          "y": 0,
+          "width": 93,
+          "height": 125,
+          "sourceBox": [
+            700,
+            90,
+            793,
+            215
+          ]
+        },
+        {
+          "char": "의",
+          "file": "assets/intro/characters/intro_story_04.png",
+          "x": 272,
+          "y": 0,
+          "width": 80,
+          "height": 125,
+          "sourceBox": [
+            792,
+            90,
+            872,
+            215
+          ]
+        },
+        {
+          "char": "운",
+          "file": "assets/intro/characters/intro_story_05.png",
+          "x": 384,
+          "y": 0,
+          "width": 94,
+          "height": 125,
+          "sourceBox": [
+            904,
+            90,
+            998,
+            215
+          ]
+        },
+        {
+          "char": "명",
+          "file": "assets/intro/characters/intro_story_06.png",
+          "x": 478,
+          "y": 0,
+          "width": 78,
+          "height": 125,
+          "sourceBox": [
+            998,
+            90,
+            1076,
+            215
+          ]
+        },
+        {
+          "char": "을",
+          "file": "assets/intro/characters/intro_story_07.png",
+          "x": 563,
+          "y": 0,
+          "width": 92,
+          "height": 125,
+          "sourceBox": [
+            1083,
+            90,
+            1175,
+            215
+          ]
+        },
+        {
+          "char": "타",
+          "file": "assets/intro/characters/intro_story_08.png",
+          "x": 680,
+          "y": 0,
+          "width": 89,
+          "height": 125,
+          "sourceBox": [
+            1200,
+            90,
+            1289,
+            215
+          ]
+        },
+        {
+          "char": "고",
+          "file": "assets/intro/characters/intro_story_09.png",
+          "x": 768,
+          "y": 0,
+          "width": 87,
+          "height": 125,
+          "sourceBox": [
+            1288,
+            90,
+            1375,
+            215
+          ]
+        },
+        {
+          "char": "난",
+          "file": "assets/intro/characters/intro_story_10.png",
+          "x": 854,
+          "y": 0,
+          "width": 93,
+          "height": 125,
+          "sourceBox": [
+            1374,
+            90,
+            1467,
+            215
+          ]
+        }
+      ]
+    },
+    {
+      "key": "characterTitle",
+      "text": "역마아씨",
+      "width": 1983,
+      "height": 501,
+      "glyphs": [
+        {
+          "char": "역",
+          "file": "assets/intro/characters/intro_character_01.png",
+          "x": 0,
+          "y": 0,
+          "width": 496,
+          "height": 501,
+          "sourceBox": [
+            0,
+            165,
+            496,
+            666
+          ]
+        },
+        {
+          "char": "마",
+          "file": "assets/intro/characters/intro_character_02.png",
+          "x": 496,
+          "y": 0,
+          "width": 496,
+          "height": 501,
+          "sourceBox": [
+            496,
+            165,
+            992,
+            666
+          ]
+        },
+        {
+          "char": "아",
+          "file": "assets/intro/characters/intro_character_03.png",
+          "x": 992,
+          "y": 0,
+          "width": 495,
+          "height": 501,
+          "sourceBox": [
+            992,
+            165,
+            1487,
+            666
+          ]
+        },
+        {
+          "char": "씨",
+          "file": "assets/intro/characters/intro_character_04.png",
+          "x": 1487,
+          "y": 0,
+          "width": 496,
+          "height": 501,
+          "sourceBox": [
+            1487,
+            165,
+            1983,
+            666
+          ]
+        }
+      ]
+    },
+    {
+      "key": "subtitle",
+      "text": "길 위에서, 당신의 운명을 읽다",
+      "width": 1045,
+      "height": 110,
+      "glyphs": [
+        {
+          "char": "길",
+          "file": "assets/intro/characters/intro_subtitle_01.png",
+          "x": 7,
+          "y": 0,
+          "width": 66,
+          "height": 110,
+          "sourceBox": [
+            477,
+            635,
+            543,
+            745
+          ]
+        },
+        {
+          "char": "위",
+          "file": "assets/intro/characters/intro_subtitle_02.png",
+          "x": 106,
+          "y": 0,
+          "width": 67,
+          "height": 110,
+          "sourceBox": [
+            576,
+            635,
+            643,
+            745
+          ]
+        },
+        {
+          "char": "에",
+          "file": "assets/intro/characters/intro_subtitle_03.png",
+          "x": 182,
+          "y": 0,
+          "width": 68,
+          "height": 110,
+          "sourceBox": [
+            652,
+            635,
+            720,
+            745
+          ]
+        },
+        {
+          "char": "서",
+          "file": "assets/intro/characters/intro_subtitle_04.png",
+          "x": 256,
+          "y": 0,
+          "width": 67,
+          "height": 110,
+          "sourceBox": [
+            726,
+            635,
+            793,
+            745
+          ]
+        },
+        {
+          "char": ",",
+          "file": "assets/intro/characters/intro_subtitle_05.png",
+          "x": 333,
+          "y": 0,
+          "width": 20,
+          "height": 110,
+          "sourceBox": [
+            803,
+            635,
+            823,
+            745
+          ]
+        },
+        {
+          "char": "당",
+          "file": "assets/intro/characters/intro_subtitle_06.png",
+          "x": 380,
+          "y": 0,
+          "width": 76,
+          "height": 110,
+          "sourceBox": [
+            850,
+            635,
+            926,
+            745
+          ]
+        },
+        {
+          "char": "신",
+          "file": "assets/intro/characters/intro_subtitle_07.png",
+          "x": 456,
+          "y": 0,
+          "width": 68,
+          "height": 110,
+          "sourceBox": [
+            926,
+            635,
+            994,
+            745
+          ]
+        },
+        {
+          "char": "의",
+          "file": "assets/intro/characters/intro_subtitle_08.png",
+          "x": 530,
+          "y": 0,
+          "width": 66,
+          "height": 110,
+          "sourceBox": [
+            1000,
+            635,
+            1066,
+            745
+          ]
+        },
+        {
+          "char": "운",
+          "file": "assets/intro/characters/intro_subtitle_09.png",
+          "x": 630,
+          "y": 0,
+          "width": 76,
+          "height": 110,
+          "sourceBox": [
+            1100,
+            635,
+            1176,
+            745
+          ]
+        },
+        {
+          "char": "명",
+          "file": "assets/intro/characters/intro_subtitle_10.png",
+          "x": 707,
+          "y": 0,
+          "width": 65,
+          "height": 110,
+          "sourceBox": [
+            1177,
+            635,
+            1242,
+            745
+          ]
+        },
+        {
+          "char": "을",
+          "file": "assets/intro/characters/intro_subtitle_11.png",
+          "x": 779,
+          "y": 0,
+          "width": 76,
+          "height": 110,
+          "sourceBox": [
+            1249,
+            635,
+            1325,
+            745
+          ]
+        },
+        {
+          "char": "읽",
+          "file": "assets/intro/characters/intro_subtitle_12.png",
+          "x": 887,
+          "y": 0,
+          "width": 64,
+          "height": 110,
+          "sourceBox": [
+            1357,
+            635,
+            1421,
+            745
+          ]
+        },
+        {
+          "char": "다",
+          "file": "assets/intro/characters/intro_subtitle_13.png",
+          "x": 960,
+          "y": 0,
+          "width": 77,
+          "height": 110,
+          "sourceBox": [
+            1430,
+            635,
+            1507,
+            745
+          ]
+        }
+      ]
+    },
+    {
+      "key": "cta",
+      "text": "탑승하기",
+      "width": 1697,
+      "height": 431,
+      "glyphs": [
+        {
+          "char": "탑",
+          "file": "assets/intro/characters/intro_cta_01.png",
+          "x": 0,
+          "y": 0,
+          "width": 412,
+          "height": 431,
+          "sourceBox": [
+            89,
+            148,
+            501,
+            579
+          ]
+        },
+        {
+          "char": "승",
+          "file": "assets/intro/characters/intro_cta_02.png",
+          "x": 440,
+          "y": 0,
+          "width": 421,
+          "height": 431,
+          "sourceBox": [
+            609,
+            148,
+            1030,
+            579
+          ]
+        },
+        {
+          "char": "하",
+          "file": "assets/intro/characters/intro_cta_03.png",
+          "x": 889,
+          "y": 0,
+          "width": 429,
+          "height": 431,
+          "sourceBox": [
+            1149,
+            148,
+            1578,
+            579
+          ]
+        },
+        {
+          "char": "기",
+          "file": "assets/intro/characters/intro_cta_04.png",
+          "x": 1346,
+          "y": 0,
+          "width": 351,
+          "height": 431,
+          "sourceBox": [
+            1702,
+            148,
+            2053,
+            579
+          ]
+        }
+      ]
+    },
+    {
+      "key": "title",
+      "text": "驛馬四柱",
+      "width": 724,
+      "height": 2172,
+      "glyphs": [
+        {
+          "char": "驛",
+          "file": "app/app/src/main/res/drawable-nodpi/intro_title_01.png",
+          "x": 60,
+          "y": 51,
+          "width": 596,
+          "height": 561,
+          "sourceBox": [
+            60,
+            51,
+            656,
+            612
+          ],
+          "androidResource": "intro_title_01"
+        },
+        {
+          "char": "馬",
+          "file": "app/app/src/main/res/drawable-nodpi/intro_title_02.png",
+          "x": 92,
+          "y": 634,
+          "width": 530,
+          "height": 510,
+          "sourceBox": [
+            92,
+            634,
+            622,
+            1144
+          ],
+          "androidResource": "intro_title_02"
+        },
+        {
+          "char": "四",
+          "file": "app/app/src/main/res/drawable-nodpi/intro_title_03.png",
+          "x": 91,
+          "y": 1232,
+          "width": 549,
+          "height": 355,
+          "sourceBox": [
+            91,
+            1232,
+            640,
+            1587
+          ],
+          "androidResource": "intro_title_03"
+        },
+        {
+          "char": "柱",
+          "file": "app/app/src/main/res/drawable-nodpi/intro_title_04.png",
+          "x": 55,
+          "y": 1650,
+          "width": 605,
+          "height": 482,
+          "sourceBox": [
+            55,
+            1650,
+            660,
+            2132
+          ],
+          "androidResource": "intro_title_04"
+        }
+      ]
+    }
+  ],
+  "ornaments": [
+    {
+      "key": "knot",
+      "file": "assets/intro/ornaments/fate-knot.png",
+      "width": 1948,
+      "height": 186
+    },
+    {
+      "key": "frame",
+      "file": "assets/intro/ornaments/button-frame.png",
+      "width": 1798,
+      "height": 431
+    }
+  ],
+  "layout": {
+    "background": {
+      "file": "app/app/src/main/res/raw/v2_idle.mp4",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080
+    },
+    "title": {
+      "x": 50,
+      "y": 58,
+      "width": 300
+    },
+    "center": {
+      "file": "app/app/src/main/res/drawable-nodpi/intro_center_original.png",
+      "x": 660,
+      "y": 650,
+      "width": 800,
+      "height": 319.91931417044884,
+      "androidResource": "intro_center_original"
+    },
+    "button": {
+      "file": "app/app/src/main/res/drawable-nodpi/intro_button_original.png",
+      "x": 845,
+      "y": 930,
+      "width": 430,
+      "height": 143.33333333333334,
+      "androidResource": "intro_button_original"
+    }
+  },
+  "animation": {
+    "titleInitialDelayMs": 180,
+    "titleStaggerMs": 310,
+    "titleFadeMs": 680,
+    "detailsDelayMs": 1950,
+    "detailsFadeMs": 600
+  },
+  "note": "The original generated center and button PNGs are used without editing. Individual character exports are retained for editing. Only the red Hanja title reveals one character at a time.",
+  "pathBase": "repository root"
+}

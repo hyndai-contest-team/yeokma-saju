@@ -1,0 +1,24 @@
+[title_prompt]
+Use case: logo-brand
+Asset type: a finished transparent PNG Korean cinematic title lockup, to overlay on a dark forest-and-car app welcome screen.
+Primary request: Design refined narrative title lettering for a Korean fortune-teller character who is fated to roam. It should feel like the title of a lyrical Korean folklore film, warm and mysterious, not horror or a fantasy game HUD.
+Text (verbatim, exactly these three centered lines, no other text):
+역마살의 운명을 타고난
+역마아씨
+길 위에서, 당신의 운명을 읽다
+Typography: The middle line 역마아씨 is the dominant hand-brushed Korean calligraphy, confident organic strokes, subtle natural dry-brush edge texture, highly legible, no lost syllables. Top line and bottom line are smaller crisp elegant Korean serif lettering, comfortably readable, much calmer than the main title. Spell all Korean text exactly. Main line consists of 역 / 마 / 아 / 씨.
+Color palette: warm ivory #F3E9D2 for the main calligraphy, muted old gold #C9A362 for smaller lettering and fine ornaments. Main text is nearly opaque and bright enough for a very dark background.
+Ornament: restrained hairline golden wind-and-travel cord flourishes to the left and right of the main title, one tiny traditional Korean knot silhouette integrated into the cord, a few delicate tapered line accents. Evoke wandering and a thread of fate. Ornaments are secondary, elegant and sparse. No large moon, stars, faces, car, mountains, dragons, stamps or scenery.
+Composition: one compact wide centered lockup with clear hierarchy, about 2.5:1 aspect ratio, generous transparent padding around all lettering, no clipping. All lines form one harmonious design, top caption above and small final line below the dominant title. Do not add a CTA button.
+Background: genuinely transparent alpha everywhere outside text and ornament, no opaque rectangle, no paper, no black fill, no checkerboard pattern, no background glow, no drop shadow. This is the standalone usable overlay asset, not a mockup.
+
+[cta_prompt]
+Use case: logo-brand.
+Asset type: standalone transparent PNG button ornament for a premium Korean cinematic fortune-telling app.
+Primary request: a single refined horizontal "탑승하기" call-to-action ornament to overlay on a near-black scene. Exactly one button, centered, wide aspect ratio 3:1.
+Text verbatim: 탑승하기
+Typography: beautiful, completely legible Korean Myeongjo serif lettering. Flat warm ivory ink. The text has generous breathing room and is large enough to read at a final display width of 260 pixels.
+Border: delicate muted old-gold #C9A362 double hairline frame, elongated rectangle with softly clipped ornamental corners, not a capsule. A very small traditional flat knot or diamond at the center of left and right edges. Quiet, clean, film-title style, not ostentatious.
+Center fill is completely TRANSPARENT. Outer background also completely transparent. Only gold border and ivory letters are visible. The text and lines are clean, mostly opaque.
+Materials: FLAT printing with elegant restrained linework, no 3D, no bevel, no shine, no texture, no glow, no shadow, no speckles.
+Composition: render at high resolution, with at least 12% clean transparent margin around the entire frame, nothing cropped. Avoid pictograms, arrows, faces, scenery, checkboards, large tassels, decorative background clouds, and any additional words.

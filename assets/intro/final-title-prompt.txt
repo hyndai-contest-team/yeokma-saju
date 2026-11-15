@@ -1,0 +1,15 @@
+최종 선택: 역마아씨가 아니라 역마사주. 한자는 驛馬四柱.
+내장 image_gen 사용. 붉은 세로 붓글씨. 좌측 도장 제거.
+
+Use case: logo-brand.
+Asset type: production transparent PNG of four separate traditional Chinese calligraphy characters for a Korean cinematic app called 역마사주 (Yeokma Saju).
+Exact text, top to bottom:
+驛
+馬
+四
+柱
+These exact TRADITIONAL forms are essential. 驛 must be U+9A5B, not 駅 or 驿. 馬 must be U+99AC, not 马. 四 must be U+56DB. 柱 must be U+67F1, with 木 at left and 主 at right. No Hangul letters.
+Layout: tall portrait canvas with width-to-height ratio 1:3. FOUR EQUAL-HEIGHT imaginary rows, one complete Chinese character optically centered in each row. Centers at y=12.5%,37.5%,62.5%,87.5%. Each character fits entirely inside its row with generous transparent separation between adjacent glyphs. Similar optical height for all four. Absolutely no touching strokes between rows. No actual grid or separators. These will each be exported as an independent PNG and also used as a vertical title.
+Art direction: distinguished bold hand-brushed calligraphy for a Korean supernatural road-story film poster. Skilled real brush gesture, powerful varied stroke widths, balanced recognizable semi-cursive regular-script characters. Keep every necessary stroke legible, especially complex 驛. Confident, elegant, slightly raw ink edges, fine dry-brush texture only within the strokes. NOT the rounded block lettering of a seal.
+Color: rich bright CINNABAR RED ink, close to #D2473A, readable over a very dark forest. Single red color, mostly opaque. No black, gold or ivory ink.
+Background: true alpha transparency. Only four red characters, nothing else. No stamp, no square border, no logo badge, no seal impression, no signature, no extra words, no scenery, no shadow, no glow, no haze, no paint splatters outside the letters. Full strokes and brush endings must be contained within their own row.
