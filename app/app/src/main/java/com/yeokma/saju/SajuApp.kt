@@ -287,8 +287,10 @@ fun SajuApp() {
                             return@LaunchedEffect
                         }
                         if (offline) { delay(2500); report = com.yeokma.saju.data.Offline.report(profile, worry); delay(400); screen = Screen.Report; return@LaunchedEffect }
+                        val began = System.currentTimeMillis()
                         when (val r = Api.reading(device, profile, worry)) {
-                            is ReadingResult.Ok -> { balance = r.balance; report = r.report; delay(400); screen = Screen.Report }
+                            // 답이 빨리 와도 무드등이 오행 색을 한 바퀴 돌 만큼은 대기 화면을 보여 준다
+                            is ReadingResult.Ok -> { balance = r.balance; report = r.report; delay(maxOf(400L, 3500L - (System.currentTimeMillis() - began))); screen = Screen.Report }
                             is ReadingResult.NeedPoints -> { balance = r.balance; screen = Screen.Pay }
                             is ReadingResult.Failed -> failed = r.message
                         }
