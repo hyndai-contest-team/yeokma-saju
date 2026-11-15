@@ -48,7 +48,7 @@ Pleos Connect(안드로이드 오토모티브) 차량용 앱입니다.
 | 차는 감각 전체를 한꺼번에 바꿀 수 있는 유일한 개인 공간이다 | 고급차 브랜드는 이미 공조·향기·시트 마사지·음악·앰비언트 조명을 묶어 기분을 바꾸는 프로그램을 판매하고 있습니다[7]. 현대차그룹도 플레오스 커넥트 앱 마켓을 게임·엔터테인먼트 앱으로 넓힐 계획입니다[8] |
 | 플레오스가 가려는 방향과 맞는다 | 역마사주는 차 기능을 함께 움직여 몰입을 만드는 차량 전용 엔터테인먼트 앱입니다. 앱 마켓이 엔터테인먼트로 넓어질 때 휴대폰 앱을 옮겨 온 것이 아니라 **차에서만 할 수 있는 콘텐츠**가 필요하고, 역마사주는 그 첫 사례가 될 수 있습니다. 중요한 일정이 생길 때마다 다시 여는 이유가 있어 앱 마켓의 재방문도 만듭니다 |
 
-역마사주는 이 근거 위에서 차의 디스플레이·스피커(탑승 영상과 인사), 앰비언트 라이트·실내등(장면마다 바뀌는 빛), 송풍(잔잔한 바람), 좌석 센서(함께 탄 사람)를 하나의 장면으로 묶습니다.
+역마사주는 이 근거 위에서 차의 디스플레이·스피커(탑승 영상과 인사), 앰비언트 라이트·실내등(장면마다 바뀌는 빛), 송풍(잔잔한 바람), 좌석 센서(함께 탄 사람)를 하나의 장면으로 묶습니다. **이 빛과 바람, 소리는 단순한 연출이 아니라 사용자가 풀이에 빠져들게 만드는 핵심 몰입 요소입니다.**
 
 <sub>출처: [1](https://www.halfordscompany.com/news-and-media/news/brits-spend-half-a-day-a-year-in-their-cars-searching-for-peace-and-quiet/) 영국 운전자 조사(업체 의뢰), [2](https://www.nova.ie/motorists-spend-more-than-three-days-of-their-lives-looking-for-their-cars/) 아일랜드 운전자 조사, [3](https://www.openads.co.kr/content/contentDetail?contsId=1579) 국내 소비자 조사, [4](https://deepai.org/publication/affective-responses-to-chromatic-ambient-light-in-a-vehicle) Kim 외(2022), [5](https://dl.ifip.org/IFIP-LNCS-11746/hal-02544538) Hassib 외(INTERACT 2019), [6](https://openaccess.cms-conferences.org/publications/book/978-1-958651-15-5/article/978-1-958651-15-5_47) AHFE 2022, [7](https://www.mercedes-benz.co.nz/passengercars/brand/mercedes-me-magazine/innovation/articles/ergonomic-design-driving-comfort.html) 제조사 기능 소개, [8](https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system) 현대차그룹 발표</sub>
 
@@ -224,7 +224,7 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 
 ## 기능
 
-휴대폰과 다른 점은 사용자를 둘러싼 실제 공간까지 앱에 참여한다는 것입니다. 디스플레이에 역마아씨가 나타나고, 차량 스피커로 인사가 들리고, 앰비언트 라이트·실내등·송풍이 같은 장면을 함께 만듭니다.
+휴대폰과 다른 점은 사용자를 둘러싼 실제 공간까지 앱에 참여한다는 것입니다. 디스플레이에 역마아씨가 나타나고, 차량 스피커로 인사가 들리고, 앰비언트 라이트·실내등·송풍이 같은 장면을 함께 만듭니다. 차량 기능은 화면을 꾸미는 단순한 연출이 아니라, 상담 공간에 들어와 있다고 느끼게 하는 **중요한 몰입 요소**입니다.
 
 | 구분 | 핵심 내용 |
 |---|---|
