@@ -232,7 +232,7 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 | 구분 | 핵심 내용 |
 |---|---|
 | 주행 중 잠금 | 기어가 P(주차)일 때만 쓸 수 있습니다. P를 벗어나면 화면을 잠그고 영상·소리·음성 입력을 멈추며, 바꿔 둔 조명과 공조를 바로 되돌립니다. 다시 P에 두면 보던 화면과 그 화면의 조명·공조가 이어집니다. 기어 값을 알 수 없으면 잠급니다 |
-| 앰비언트 라이트 · 실내등 | 대기 화면에서 무드등 금색과 실내등 켜기, 탑승 5초에 실내등 끄고 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 순환 |
+| 앰비언트 라이트 · 실내등 | 앱을 켜면 도입 영상 동안 둘 다 꺼서 차 안을 어둡게, 대기 화면에서 무드등 금색과 실내등 켜기, 탑승 5초에 실내등 끄고 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 순환 |
 | 송풍 | 공조를 켜고 풍량을 "중"으로 맞춘 잔잔한 바람. 온도·에어컨·풍향은 사용자 설정 그대로이고, 앱을 떠나면 원래대로 |
 | 동승 궁합 | 좌석 센서로 동승자를 감지하면 "혼자가 아니시군요?"로 사주 보기와 궁합 보기를 나눔. 두 사람의 명식으로 점수(39\~97)와 유형(귀인, 단짝, 동반자, 자극제, 숙제) |
 | 디스플레이 · 스피커 | 숲길을 달려온 차와 역마아씨의 탑승 영상, 차량 스피커로 들리는 "오셨군요" 인사 |
@@ -247,8 +247,8 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 
 | 기능 | 하는 일 | SDK · API | 권한 | 코드 |
 |---|---|---|---|---|
-| 앰비언트 라이트 | 대기 화면에서 무드등 금색, 탑승 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 바뀜 | Pleos Vehicle SDK 2.3.2 `Light`: `checkAmbientLightBrightnessColorCapabilities`, `getAmbientLightBrightnessColor`, `setAmbientLightBrightnessColor` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` | [CarMood.kt `ambient`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L112), [오행 순환](../app/app/src/main/java/com/yeokma/saju/ui/ReadingScreens.kt#L128) |
-| 실내등 | 대기 화면에서 켜고, 탑승 5초에 끔 | Vehicle SDK `Light`: `getCabinLightSwitch`, `setCabinLightSwitch` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` | [CarMood.kt `cabin`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L125), [탑승 5초](../app/app/src/main/java/com/yeokma/saju/intro/IntroFlow.kt#L107) |
+| 앰비언트 라이트 | 도입 영상 동안 끔, 대기 화면에서 무드등 금색, 탑승 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 바뀜 | Pleos Vehicle SDK 2.3.2 `Light`: `checkAmbientLightBrightnessColorCapabilities`, `getAmbientLightBrightnessColor`, `setAmbientLightBrightnessColor`, `getAmbientLightSwitch`, `setAmbientLightSwitch` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` | [CarMood.kt `ambient`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L112), [오행 순환](../app/app/src/main/java/com/yeokma/saju/ui/ReadingScreens.kt#L128) |
+| 실내등 | 도입 영상 동안 끄고, 대기 화면에서 켜고, 탑승 5초에 끔 | Vehicle SDK `Light`: `getCabinLightSwitch`, `setCabinLightSwitch` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` | [CarMood.kt `cabin`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L125), [탑승 5초](../app/app/src/main/java/com/yeokma/saju/intro/IntroFlow.kt#L107) |
 | 송풍 | 공조 전원을 켜고 풍량을 "중"으로. AUTO일 때는 풍량을 맞추려고 잠시 끔. 온도·에어컨·풍향은 사용자 설정 그대로 | Vehicle SDK `HVAC`: `setHvacPower`, `setHvacAuto`, `setHvacFanSpeed` (각각 `check…Capabilities`, `get…`로 지원 범위와 원래 값을 읽어 두고 되돌림) | `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE` | [CarMood.kt `breeze`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L135) |
 | 주행 중 잠금 | 기어가 P가 아니면 화면을 잠그고 영상·소리·음성 입력을 멈춤, 조명·공조 복원 | Vehicle SDK `Gear`: `getCurrentGearSelectionState`, `registerGearSelection` | `CAR_DRIVE` | [CarMood.kt 기어 구독](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L52), [잠금 화면](../app/app/src/main/java/com/yeokma/saju/SajuApp.kt#L315) |
 | 동승자 감지 | 운전석 말고 앉은 자리가 있으면 "혼자가 아니시군요?"로 궁합 보기를 엶 | Vehicle SDK `Seat`: `checkSeatOccupancyCapabilities`, `getCurrentSeatOccupancy` | `CAR_SEATS` | [CarMood.kt `companions`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L63) |

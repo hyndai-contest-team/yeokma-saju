@@ -43,7 +43,7 @@ private const val BOARDING_LINE = "오셨군요"
 
 /**
  * 인트로: V1 한 번 → V2 대기 루프(버튼 누를 때까지) → 버튼 → V3 탑승 → onDone.
- * V2 동안은 차도 같이 연출한다: 앰비언트를 무드등 색으로, 실내등 켜기, 약한 송풍.
+ * V1 동안은 앰비언트와 실내등을 끈다. V2 동안은 앰비언트를 무드등 색으로, 실내등 켜기, 약한 송풍.
  * V1 동안은 글씨 없이 영상만 보여 주고, 오른쪽 아래 '건너뛰기'만 둔다.
  */
 @Composable
@@ -54,9 +54,13 @@ fun IntroFlow(onDone: () -> Unit) {
     Box(Modifier.fillMaxSize()) {
         Crossfade(targetState = phase, animationSpec = tween(if (phase == IntroPhase.Idle) 0 else 600), label = "intro") { p ->
             when (p) {
-                IntroPhase.Prelude ->
+                IntroPhase.Prelude -> {
+                    // 앱을 처음 켤 때: 도입 영상 동안 앰비언트와 실내등을 꺼 차 안을 어둡게 한다(대기 화면에서 다시 켬)
+                    val car = LocalCarMood.current
+                    LaunchedEffect(Unit) { runCatching { car?.dark() } }
                     if (v1 != null) VideoLayer(resId = v1, loop = false, onEnded = { phase = IntroPhase.Idle })
                     else LaunchedEffect(Unit) { phase = IntroPhase.Idle }
+                }
                 IntroPhase.Idle -> {
                     val car = LocalCarMood.current
                     LaunchedEffect(Unit) { runCatching { car?.idle() } }

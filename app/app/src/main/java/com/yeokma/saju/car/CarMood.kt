@@ -43,7 +43,7 @@ class CarMood(context: Context) {
     }
 
     private fun reapply(kind: CarEffects.Kind) = when (kind) {
-        CarEffects.Kind.Ambient -> sceneAmbient?.let { ambient(it) }
+        CarEffects.Kind.Ambient -> if (sceneAmbientOn == false) ambientSwitch(false) else sceneAmbient?.let { ambient(it) }
         CarEffects.Kind.Cabin -> sceneCabin?.let { cabin(it) }
         CarEffects.Kind.Breeze -> if (sceneBreeze) breeze() else Unit
     }
@@ -124,18 +124,41 @@ class CarMood(context: Context) {
 
     // 마지막으로 켠 장면. 잠금이 풀리면 이것을 다시 켠다
     private var sceneAmbient: Int? = null
+    private var sceneAmbientOn: Boolean? = null
     private var sceneCabin: Boolean? = null
     private var sceneBreeze = false
 
     private fun resume() {
-        sceneAmbient?.let { ambient(it) }
+        if (sceneAmbientOn == false) ambientSwitch(false) else sceneAmbient?.let { ambient(it) }
         sceneCabin?.let { cabin(it) }
         if (sceneBreeze) breeze()
+    }
+
+    /** 앱을 처음 켤 때(V1 도입 영상): 앰비언트와 실내등을 꺼서 차 안을 어둡게 한다 */
+    fun dark() {
+        ambientSwitch(false)
+        cabin(false)
+    }
+
+    /** 앰비언트 라이트 자체를 켜거나 끈다. 원래 값은 기억해 두었다가 되돌린다 */
+    fun ambientSwitch(on: Boolean) {
+        sceneAmbientOn = on
+        if (!parked || !CarEffects.allowed(CarEffects.Kind.Ambient)) return
+        light.checkAmbientLightSwitchCapabilities({ _, areas ->
+            areas.keys.forEach { area ->
+                light.getAmbientLightSwitch(area, { old ->
+                    if (old != null) keep("ambient:sw:" + area.key()) { light.setAmbientLightSwitch(area, old, { _, _ -> }, ::warn) }
+                    light.setAmbientLightSwitch(area, if (on) LightSwitch.ON else LightSwitch.OFF, { _, _ -> }, ::warn)
+                }, ::warn)
+            }
+        }, ::warn)
     }
 
     fun ambient(color: Int) {
         sceneAmbient = color
         if (!parked || !CarEffects.allowed(CarEffects.Kind.Ambient)) return
+        if (sceneAmbientOn == false) ambientSwitch(true)   // 꺼 둔 앰비언트를 다시 켜고 색을 바꾼다
+        sceneAmbientOn = true
         light.checkAmbientLightBrightnessColorCapabilities({ _, areas ->
             areas.forEach { area ->
                 light.getAmbientLightBrightnessColor(area, { old ->
