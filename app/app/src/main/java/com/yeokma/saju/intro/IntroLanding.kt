@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/** V2 대기 화면만 16:9 무대에 맞춘다. 다른 인트로 영상과 앱 화면의 비율은 유지한다. */
+/** V2 대기 화면. 영상은 다른 화면처럼 화면을 꽉 채우고, 제목·버튼 그림은 그 위에 화면에 맞춰 얹는다. */
 @Composable
 internal fun IntroLanding(video: Int?, onStart: () -> Unit) {
     val resources = LocalResources.current
@@ -46,15 +46,9 @@ internal fun IntroLanding(video: Int?, onStart: () -> Unit) {
             }
         }
     }
-    BoxWithConstraints(
-        Modifier.fillMaxSize().background(Color.Black),
-        contentAlignment = Alignment.Center,
-    ) {
-        val width = minOf(maxWidth, maxHeight * (16f / 9f))
-        Box(Modifier.size(width, width * (9f / 16f)).clipToBounds()) {
-            if (video != null) VideoLayer(resId = video, loop = true) else PosterImage()
-            images?.let { IntroArtwork(it, onStart) }
-        }
+    Box(Modifier.fillMaxSize().background(Color.Black)) {
+        if (video != null) VideoLayer(resId = video, loop = true) else PosterImage()
+        images?.let { IntroArtwork(it, onStart) }
     }
 }
 
@@ -70,7 +64,12 @@ private fun IntroArtwork(images: Map<Int, ImageBitmap>, onStart: () -> Unit) {
         label = "introDetails",
     )
     BoxWithConstraints(Modifier.fillMaxSize()) {
-        val scale = maxWidth.value / 1920f
+        // 1920×1080 배치를 화면 안에 다 들어오게 줄이고, 가로는 가운데·세로는 아래에 붙인다(영상의 아래쪽에 글씨가 오게)
+        val scale = minOf(maxWidth.value / 1920f, maxHeight.value / 1080f)
+        val ox = (maxWidth.value - 1920f * scale) / 2f
+        val oy = maxHeight.value - 1080f * scale
+        // 세로 한자 제목은 원래 디자인처럼 화면 높이 전체에 걸치게 높이 기준으로 맞추고 왼쪽에 붙인다
+        val titleScale = maxHeight.value / 1080f
         Box(
             Modifier.fillMaxSize().background(
                 Brush.verticalGradient(
@@ -88,7 +87,7 @@ private fun IntroArtwork(images: Map<Int, ImageBitmap>, onStart: () -> Unit) {
                     animationSpec = tween(durationMillis = 680, delayMillis = 180 + index * 310),
                     label = "introTitle$index",
                 )
-                IntroAsset(asset, images.getValue(asset.resource), scale, alpha)
+                IntroAsset(asset, images.getValue(asset.resource), titleScale, 0f, 0f, alpha)
             }
         }
         Box(
@@ -100,7 +99,7 @@ private fun IntroArtwork(images: Map<Int, ImageBitmap>, onStart: () -> Unit) {
                     }
                 }
         ) {
-            IntroDetailImages.forEach { IntroAsset(it, images.getValue(it.resource), scale) }
+            IntroDetailImages.forEach { IntroAsset(it, images.getValue(it.resource), scale, ox, oy) }
         }
         // Keep the visual composition fixed while retaining a 48dp minimum touch target.
         // Invisible / fading-in controls cannot start boarding or receive accessibility focus.
@@ -110,8 +109,8 @@ private fun IntroArtwork(images: Map<Int, ImageBitmap>, onStart: () -> Unit) {
             Box(
                 Modifier
                     .offset(
-                        x = (1060f * scale - touchWidth / 2f).dp,
-                        y = (1002f * scale - touchHeight / 2f).dp,
+                        x = (ox + 1060f * scale - touchWidth / 2f).dp,
+                        y = (oy + 1002f * scale - touchHeight / 2f).dp,
                     )
                     .size(touchWidth.dp, touchHeight.dp)
                     .semantics { contentDescription = "탑승하기" }
@@ -122,13 +121,13 @@ private fun IntroArtwork(images: Map<Int, ImageBitmap>, onStart: () -> Unit) {
 }
 
 @Composable
-private fun IntroAsset(asset: IntroImage, bitmap: ImageBitmap, scale: Float, alpha: Float = 1f) {
+private fun IntroAsset(asset: IntroImage, bitmap: ImageBitmap, scale: Float, ox: Float, oy: Float, alpha: Float = 1f) {
     Image(
         bitmap = bitmap,
         contentDescription = null,
         contentScale = ContentScale.FillBounds,
         modifier = Modifier
-            .offset((asset.x * scale).dp, (asset.y * scale).dp)
+            .offset((ox + asset.x * scale).dp, (oy + asset.y * scale).dp)
             .size((asset.width * scale).dp, (asset.height * scale).dp)
             .graphicsLayer { this.alpha = alpha },
     )
