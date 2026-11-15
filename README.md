@@ -2,7 +2,9 @@
   <img src="assets/brand/app/app-icon-512.png" width="140" height="140" alt="흰 배경의 驛馬四柱 도장 로고">
 </p>
 
-<h1 align="center">역마사주</h1>
+<h1 align="center">역마사주 (Yeokma Saju)</h1>
+
+<p align="center">팀 tridrive</p>
 
 <p align="center"><b>중요한 일정을 앞두고, 출발 전이나 도착 후 차 안에서 보내는 몇 분. 그 시간의 고민을 사주로 풀어 주는 차량용 사주 앱</b></p>
 
@@ -44,13 +46,13 @@ Pleos Connect(안드로이드 오토모티브) 차량용 앱입니다.
 
 #### 바로 설치 (빌드된 APK)
 
-저장소 맨 위의 [`yeokma-saju.apk`](yeokma-saju.apk)를 설치합니다. [Releases](https://github.com/hyndai-contest-team/yeokma-saju/releases/latest)에도 같은 파일이 있습니다. 빌드 없이 바로 됩니다.
+저장소의 [`apk/tridrive_yeokmasaju_release.apk`](apk/tridrive_yeokmasaju_release.apk)를 설치합니다. [Releases](https://github.com/hyndai-contest-team/yeokma-saju/releases/latest)에도 같은 파일이 있습니다. 빌드 없이 바로 됩니다.
 
 ```bash
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 
 # 저장소 루트에서, 에뮬레이터를 켠 뒤 설치하고 실행합니다
-$ANDROID_HOME/platform-tools/adb install -r --user 10 yeokma-saju.apk
+$ANDROID_HOME/platform-tools/adb install -r --user 10 apk/tridrive_yeokmasaju_release.apk
 $ANDROID_HOME/platform-tools/adb shell am start --user 10 -n com.yeokma.saju/.MainActivity
 ```
 
@@ -146,7 +148,7 @@ npx wrangler@4.162.0 dev --ip 0.0.0.0 --port 8787
 
 | 항목 | 내용 |
 |---|---|
-| 저장소 안 위치 | 루트의 [`yeokma-saju.apk`](yeokma-saju.apk) |
+| 저장소 안 위치 | [`apk/tridrive_yeokmasaju_release.apk`](apk/tridrive_yeokmasaju_release.apk) |
 | GitHub Release | [최신 릴리스](https://github.com/hyndai-contest-team/yeokma-saju/releases/latest) |
 | 파일 정보 | 패키지 `com.yeokma.saju`, 버전 0.1.0, 릴리스 빌드(코드 축소), 시연용 디버그 키 서명, 약 67MB |
 | 직접 빌드한 경우 | `./gradlew :app:assembleRelease` → `app/app/build/outputs/apk/release/app-release.apk` |
