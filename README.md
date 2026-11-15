@@ -84,6 +84,23 @@ npx wrangler@4.162.0 dev --ip 0.0.0.0 --port 8787
 
 ## 2. 앱 설치와 실행
 
+### 바로 설치 (빌드된 APK)
+
+[Releases](https://github.com/hyndai-contest-team/yeokma-saju/releases/latest)에서 `yeokma-saju.apk`를 받아 설치합니다. 빌드 없이 바로 됩니다.
+
+```bash
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+
+# APK 받기 (비공개 레포라 gh 로그인이 필요합니다. 브라우저로 받아도 됩니다)
+gh release download -R hyndai-contest-team/yeokma-saju -p yeokma-saju.apk
+
+# 에뮬레이터를 켠 뒤 설치하고 실행합니다
+$ANDROID_HOME/platform-tools/adb install -r --user 10 yeokma-saju.apk
+$ANDROID_HOME/platform-tools/adb shell am start --user 10 -n com.yeokma.saju/.MainActivity
+```
+
+### 직접 빌드해서 설치
+
 ```bash
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
