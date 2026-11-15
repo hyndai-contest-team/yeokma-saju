@@ -62,8 +62,10 @@ import androidx.compose.runtime.LaunchedEffect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import com.yeokma.saju.ui.ProfilesScreen
+import com.yeokma.saju.ui.MatchPickScreen
+import com.yeokma.saju.ui.MatchReportScreen
 
-enum class Screen { Intro, Profiles, Input, Confirm, Worry, Pay, Loading, Report }
+enum class Screen { Intro, Profiles, Input, Confirm, Worry, Pay, Loading, Report, MatchPick, MatchReport }
 
 /** 앱 흐름: 인트로 → 오셨군요(저장된 사람/새로 추가) → 입력 6단계 → 확인 → 고민 → 풀이 */
 @Composable
@@ -85,7 +87,25 @@ fun SajuApp() {
     var failed by remember { mutableStateOf<String?>(null) }
     var attempt by remember { mutableIntStateOf(0) }
     var offline by remember { mutableStateOf(false) }
+    var chart by remember { mutableStateOf<com.yeokma.saju.data.Chart?>(null) }
+    var chartLoading by remember { mutableStateOf(false) }
+    // 확인 화면에 오면 서버 만세력으로 명식을 계산한다(무료, LLM 없음). 리포트 위쪽에도 같이 쓴다
+    LaunchedEffect(screen, profile) {
+        if (screen == Screen.Confirm || (screen == Screen.Worry && chart == null)) {
+            chartLoading = true; chart = Api.manse(profile); chartLoading = false
+        }
+    }
     var fromSaved by remember { mutableStateOf(false) }
+    // 궁합: 좌석 센서가 찾은 동승 자리, 두 자리(0 운전석, 1 함께 탄 분), 지금 고르는 자리
+    var companions by remember { mutableStateOf(emptyList<String>()) }
+    var matchMode by remember { mutableStateOf(false) }
+    var matchA by remember { mutableStateOf<Profile?>(null) }
+    var matchB by remember { mutableStateOf<Profile?>(null) }
+    var matchSlot by remember { mutableIntStateOf(0) }
+    var match by remember { mutableStateOf<com.yeokma.saju.data.Match?>(null) }
+    fun fill(p: Profile) {
+        if (matchSlot == 0) { matchA = p; if (matchB == null) matchSlot = 1 } else { matchB = p; if (matchA == null) matchSlot = 0 }
+    }
     var emailWanted by remember { mutableStateOf(false) }
     val places = remember { com.yeokma.saju.data.Places.get(ctx) }
     var placeOptions by remember { mutableStateOf(emptyList<com.yeokma.saju.data.Places.Place>()) }
@@ -131,6 +151,8 @@ fun SajuApp() {
         when (screen) {
             Screen.Intro -> {}
             Screen.Profiles -> screen = Screen.Intro
+            Screen.MatchPick -> { matchMode = false; screen = Screen.Profiles }
+            Screen.MatchReport -> screen = Screen.MatchPick
             Screen.Input -> when {
                 PROFILE_STEPS[step].id == StepId.Email && emailWanted -> emailWanted = false
                 backToConfirm -> screen = Screen.Confirm
@@ -139,14 +161,27 @@ fun SajuApp() {
             }
             Screen.Confirm -> { step = PROFILE_STEPS.lastIndex; backToConfirm = false; screen = Screen.Input }
             Screen.Worry -> screen = if (fromSaved) Screen.Profiles else Screen.Confirm
-            Screen.Pay -> screen = Screen.Worry
-            Screen.Loading -> if (failed != null) screen = Screen.Worry
+            Screen.Pay -> screen = if (matchMode) Screen.MatchPick else Screen.Worry
+            Screen.Loading -> if (failed != null) screen = if (matchMode) Screen.MatchPick else Screen.Worry
             Screen.Report -> screen = Screen.Worry
         }
     }
 
     // 결제(포인트)가 먼저다. 포인트가 모자라면 복채 화면, 있으면 대기 화면에서 서버가 포인트를 빼고 나서 LLM을 부른다
+    // 궁합도 포인트가 먼저다. 서버가 꺼져 있으면 궁합은 볼 수 없다고 알린다
+    fun startMatch() {
+        scope.launch {
+            balance = runCatching { Api.wallet(device) }.getOrDefault(-1)
+            when {
+                balance < 0 -> { failed = "서버에 연결되면 궁합을 볼 수 있어요"; match = null; screen = Screen.Loading }
+                balance < Api.PRICE -> screen = Screen.Pay
+                else -> { failed = null; match = null; attempt++; screen = Screen.Loading }
+            }
+        }
+    }
+
     fun startReading() {
+        if (matchMode) { startMatch(); return }
         scope.launch {
             balance = runCatching { Api.wallet(device) }.getOrDefault(-1)
             when {
@@ -159,6 +194,8 @@ fun SajuApp() {
     }
 
     val car = rememberCarMood()
+    // "오셨군요"에 오면 좌석 센서로 동승자를 찾는다
+    LaunchedEffect(screen) { if (screen == Screen.Profiles) car?.companions { companions = it } }
     val backdropBlur = remember { mutableStateOf(false) }
     CompositionLocalProvider(LocalCarMood provides car, com.yeokma.saju.ui.LocalBackdropBlur provides backdropBlur) {
     Box(Modifier.fillMaxSize().background(Ink)) {
@@ -168,9 +205,10 @@ fun SajuApp() {
             when (s) {
                 Screen.Intro -> IntroFlow(onDone = { saved = store.all(); screen = Screen.Profiles })
                 Screen.Profiles -> ProfilesScreen(
-                    saved = saved,
-                    onPick = { profile = it; worry = ""; fromSaved = true; screen = Screen.Worry },
-                    onNew = { profile = Profile(); step = 0; backToConfirm = false; fromSaved = false; placeOptions = emptyList(); province = null; placeAsk = ""; emailWanted = false; screen = Screen.Input },
+                    saved = saved, companions = companions,
+                    onMatch = { matchMode = true; matchA = null; matchB = null; matchSlot = 0; screen = Screen.MatchPick },
+                    onPick = { profile = it; worry = ""; fromSaved = true; chart = null; screen = Screen.Worry },
+                    onNew = { profile = Profile(); chart = null; step = 0; backToConfirm = false; fromSaved = false; placeOptions = emptyList(); province = null; placeAsk = ""; emailWanted = false; screen = Screen.Input },
                 )
                 Screen.Input -> {
                     val st = PROFILE_STEPS[i].let { if (it.id == StepId.Email && emailWanted) EMAIL_ADDRESS_STEP else it }
@@ -212,9 +250,12 @@ fun SajuApp() {
                     )
                 }
                 Screen.Confirm -> ConfirmScreen(
-                    p = profile,
+                    p = profile, chart = chart, chartLoading = chartLoading,
                     onEdit = { idx -> step = idx; backToConfirm = true; voiceMode = false; emailWanted = false; screen = Screen.Input },
-                    onOk = { store.save(profile); saved = store.all(); worry = ""; fromSaved = false; screen = Screen.Worry },
+                    onOk = {
+                        store.save(profile); saved = store.all(); worry = ""; fromSaved = false
+                        if (matchMode) { fill(profile); screen = Screen.MatchPick } else screen = Screen.Worry
+                    },
                 )
                 Screen.Worry -> AskScreen(
                     step = WORRY_STEP, progress = null, autoListen = voiceMode,
@@ -222,7 +263,7 @@ fun SajuApp() {
                     onNext = { startReading() },
                     extra = { pick -> Hints(pick) },
                 )
-                Screen.Pay -> PayScreen(worry, balance, paying,
+                Screen.Pay -> PayScreen(if (matchMode) "${matchA?.name} ♥ ${matchB?.name} 궁합" else worry, balance, paying,
                     onPay = { pack ->
                         paying = true
                         scope.launch {
@@ -232,11 +273,19 @@ fun SajuApp() {
                             startReading()
                         }
                     },
-                    onBack = { screen = Screen.Worry },
+                    onBack = { screen = if (matchMode) Screen.MatchPick else Screen.Worry },
                 )
                 Screen.Loading -> {
                     LaunchedEffect(attempt) {
                         if (failed != null) return@LaunchedEffect
+                        if (matchMode) {
+                            when (val r = Api.match(device, matchA!!, matchB!!)) {
+                                is com.yeokma.saju.data.MatchResult.Ok -> { balance = r.balance; match = r.match; delay(400); screen = Screen.MatchReport }
+                                is com.yeokma.saju.data.MatchResult.NeedPoints -> { balance = r.balance; screen = Screen.Pay }
+                                is com.yeokma.saju.data.MatchResult.Failed -> failed = r.message
+                            }
+                            return@LaunchedEffect
+                        }
                         if (offline) { delay(2500); report = com.yeokma.saju.data.Offline.report(profile, worry); delay(400); screen = Screen.Report; return@LaunchedEffect }
                         when (val r = Api.reading(device, profile, worry)) {
                             is ReadingResult.Ok -> { balance = r.balance; report = r.report; delay(400); screen = Screen.Report }
@@ -244,9 +293,17 @@ fun SajuApp() {
                             is ReadingResult.Failed -> failed = r.message
                         }
                     }
-                    LoadingScreen(done = report != null, failed = failed, onRetry = { failed = null; startReading() }, onHome = { screen = Screen.Intro })
+                    LoadingScreen(done = if (matchMode) match != null else report != null, failed = failed, onRetry = { failed = null; startReading() }, onHome = { screen = Screen.Intro })
                 }
-                Screen.Report -> ReportScreen(profile.name, report!!, onHome = { screen = Screen.Intro })
+                Screen.Report -> ReportScreen(profile.name, report!!, chart, onHome = { screen = Screen.Intro })
+                Screen.MatchPick -> MatchPickScreen(
+                    saved = saved, a = matchA, b = matchB, slot = matchSlot, companions = companions,
+                    onSlot = { matchSlot = it },
+                    onPick = { fill(it) },
+                    onNew = { profile = Profile(); chart = null; step = 0; backToConfirm = false; placeOptions = emptyList(); province = null; placeAsk = ""; emailWanted = false; screen = Screen.Input },
+                    onGo = { startMatch() },
+                )
+                Screen.MatchReport -> MatchReportScreen(matchA!!, matchB!!, match!!, onHome = { matchMode = false; screen = Screen.Intro })
             }
         }
         if (screen != Screen.Intro && (screen != Screen.Loading || failed != null)) BackButton(Modifier.align(Alignment.TopStart).padding(start = 20.dp, top = 18.dp)) { goBack() }

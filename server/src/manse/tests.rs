@@ -68,3 +68,16 @@ fn mock_report_shape() {
     println!("{}\n{total}자\n{}", r.title, r.sections[2].body);
     assert!(total > 700);
 }
+
+#[test]
+fn demo_reading_chart() {
+    // 시연용 풀이(reading::demo_report)가 말하는 명식과 실제 계산이 같은지
+    let m = compute(&inp("2000.01.01", "12:00", "여자")).unwrap();
+    let h: Vec<&str> = m.pillars.iter().map(|p| p.hanja.as_str()).collect();
+    assert_eq!(h, vec!["戊午", "戊午", "丙子", "己卯"]);
+    assert_eq!(m.elements, [1, 3, 3, 0, 1]);
+    let r = crate::reading::demo_report("임지민", "2000.01.01", "12:00").unwrap();
+    assert_eq!(r.sections.len(), 3);
+    let total: usize = r.sections.iter().map(|s| s.body.chars().count()).sum();
+    assert!(total >= 1000, "{total}");
+}

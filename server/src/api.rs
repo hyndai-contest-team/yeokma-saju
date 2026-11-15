@@ -3,9 +3,11 @@
 //!  GET  /api/wallet   ?device=  포인트 잔액
 //!  POST /api/charge   {device, pack}  충전 (결제 연동 전 목업)
 //!  POST /api/reading  {device, profile, worry}  990P를 먼저 빼고 나서야 LLM을 부른다. 실패하면 돌려준다.
+//!  POST /api/match    {device, a, b}  두 사람의 궁합. 같은 가격, 같은 순서(포인트 먼저)
 
 use crate::manse::{compute, BirthInput};
 use crate::reading::{self, PRICE};
+use crate::matching;
 use serde::Deserialize;
 use serde_json::json;
 use worker::*;
@@ -56,6 +58,9 @@ struct ChargeReq { device: String, pack: usize }
 
 #[derive(Deserialize)]
 struct ReadingReq { device: String, profile: BirthInput, worry: String }
+
+#[derive(Deserialize)]
+struct MatchReq { device: String, a: BirthInput, b: BirthInput }
 
 async fn call_llm(env: &Env, body: serde_json::Value) -> std::result::Result<reading::Report, String> {
     let key = env.secret("OPENROUTER_API_KEY").map_err(|_| "API 키 없음".to_string())?.to_string();
@@ -118,7 +123,8 @@ async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
             // LLM 키가 등록되지 않았으면 목업 풀이를 보여 준다
             let has_key = ctx.env.secret("OPENROUTER_API_KEY").map(|k| !k.to_string().trim().is_empty()).unwrap_or(false);
             if !has_key {
-                let rep = reading::mock_report(r.profile.name.as_deref().unwrap_or("손님"), &m, &worry);
+                let name = r.profile.name.as_deref().unwrap_or("손님");
+                let rep = reading::demo_report(name, &r.profile.birth, &r.profile.time).unwrap_or_else(|| reading::mock_report(name, &m, &worry));
                 return cors(Response::from_json(&json!({ "report": rep, "manse": m, "balance": balance(&db, &r.device).await?, "mock": true }))?);
             }
             // 형식 검사를 두 번까지 시도하고, 그래도 안 되면 포인트를 돌려준다
@@ -131,6 +137,36 @@ async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
             }
             add_points(&db, &r.device, PRICE, "refund").await?;
             cors(Response::from_json(&json!({ "error": "풀이를 만들지 못했어요. 포인트는 돌려드렸어요", "detail": last, "refunded": PRICE, "balance": balance(&db, &r.device).await? }))?.with_status(502))
+        })
+        .post_async("/api/match", |mut req, ctx| async move {
+            let r: MatchReq = match req.json().await { Ok(v) => v, Err(_) => return err("입력 형식이 맞지 않아요", 400) };
+            if !valid_device(&r.device) { return err("기기 번호가 맞지 않아요", 400) }
+            let ma = match compute(&r.a) { Ok(m) => m, Err(e) => return err(&e, 422) };
+            let mb = match compute(&r.b) { Ok(m) => m, Err(e) => return err(&e, 422) };
+            let sc = matching::score(&ma, &mb);
+            let db = ctx.env.d1("DB")?;
+            if !take_points(&db, &r.device, PRICE).await? {
+                return cors(Response::from_json(&json!({ "error": "포인트가 부족해요", "need": PRICE, "balance": balance(&db, &r.device).await? }))?.with_status(402));
+            }
+            let (na, nb) = (r.a.name.as_deref().unwrap_or("첫째 분"), r.b.name.as_deref().unwrap_or("둘째 분"));
+            let has_key = ctx.env.secret("OPENROUTER_API_KEY").map(|k| !k.to_string().trim().is_empty()).unwrap_or(false);
+            let out = |rep: reading::Report, bal: i64, mock: bool| json!({ "report": rep, "score": sc.score, "kind": sc.kind, "a": ma, "b": mb, "balance": bal, "mock": mock });
+            if !has_key {
+                let rep = matching::mock_report(na, nb, &sc);
+                return cors(Response::from_json(&out(rep, balance(&db, &r.device).await?, true))?);
+            }
+            let model = ctx.env.var("MODEL").map(|v| v.to_string()).unwrap_or_else(|_| reading::DEFAULT_MODEL.into());
+            let year = js_sys_year();
+            let body = matching::request_body(&model, &reading::chart_text(na, &r.a.gender, &ma, year), &reading::chart_text(nb, &r.b.gender, &mb, year), &sc);
+            let mut last = String::new();
+            for _ in 0..2 {
+                match call_llm(&ctx.env, body.clone()).await {
+                    Ok(rep) => return cors(Response::from_json(&out(rep, balance(&db, &r.device).await?, false))?),
+                    Err(e) => { console_log!("match failed: {e}"); last = e; }
+                }
+            }
+            add_points(&db, &r.device, PRICE, "refund").await?;
+            cors(Response::from_json(&json!({ "error": "궁합을 만들지 못했어요. 포인트는 돌려드렸어요", "detail": last, "refunded": PRICE, "balance": balance(&db, &r.device).await? }))?.with_status(502))
         })
         .run(req, env)
         .await

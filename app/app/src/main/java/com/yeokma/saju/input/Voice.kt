@@ -3,7 +3,12 @@ package com.yeokma.saju.input
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.Intent
+import android.os.Bundle
 import android.os.Handler
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.os.Looper
 import android.util.Log
 import ai.pleos.playground.stt.SpeechToText
@@ -26,7 +31,7 @@ import java.util.Locale
 
 /**
  * 음성 인식: Pleos SpeechToText SDK의 ON_DEVICE 모드(차 안의 인식 엔진. 앱 등록 키가 필요 없다).
- * 초기화에 실패하면(Pleos가 아닌 기기 등) available=false가 되고 화면은 키보드로만 받는다.
+ * Pleos가 아닌 기기에서는 안드로이드 기본 인식기(SpeechRecognizer)로 받고, 그것도 없으면 available=false라 키보드로만 받는다.
  */
 class Voice(context: Context) {
     private val app = context.applicationContext
@@ -36,6 +41,8 @@ class Voice(context: Context) {
     private var pendingStart = false
     private var delivered = false
     private var released = false
+    private var sys: SpeechRecognizer? = null
+    private var useAndroid = false
 
     var available by mutableStateOf(true); private set
     var listening by mutableStateOf(false); private set
@@ -61,8 +68,20 @@ class Voice(context: Context) {
         }
     }
 
+    /** Pleos 인식기를 못 쓸 때: 안드로이드 기본 인식기가 있으면 그것으로, 없으면 키보드만 */
+    private fun fallback() {
+        if (SpeechRecognizer.isRecognitionAvailable(app)) {
+            useAndroid = true; ready = true
+            if (pendingStart) { pendingStart = false; start() }
+            return
+        }
+        available = false
+        if (pendingStart) { pendingStart = false; listening = false; onFail() }
+    }
+
     init {
-        stt.initialize(object : OnInitializeListener {
+        // Pleos가 아닌 기기에서는 SDK가 권한 예외를 던진다
+        runCatching { stt.initialize(object : OnInitializeListener {
             override fun onSuccess() = ui {
                 if (released) return@ui
                 stt.setLocale(Locale.KOREA)
@@ -72,10 +91,9 @@ class Voice(context: Context) {
             }
             override fun onFailure(errorType: ErrorType) = ui {
                 Log.w(TAG, "stt init failed $errorType")
-                available = false
-                if (pendingStart) { pendingStart = false; listening = false; onFail() }
+                fallback()
             }
-        })
+        }) }.onFailure { Log.w(TAG, "pleos stt unavailable", it); fallback() }
     }
 
     private fun ui(block: () -> Unit) { if (Looper.myLooper() == Looper.getMainLooper()) block() else main.post(block) }
@@ -96,19 +114,47 @@ class Voice(context: Context) {
         delivered = false
         listening = true
         if (!ready) { pendingStart = true; return }
+        if (useAndroid) { startAndroid(); return }
         runCatching { stt.request() }.onFailure { Log.w(TAG, "request failed", it); delivered = true; listening = false; onFail() }
     }
 
     fun stop() {
         pendingStart = false
-        if (listening) { delivered = true; listening = false; if (ready) runCatching { stt.stop() } }
+        if (listening) { delivered = true; listening = false; if (ready) runCatching { if (useAndroid) sys?.cancel() else stt.stop() } }
+    }
+
+    private fun startAndroid() {
+        sys?.destroy()
+        val r = SpeechRecognizer.createSpeechRecognizer(app)
+        r.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(params: Bundle?) { listening = true }
+            override fun onBeginningOfSpeech() {}
+            override fun onRmsChanged(rmsdB: Float) {}
+            override fun onBufferReceived(buffer: ByteArray?) {}
+            override fun onEndOfSpeech() {}
+            override fun onError(error: Int) { Log.w(TAG, "android stt error $error"); if (!delivered) { delivered = true; listening = false; onFail() } }
+            override fun onResults(results: Bundle?) {
+                finish(results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull().orEmpty())
+            }
+            override fun onPartialResults(partialResults: Bundle?) {
+                partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()?.let { if (!delivered) partial = it }
+            }
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+        })
+        r.startListening(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
+            putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+        })
+        sys = r
     }
 
     fun release() {
         stop()
         released = true
         main.removeCallbacksAndMessages(null)
-        runCatching { stt.removeListener(listener); stt.release() }
+        runCatching { sys?.destroy(); sys = null }
+        if (!useAndroid) runCatching { stt.removeListener(listener); stt.release() }
     }
 
     companion object { private const val TAG = "Voice" }

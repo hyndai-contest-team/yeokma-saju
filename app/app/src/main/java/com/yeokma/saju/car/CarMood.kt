@@ -30,6 +30,41 @@ class CarMood(context: Context) {
     private fun keep(key: String, restore: () -> Unit) { if (key !in undo) undo[key] = restore }
     private fun SeatArea.key() = values.joinToString { it.name }
 
+    /**
+     * 좌석 센서로 운전석 말고 사람이 앉은 자리를 찾는다(조수석, 뒷좌석 …). 지원하지 않거나 실패하면 빈 목록.
+     * 결과는 메인 스레드에서 한 번만 돌려준다.
+     */
+    fun companions(done: (List<String>) -> Unit) {
+        var sent = false
+        fun send(v: List<String>) = main.post { if (!sent) { sent = true; done(v) } }
+        main.postDelayed({ send(emptyList()) }, 2500)
+        runCatching {
+            val seat = vehicle.getSeat()
+            seat.checkSeatOccupancyCapabilities({ areas ->
+                val others = areas.filter { a -> a.values.none { it.name == "ROW_1_LEFT" } }
+                if (others.isEmpty()) { send(emptyList()); return@checkSeatOccupancyCapabilities }
+                val found = java.util.Collections.synchronizedList(mutableListOf<String>())
+                var left = others.size
+                others.forEach { area ->
+                    seat.getCurrentSeatOccupancy(area, { vacant ->
+                        // Vehicle SDK 2.3.2는 빈 자리에 true, 앉은 자리에 false를 돌려준다(2026-11-15 Pleos 에뮬레이터 가상 콘솔로 확인)
+                        Log.i(TAG, "seat ${area.key()} value=$vacant")
+                        if (vacant == false) found += seatName(area)
+                        synchronized(found) { left -= 1; if (left == 0) send(found.sorted()) }
+                    }, { e -> warn(e); synchronized(found) { left -= 1; if (left == 0) send(found.sorted()) } })
+                }
+            }, { e -> warn(e); send(emptyList()) })
+        }.onFailure { Log.w(TAG, "seat", it); send(emptyList()) }
+    }
+
+    private fun seatName(a: SeatArea) = a.values.joinToString(", ") {
+        when (it.name) {
+            "ROW_1_RIGHT" -> "조수석"; "ROW_1_CENTER" -> "앞좌석 가운데"
+            "ROW_2_LEFT" -> "뒷좌석 왼쪽"; "ROW_2_CENTER" -> "뒷좌석 가운데"; "ROW_2_RIGHT" -> "뒷좌석 오른쪽"
+            else -> "셋째 줄"
+        }
+    }
+
     /** 대기 화면 연출 */
     fun idle(moodColor: Int = MOOD_GOLD) {
         ambient(moodColor)

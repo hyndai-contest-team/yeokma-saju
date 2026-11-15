@@ -163,7 +163,7 @@ fun LoadingScreen(done: Boolean, failed: String?, onRetry: () -> Unit, onHome: (
 
 /** 10 리포트: 왼쪽은 역마아씨 클로즈업(크롭), 오른쪽은 어두운 그라데이션 위에 제목과 소제목 3개 */
 @Composable
-fun ReportScreen(name: String, report: Report, onHome: () -> Unit) {
+fun ReportScreen(name: String, report: Report, chart: com.yeokma.saju.data.Chart?, onHome: () -> Unit) {
     Row(Modifier.fillMaxSize().background(Ink)) {
         Box(Modifier.weight(0.4f).fillMaxHeight()) {
             PosterImage(asset = "v3_end.avif")
@@ -171,6 +171,7 @@ fun ReportScreen(name: String, report: Report, onHome: () -> Unit) {
         }
         Column(Modifier.weight(0.6f).fillMaxHeight().padding(start = 12.dp, end = 48.dp, top = 36.dp, bottom = 24.dp)) {
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(18.dp)) {
+                if (chart != null) ChartStrip(chart)
                 Text("${name}님께 드리는 풀이", color = Gold, fontSize = 17.sp)
                 Text(report.title, color = Paper, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 34.sp, lineHeight = 44.sp)
                 report.sections.forEachIndexed { i, (h, b) ->
