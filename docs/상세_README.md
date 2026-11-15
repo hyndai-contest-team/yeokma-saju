@@ -230,7 +230,7 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 |---|---|
 | 주행 중 잠금 | 기어가 P(주차)일 때만 쓸 수 있습니다. P를 벗어나면 화면을 잠그고 영상·소리·음성 입력을 멈추며, 바꿔 둔 조명과 공조를 바로 되돌립니다. 다시 P에 두면 보던 화면과 그 화면의 조명·공조가 이어집니다. 기어 값을 알 수 없으면 잠급니다 |
 | 앰비언트 라이트 · 실내등 | 대기 화면에서 무드등 금색과 실내등 켜기, 탑승 5초에 실내등 끄고 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 순환 |
-| 송풍 | 풍량 중간의 잔잔한 바람으로 몸으로도 느끼는 상담 분위기 |
+| 송풍 | 사용자가 맞춰 둔 온도·에어컨·풍향은 그대로 두고 풍량만 "중"으로 맞춘 잔잔한 바람. 앱을 떠나면 원래 풍량으로 |
 | 동승 궁합 | 좌석 센서로 동승자를 감지하면 "혼자가 아니시군요?"로 사주 보기와 궁합 보기를 나눔. 두 사람의 명식으로 점수(38\~97)와 유형(귀인, 단짝, 동반자, 자극제, 숙제) |
 | 디스플레이 · 스피커 | 숲길을 달려온 차와 역마아씨의 탑승 영상, 차량 스피커로 들리는 "오셨군요" 인사 |
 | 음성 입력 | 이름, 성별, 생년월일, 태어난 시간("오후 한 시 반"), 태어난 곳(전국 시·군)을 질문에 따라 말로 입력. 키보드도 지원 |
@@ -245,7 +245,7 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 |---|---|---|---|---|
 | 앰비언트 라이트 | 대기 화면에서 무드등 금색, 탑승 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 바뀜 | Pleos Vehicle SDK 2.3.2 `Light`: `checkAmbientLightBrightnessColorCapabilities`, `getAmbientLightBrightnessColor`, `setAmbientLightBrightnessColor` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` | [CarMood.kt `ambient`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L99), [오행 순환](../app/app/src/main/java/com/yeokma/saju/ui/ReadingScreens.kt#L128) |
 | 실내등 | 대기 화면에서 켜고, 탑승 5초에 끔 | Vehicle SDK `Light`: `getCabinLightSwitch`, `setCabinLightSwitch` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` | [CarMood.kt `cabin`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L110), [탑승 5초](../app/app/src/main/java/com/yeokma/saju/intro/IntroFlow.kt#L107) |
-| 송풍 | 공조 전원을 켜고 AUTO·에어컨을 끈 뒤 풍량 중간, 얼굴 방향으로 잔잔한 바람 | Vehicle SDK `HVAC`: `setHvacPower`, `setHvacAuto`, `setHvacAc`, `setHvacFanSpeed`, `setHvacFanDirection` (각각 `check…Capabilities`, `get…`로 지원 범위와 원래 값 확인) | `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE` | [CarMood.kt `breeze`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L118) |
+| 송풍 | 공조 전원을 켜고 풍량만 "중"으로. 온도·에어컨·풍향은 사용자 설정 그대로(AUTO는 풍량을 맞추려고 잠시 끔) | Vehicle SDK `HVAC`: `setHvacPower`, `setHvacAuto`, `setHvacFanSpeed` (각각 `check…Capabilities`, `get…`로 지원 범위와 원래 값을 읽어 두고 되돌림) | `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE` | [CarMood.kt `breeze`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L118) |
 | 주행 중 잠금 | 기어가 P가 아니면 화면을 잠그고 영상·소리·음성 입력을 멈춤, 조명·공조 복원 | Vehicle SDK `Gear`: `getCurrentGearSelectionState`, `registerGearSelection` | `CAR_DRIVE` | [CarMood.kt 기어 구독](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L50), [잠금 화면](../app/app/src/main/java/com/yeokma/saju/SajuApp.kt#L319) |
 | 동승자 감지 | 운전석 말고 앉은 자리가 있으면 "혼자가 아니시군요?"로 궁합 보기를 엶 | Vehicle SDK `Seat`: `checkSeatOccupancyCapabilities`, `getCurrentSeatOccupancy` | `CAR_SEATS` | [CarMood.kt `companions`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L61) |
 | 음성 입력 | 이름, 성별, 생년월일, 시간, 태어난 곳, 고민을 말로 입력 | Pleos SpeechToText SDK 3.3.1 (`ON_DEVICE` 모드): `initialize`, `setLocale(Locale.KOREA)`, `addListener`, `request`, `stop`. Pleos가 아닌 기기에서는 안드로이드 `SpeechRecognizer`로 대체 | `STT_SERVICE` | [Voice.kt](../app/app/src/main/java/com/yeokma/saju/input/Voice.kt#L39) |

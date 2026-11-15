@@ -13,12 +13,11 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import ai.pleos.playground.vehicle.Vehicle
 import ai.pleos.playground.vehicle.api.model.area.SeatArea
-import ai.pleos.playground.vehicle.constant.control.FanDirectionType
 import ai.pleos.playground.vehicle.constant.control.LightSwitch
 
 /**
  * 차 연출. 처음 바꾸는 항목마다 원래 값을 한 번만 기억해 두고, 앱을 떠나면(화면이 안 보이게 되면) 모두 되돌린다.
- *  - 대기 화면: 앰비언트 무드등 색, 실내등 켬, 송풍(전원 켬, AUTO·에어컨 끔, 풍량 중간, 얼굴 방향)
+ *  - 대기 화면: 앰비언트 무드등 색, 실내등 켬, 송풍(전원 켬, 풍량 "중". 온도·에어컨·풍향은 사용자 설정 그대로)
  *  - 탑승 영상(V3): 5초에 실내등 끔, 6초에 앰비언트 빨강 (영상 속 차 안과 맞춘다)
  * 지원하지 않는 차나 권한이 없으면 해당 항목만 건너뛴다.
  */
@@ -148,7 +147,7 @@ class CarMood(context: Context) {
         }, { warn(it); autoOff() })
     }
 
-    /** AUTO 모드에서는 풍량과 풍향을 직접 못 바꾼다. AUTO를 먼저 끈다. */
+    /** AUTO 모드에서는 풍량을 직접 못 바꾼다. AUTO만 잠시 끄고(원래 값은 기억) 풍량을 맞춘다. */
     private fun autoOff() {
         hvac.checkHvacAutoCapabilities({ areas ->
             var left = areas.size
@@ -165,29 +164,16 @@ class CarMood(context: Context) {
     // 전원·AUTO 변경이 차에 반영될 시간을 조금 준다
     private fun fan() = main.postDelayed(::fanNow, CAR_TASK, 800)
 
+    /**
+     * 사용자가 맞춰 둔 온도·에어컨·풍향은 그대로 둔다(바꾸지 않으니 되돌릴 필요도 없다).
+     * 풍량만 기존 값을 읽어 기억해 두고 "중"(지원 범위의 가운데)으로 맞춘다. 앱을 떠나거나 P를 벗어나면 기존 값으로 돌린다.
+     */
     private fun fanNow() {
-        hvac.checkHvacAcCapabilities({ areas ->
-            areas.forEach { area ->
-                hvac.getHvacAcState(area, { old ->
-                    if (old != null) keep("ac:" + area.key()) { hvac.setHvacAc(area, old, { _, _ -> }, ::warn) }
-                    hvac.setHvacAc(area, false, { _, _ -> }, ::warn)
-                }, ::warn)
-            }
-        }, ::warn)
         hvac.checkHvacFanSpeedCapabilities({ bounds ->
             bounds.forEach { (area, range) ->
                 hvac.getHvacFanSpeed(area, { old ->
                     if (old != null) keep("fan:" + area.key()) { hvac.setHvacFanSpeed(area, old, { _, _ -> }, ::warn) }
-                    // 풍량은 중간 (사용자 요청 11/15)
                     hvac.setHvacFanSpeed(area, (range.minValue + range.maxValue + 1) / 2, { _, _ -> }, ::warn)
-                }, ::warn)
-            }
-        }, ::warn)
-        hvac.checkHvacFanDirectionCapabilities({ dirs ->
-            dirs.keys.forEach { area ->
-                hvac.getHvacFanDirection(area, { old ->
-                    if (old != null) keep("dir:" + area.key()) { hvac.setHvacFanDirection(area, old, { _, _ -> }, ::warn) }
-                    hvac.setHvacFanDirection(area, FanDirectionType.FACE, { _, _ -> }, ::warn)
                 }, ::warn)
             }
         }, ::warn)
