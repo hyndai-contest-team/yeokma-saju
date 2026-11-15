@@ -45,14 +45,14 @@ Pleos Connect(안드로이드 오토모티브) 차량용 앱입니다.
 
 | 근거 | 내용 |
 |---|---|
-| 사람들은 이미 차 안에서 마음을 준비한다 | 운전자 2,000명 조사에서 26%가 집이나 직장에 들어가기 전 마음을 준비하려고 차 안에서 시간을 보내고, 77%가 출발·도착 전후의 "카타임"을 즐긴다고 답했습니다[1]. 다른 조사에서는 63%가 차 안에서 5분 쉬고 나면 하루를 더 잘 준비한다고 느꼈습니다[2]. 국내 조사에서도 혼자만의 공간이 필요할 때 떠올리는 곳으로 자동차가 꼽혔습니다(16.9%)[3] |
-| 차 안의 빛은 감정을 움직인다 | 차량 실내조명의 색을 바꾸면 뇌파로 측정한 각성도가 달라졌고[4], 앰비언트 조명을 켜면 운전자의 수행이 나아졌습니다[5]. 운전자의 감정에 맞춰 조명을 바꿔 스트레스를 낮추는 연구도 진행되고 있습니다[6] |
-| 차는 감각 전체를 한꺼번에 바꿀 수 있는 유일한 개인 공간이다 | 고급차 브랜드는 이미 공조·향기·시트 마사지·음악·앰비언트 조명을 묶어 기분을 바꾸는 프로그램을 판매하고 있습니다[7]. 현대차그룹도 플레오스 커넥트 앱 마켓을 게임·엔터테인먼트 앱으로 넓힐 계획입니다[8] |
+| 사람들은 차를 혼자만의 공간으로 여긴다 | 국내 소비자 조사에서 혼자만의 공간이 필요할 때 떠올리는 곳으로 자동차가 꼽혔습니다(16.9%)[1]. 중요한 자리에 들어가기 전 마음을 정리할 수 있는 거의 유일한 사적 공간입니다 |
+| 차 안의 빛은 감정을 움직인다 | 차량 실내조명의 색을 바꾸면 뇌파로 측정한 각성도가 달라졌고[2], 앰비언트 조명을 켜면 운전자의 수행이 나아졌습니다[3]. 운전자의 감정에 맞춰 조명을 바꿔 스트레스를 낮추는 연구도 진행되고 있습니다[4] |
+| 차는 감각 전체를 한꺼번에 바꿀 수 있는 유일한 개인 공간이다 | 플레오스 Vehicle SDK로 한 앱이 디스플레이·스피커와 함께 앰비언트 라이트, 실내등, 공조, 좌석 정보를 다룰 수 있습니다. 현대차그룹도 플레오스 커넥트 앱 마켓을 게임·엔터테인먼트 앱으로 넓힐 계획입니다[5] |
 | 플레오스가 가려는 방향과 맞는다 | 역마사주는 차 기능을 함께 움직여 몰입을 만드는 차량 전용 엔터테인먼트 앱입니다. 앱 마켓이 엔터테인먼트로 넓어질 때 휴대폰 앱을 옮겨 온 것이 아니라 **차에서만 할 수 있는 콘텐츠**가 필요하고, 역마사주는 그 첫 사례가 될 수 있습니다. 중요한 일정이 생길 때마다 다시 여는 이유가 있어 앱 마켓의 재방문도 만듭니다 |
 
 역마사주는 이 근거 위에서 차의 디스플레이·스피커(탑승 영상과 인사), 앰비언트 라이트·실내등(장면마다 바뀌는 빛), 송풍(잔잔한 바람), 좌석 센서(함께 탄 사람)를 하나의 장면으로 묶습니다. **이 빛과 바람, 소리는 단순한 연출이 아니라 사용자가 풀이에 빠져들게 만드는 핵심 몰입 요소입니다.**
 
-<sub>출처: [1](https://www.halfordscompany.com/news-and-media/news/brits-spend-half-a-day-a-year-in-their-cars-searching-for-peace-and-quiet/) 영국 운전자 조사(업체 의뢰), [2](https://www.nova.ie/motorists-spend-more-than-three-days-of-their-lives-looking-for-their-cars/) 아일랜드 운전자 조사, [3](https://www.openads.co.kr/content/contentDetail?contsId=1579) 국내 소비자 조사, [4](https://deepai.org/publication/affective-responses-to-chromatic-ambient-light-in-a-vehicle) Kim 외(2022), [5](https://dl.ifip.org/IFIP-LNCS-11746/hal-02544538) Hassib 외(INTERACT 2019), [6](https://openaccess.cms-conferences.org/publications/book/978-1-958651-15-5/article/978-1-958651-15-5_47) AHFE 2022, [7](https://www.mercedes-benz.co.nz/passengercars/brand/mercedes-me-magazine/innovation/articles/ergonomic-design-driving-comfort.html) 제조사 기능 소개, [8](https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system) 현대차그룹 발표</sub>
+<sub>출처: [1](https://www.openads.co.kr/content/contentDetail?contsId=1579) 국내 소비자 조사, [2](https://deepai.org/publication/affective-responses-to-chromatic-ambient-light-in-a-vehicle) Kim 외(2022), [3](https://dl.ifip.org/IFIP-LNCS-11746/hal-02544538) Hassib 외(INTERACT 2019), [4](https://openaccess.cms-conferences.org/publications/book/978-1-958651-15-5/article/978-1-958651-15-5_47) AHFE 2022, [5](https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system) 현대차그룹 발표</sub>
 
 ## 실행 방법
 
