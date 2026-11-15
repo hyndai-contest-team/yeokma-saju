@@ -147,7 +147,7 @@ npx wrangler@4.162.0 dev --ip 0.0.0.0 --port 8787
 
 | 경로 | 하는 일 |
 |---|---|
-| `POST /api/manse` | 만세력 계산. 무료이고 LLM을 부르지 않습니다 |
+| `POST /api/manse` | 만세력 계산 |
 | `GET /api/wallet?device=` | 포인트 잔액 |
 | `POST /api/charge` | 포인트 충전. 시연용이라 결제 인증 없이 바로 충전됩니다 (990원 1회 / 9,900원 11회 / 99,000원 115회) |
 | `POST /api/reading` | 990P를 먼저 빼고 풀이를 만듭니다. 포인트가 모자라면 402를 돌려주고 LLM을 부르지 않습니다 |
