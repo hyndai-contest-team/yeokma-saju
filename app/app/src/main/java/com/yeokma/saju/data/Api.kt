@@ -23,7 +23,7 @@ fun deviceId(context: Context): String {
     return p.getString("id", null) ?: UUID.randomUUID().toString().also { p.edit().putString("id", it).apply() }
 }
 
-/** 서버(Rust, Cloudflare Workers). LLM 키는 서버에만 있다 */
+/** 로컬 서버(Rust). LLM 키는 서버에만 있다. 서버가 꺼져 있으면 앱은 Offline 목업 풀이를 쓴다 */
 object Api {
     const val PRICE = 990
     /** 충전 단위: (가격, 지급 회수, 더 주는 회수) */

@@ -84,6 +84,7 @@ fun SajuApp() {
     var report by remember { mutableStateOf<Report?>(null) }
     var failed by remember { mutableStateOf<String?>(null) }
     var attempt by remember { mutableIntStateOf(0) }
+    var offline by remember { mutableStateOf(false) }
     var fromSaved by remember { mutableStateOf(false) }
     var emailWanted by remember { mutableStateOf(false) }
     val places = remember { com.yeokma.saju.data.Places.get(ctx) }
@@ -149,9 +150,10 @@ fun SajuApp() {
         scope.launch {
             balance = runCatching { Api.wallet(device) }.getOrDefault(-1)
             when {
-                balance < 0 -> { failed = "서버에 연결하지 못했어요"; report = null; screen = Screen.Loading }
+                // 서버가 꺼져 있으면 앱 안의 목업 풀이를 보여 준다(포인트 없음)
+                balance < 0 -> { offline = true; failed = null; report = null; attempt++; screen = Screen.Loading }
                 balance < Api.PRICE -> screen = Screen.Pay
-                else -> { failed = null; report = null; attempt++; screen = Screen.Loading }
+                else -> { offline = false; failed = null; report = null; attempt++; screen = Screen.Loading }
             }
         }
     }
@@ -235,6 +237,7 @@ fun SajuApp() {
                 Screen.Loading -> {
                     LaunchedEffect(attempt) {
                         if (failed != null) return@LaunchedEffect
+                        if (offline) { delay(2500); report = com.yeokma.saju.data.Offline.report(profile, worry); delay(400); screen = Screen.Report; return@LaunchedEffect }
                         when (val r = Api.reading(device, profile, worry)) {
                             is ReadingResult.Ok -> { balance = r.balance; report = r.report; delay(400); screen = Screen.Report }
                             is ReadingResult.NeedPoints -> { balance = r.balance; screen = Screen.Pay }
