@@ -48,4 +48,5 @@ dependencies {
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.ui.compose)
     implementation(libs.pleos.vehicle)
+    implementation(libs.pleos.stt)
 }

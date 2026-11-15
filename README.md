@@ -11,7 +11,7 @@
 
 | 폴더 | 내용 |
 |---|---|
-| `app/` | 차량 앱. Kotlin, Jetpack Compose, Media3, Pleos Vehicle SDK 2.3.2 |
+| `app/` | 차량 앱. Kotlin, Jetpack Compose, Media3, Pleos Vehicle SDK 2.3.2, Pleos SpeechToText SDK 3.3.1 |
 | `server/` | 서버. Rust(`worker` 0.9). 이 컴퓨터에서 로컬로 실행하고, 포인트는 로컬 DB에 저장합니다 |
 
 ## 준비물
@@ -122,7 +122,7 @@ Android Studio에서는 `app/` 폴더를 열고 실행해도 됩니다.
 
 - 앱은 서버를 `http://10.0.2.2:8787`(에뮬레이터에서 본 이 컴퓨터)로 찾습니다. 앱을 쓰는 동안 1번의 로컬 서버를 켜 두세요.
 - 앱은 기어가 P일 때 쓰는 앱입니다. 에뮬레이터는 기본으로 P입니다.
-- 음성 입력은 기기에 음성 인식기가 있을 때만 켜집니다. Pleos 에뮬레이터에는 없어서 키보드로 입력합니다.
+- 음성 입력은 Pleos SpeechToText SDK(3.3.1)의 `ON_DEVICE` 모드를 씁니다. 차 안의 인식 엔진이라 앱 등록 키가 필요 없습니다. 인식 엔진이 없는 기기에서는 키보드로 입력합니다.
 - 공조 풍량·풍향 제어는 에뮬레이터가 지원하지 않아 실차에서만 동작합니다.
 
 ## 안내

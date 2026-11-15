@@ -100,7 +100,8 @@ fun AskScreen(
         onFail = { mode = AskMode.Idle; hint = "잘 못 들었어요. 다시 눌러 말씀해 주세요" },
     )
     LaunchedEffect(voice.listening) { if (voice.listening) mode = AskMode.Listening else if (mode == AskMode.Listening) mode = AskMode.Idle }
-    LaunchedEffect(step.id) { if (autoListen && voice.available) listen() else if (!voice.available) kb = true }
+    LaunchedEffect(step.id) { if (autoListen && voice.available) listen() }
+    LaunchedEffect(voice.available) { if (!voice.available) kb = true }
 
     // 음성으로 답한 뒤 카운트다운
     val count = remember(step.id) { Animatable(0f) }

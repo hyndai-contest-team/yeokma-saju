@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -78,6 +79,25 @@ fun SajuApp() {
     var report by remember { mutableStateOf<Report?>(null) }
     var failed by remember { mutableStateOf<String?>(null) }
     var attempt by remember { mutableIntStateOf(0) }
+    var fromSaved by remember { mutableStateOf(false) }
+
+    // 왼쪽 위 '이전' 버튼과 기기 뒤로 가기: 한 단계 앞 화면으로
+    fun goBack() {
+        when (screen) {
+            Screen.Intro -> {}
+            Screen.Profiles -> screen = Screen.Intro
+            Screen.Input -> when {
+                backToConfirm -> screen = Screen.Confirm
+                step > 0 -> step -= 1
+                else -> screen = Screen.Profiles
+            }
+            Screen.Confirm -> { step = PROFILE_STEPS.lastIndex; backToConfirm = false; screen = Screen.Input }
+            Screen.Worry -> screen = if (fromSaved) Screen.Profiles else Screen.Confirm
+            Screen.Pay -> screen = Screen.Worry
+            Screen.Loading -> if (failed != null) screen = Screen.Worry
+            Screen.Report -> screen = Screen.Worry
+        }
+    }
 
     // 결제(포인트)가 먼저다. 포인트가 모자라면 복채 화면, 있으면 대기 화면에서 서버가 포인트를 빼고 나서 LLM을 부른다
     fun startReading() {
@@ -96,13 +116,14 @@ fun SajuApp() {
     CompositionLocalProvider(LocalCarMood provides car, com.yeokma.saju.ui.LocalBackdropBlur provides backdropBlur) {
     Box(Modifier.fillMaxSize().background(Ink)) {
         if (screen != Screen.Intro && screen != Screen.Report) Backdrop()
+        androidx.activity.compose.BackHandler(enabled = screen != Screen.Intro) { goBack() }
         AnimatedContent(targetState = screen to step, transitionSpec = { fadeIn(tween(560)) togetherWith fadeOut(tween(400)) }, label = "screen") { (s, i) ->
             when (s) {
                 Screen.Intro -> IntroFlow(onDone = { saved = store.all(); screen = Screen.Profiles })
                 Screen.Profiles -> ProfilesScreen(
                     saved = saved,
-                    onPick = { profile = it; worry = ""; screen = Screen.Worry },
-                    onNew = { profile = Profile(); step = 0; backToConfirm = false; screen = Screen.Input },
+                    onPick = { profile = it; worry = ""; fromSaved = true; screen = Screen.Worry },
+                    onNew = { profile = Profile(); step = 0; backToConfirm = false; fromSaved = false; screen = Screen.Input },
                 )
                 Screen.Input -> {
                     val st = PROFILE_STEPS[i]
@@ -131,7 +152,7 @@ fun SajuApp() {
                 Screen.Confirm -> ConfirmScreen(
                     p = profile,
                     onEdit = { idx -> step = idx; backToConfirm = true; voiceMode = false; screen = Screen.Input },
-                    onOk = { store.save(profile); saved = store.all(); worry = ""; screen = Screen.Worry },
+                    onOk = { store.save(profile); saved = store.all(); worry = ""; fromSaved = false; screen = Screen.Worry },
                 )
                 Screen.Worry -> AskScreen(
                     step = WORRY_STEP, progress = null, autoListen = voiceMode,
@@ -165,6 +186,7 @@ fun SajuApp() {
                 Screen.Report -> ReportScreen(profile.name, report!!, onHome = { screen = Screen.Intro })
             }
         }
+        if (screen != Screen.Intro && (screen != Screen.Loading || failed != null)) BackButton(Modifier.align(Alignment.TopStart).padding(start = 20.dp, top = 18.dp)) { goBack() }
     }
     }
 }
@@ -192,3 +214,12 @@ private fun Hints(pick: (String) -> Unit) = Column(
     Text("이런 고민도 괜찮아요", color = Gold, fontSize = 17.sp)
     WORRY_EXAMPLES.forEach { e -> Text("· $e", color = Paper, fontSize = 17.sp, modifier = Modifier.clickable { pick(e) }) }
 }
+
+/** 왼쪽 위 '이전' 버튼 */
+@Composable
+private fun BackButton(modifier: Modifier, onClick: () -> Unit) = Text(
+    "‹  이전", color = Paper, fontSize = 20.sp,
+    modifier = modifier.clip(RoundedCornerShape(28.dp)).background(Ink.copy(alpha = .55f))
+        .border(1.dp, Paper.copy(alpha = .28f), RoundedCornerShape(28.dp)).clickable(onClick = onClick)
+        .padding(horizontal = 22.dp, vertical = 12.dp),
+)
