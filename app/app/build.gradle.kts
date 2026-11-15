@@ -33,6 +33,8 @@ android {
     androidResources {
         noCompress += listOf("mp4")
     }
+    // 태어난 곳 목록(data/places.tsv)은 서버와 같은 파일을 쓴다
+    sourceSets["main"].assets.directories.add("../../data")
 }
 
 dependencies {

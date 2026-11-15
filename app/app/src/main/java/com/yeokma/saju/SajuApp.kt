@@ -80,9 +80,32 @@ fun SajuApp() {
     var failed by remember { mutableStateOf<String?>(null) }
     var attempt by remember { mutableIntStateOf(0) }
     var fromSaved by remember { mutableStateOf(false) }
+    val places = remember { com.yeokma.saju.data.Places.get(ctx) }
+    var placeOptions by remember { mutableStateOf(emptyList<com.yeokma.saju.data.Places.Place>()) }
+    var placeWord by remember { mutableStateOf("") }
+
+    // 태어난 곳: 목록에서 찾아 하나면 정하고, 같은 이름이 여러 곳이면 어느 곳인지 묻는다
+    fun submitPlace(raw: String): String? {
+        val text = Parse.place(raw) ?: return null
+        fun choose(p: com.yeokma.saju.data.Places.Place): String { placeOptions = emptyList(); profile = profile.copy(place = p.full); return p.full }
+        if (placeOptions.isNotEmpty()) {
+            placeOptions.firstOrNull { it.label == raw.trim() || it.full == raw.trim() }?.let { return choose(it) }
+            val said = places.find(text).second
+            val pick = placeOptions.filter { o -> said.any { x -> o.full == x.full || o.full.startsWith(x.full + " ") } }.singleOrNull()
+                ?: placeOptions.filter { o -> o.full.replace(" ", "").contains(text.replace(" ", "")) }.singleOrNull()
+            if (pick != null) return choose(pick)
+        }
+        val (word, found) = places.find(text)
+        return when (found.size) {
+            0 -> { placeOptions = emptyList(); profile = profile.copy(place = text); text } // 목록에 없으면 말한 그대로
+            1 -> choose(found[0])
+            else -> { placeOptions = found; placeWord = word; null }
+        }
+    }
 
     // 왼쪽 위 '이전' 버튼과 기기 뒤로 가기: 한 단계 앞 화면으로
     fun goBack() {
+        placeOptions = emptyList()
         when (screen) {
             Screen.Intro -> {}
             Screen.Profiles -> screen = Screen.Intro
@@ -123,13 +146,14 @@ fun SajuApp() {
                 Screen.Profiles -> ProfilesScreen(
                     saved = saved,
                     onPick = { profile = it; worry = ""; fromSaved = true; screen = Screen.Worry },
-                    onNew = { profile = Profile(); step = 0; backToConfirm = false; fromSaved = false; screen = Screen.Input },
+                    onNew = { profile = Profile(); step = 0; backToConfirm = false; fromSaved = false; placeOptions = emptyList(); screen = Screen.Input },
                 )
                 Screen.Input -> {
                     val st = PROFILE_STEPS[i]
                     AskScreen(
                         step = st, progress = i to PROFILE_STEPS.size, autoListen = voiceMode,
-                        submit = { raw -> Parse.apply(st.id, raw, profile)?.let { (p, shown) -> profile = p; shown } },
+                        submit = { raw -> if (st.id == StepId.Place) submitPlace(raw) else Parse.apply(st.id, raw, profile)?.let { (p, shown) -> profile = p; shown } },
+                        rejectHint = { if (st.id == StepId.Place && placeOptions.isNotEmpty()) "어느 ${placeWord}인가요? 골라 주세요" else null },
                         onNext = { usedVoice ->
                             voiceMode = usedVoice
                             if (backToConfirm || i == PROFILE_STEPS.lastIndex) screen = Screen.Confirm else step = i + 1
@@ -144,6 +168,7 @@ fun SajuApp() {
                             when (st.id) {
                                 StepId.Gender -> Choices(listOf("여성", "남성"), pick)
                                 StepId.Birth -> Choices(listOf("양력", "음력"), { profile = profile.copy(lunar = it == "음력") }, selected = if (profile.lunar) "음력" else "양력")
+                                StepId.Place -> if (placeOptions.isNotEmpty()) PlaceChoices(placeOptions.map { it.label }, pick)
                                 else -> {}
                             }
                         },
@@ -223,3 +248,20 @@ private fun BackButton(modifier: Modifier, onClick: () -> Unit) = Text(
         .border(1.dp, Paper.copy(alpha = .28f), RoundedCornerShape(28.dp)).clickable(onClick = onClick)
         .padding(horizontal = 22.dp, vertical = 12.dp),
 )
+
+/** 같은 이름의 지역이 여러 곳일 때 고르는 칩. 여러 줄로 감긴다 */
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@Composable
+private fun PlaceChoices(options: List<String>, pick: (String) -> Unit) = androidx.compose.foundation.layout.FlowRow(
+    horizontalArrangement = Arrangement.spacedBy(12.dp, androidx.compose.ui.Alignment.CenterHorizontally),
+    verticalArrangement = Arrangement.spacedBy(10.dp),
+) {
+    options.forEach { o ->
+        Text(
+            o, color = Paper, fontSize = 20.sp,
+            modifier = Modifier.clip(RoundedCornerShape(26.dp)).background(Ink.copy(alpha = .5f))
+                .border(1.dp, Gold.copy(alpha = .6f), RoundedCornerShape(26.dp)).clickable { pick(o) }
+                .padding(horizontal = 26.dp, vertical = 12.dp),
+        )
+    }
+}

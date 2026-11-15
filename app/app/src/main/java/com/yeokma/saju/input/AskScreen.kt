@@ -77,6 +77,7 @@ fun AskScreen(
     onSkip: (() -> Unit)? = null,
     skipLabel: String = "건너뛸게요",
     extra: @Composable (pick: (String) -> Unit) -> Unit = {},
+    rejectHint: () -> String? = { null },
 ) {
     var mode by remember(step.id) { mutableStateOf(AskMode.Idle) }
     var shown by remember(step.id) { mutableStateOf("") }
@@ -90,7 +91,7 @@ fun AskScreen(
 
     fun take(raw: String, voice: Boolean) {
         val v = submit(raw)
-        if (v == null) { hint = "잘 못 알아들었어요. 다시 말씀해 주세요"; mode = AskMode.Idle; return }
+        if (v == null) { hint = rejectHint() ?: "잘 못 알아들었어요. 다시 말씀해 주세요"; mode = AskMode.Idle; return }
         hint = ""; shown = v; viaVoice = voice; mode = AskMode.Done
         if (!voice) { kb = false; onNext(false) }
     }

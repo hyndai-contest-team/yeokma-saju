@@ -179,7 +179,6 @@ fun ReportScreen(name: String, report: Report, onHome: () -> Unit) {
                         Text(b, color = Paper.copy(alpha = .92f), fontSize = 19.sp, lineHeight = 31.sp)
                     }
                 }
-                Text("사주 풀이는 재미로 보는 이야기예요.", color = Paper.copy(alpha = .5f), fontSize = 14.sp)
             }
             Row(Modifier.padding(top = 14.dp)) {
                 Spacer(Modifier.weight(1f))
