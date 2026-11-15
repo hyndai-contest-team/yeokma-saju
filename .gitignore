@@ -21,3 +21,8 @@ server/.wrangler/
 server/.dev.vars
 server/.dev.vars.*
 .env*
+
+# Brand export tools
+__pycache__/
+*.pyc
+.venv/
