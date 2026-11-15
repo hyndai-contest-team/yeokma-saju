@@ -47,7 +47,9 @@ internal fun IntroLanding(video: Int?, onStart: () -> Unit) {
         }
     }
     Box(Modifier.fillMaxSize().background(Color.Black)) {
-        if (video != null) VideoLayer(resId = video, loop = true) else PosterImage()
+        // V1 마지막 장면을 깔아 두어, V2가 첫 장면을 그리기 전에도 화면이 끊기지 않게 한다
+        PosterImage()
+        if (video != null) VideoLayer(resId = video, loop = true)
         images?.let { IntroArtwork(it, onStart) }
     }
 }

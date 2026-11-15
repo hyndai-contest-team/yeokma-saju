@@ -52,7 +52,7 @@ fun IntroFlow(onDone: () -> Unit) {
     val v1 = IntroMedia.v1()
 
     Box(Modifier.fillMaxSize()) {
-        Crossfade(targetState = phase, animationSpec = tween(600), label = "intro") { p ->
+        Crossfade(targetState = phase, animationSpec = tween(if (phase == IntroPhase.Idle) 0 else 600), label = "intro") { p ->
             when (p) {
                 IntroPhase.Prelude ->
                     if (v1 != null) VideoLayer(resId = v1, loop = false, onEnded = { phase = IntroPhase.Idle })

@@ -55,6 +55,9 @@ fun VideoLayer(
             prepare()
         }
     }
+    // 주행 중(기어가 P가 아님)에는 영상과 소리를 멈춘다
+    val locked = com.yeokma.saju.car.DriveLock.locked
+    androidx.compose.runtime.LaunchedEffect(player, locked) { player.playWhenReady = !locked }
     DisposableEffect(player) {
         val listener = object : Player.Listener {
             override fun onRenderedFirstFrame() = started()

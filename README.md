@@ -44,15 +44,12 @@ Pleos Connect(안드로이드 오토모티브) 차량용 앱입니다.
 
 #### 바로 설치 (빌드된 APK)
 
-[Releases](https://github.com/hyndai-contest-team/yeokma-saju/releases/latest)에서 `yeokma-saju.apk`를 받아 설치합니다. 빌드 없이 바로 됩니다.
+저장소 맨 위의 [`yeokma-saju.apk`](yeokma-saju.apk)를 설치합니다. [Releases](https://github.com/hyndai-contest-team/yeokma-saju/releases/latest)에도 같은 파일이 있습니다. 빌드 없이 바로 됩니다.
 
 ```bash
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 
-# APK 받기 (비공개 레포라 gh 로그인이 필요합니다. 브라우저로 받아도 됩니다)
-gh release download -R hyndai-contest-team/yeokma-saju -p yeokma-saju.apk
-
-# 에뮬레이터를 켠 뒤 설치하고 실행합니다
+# 저장소 루트에서, 에뮬레이터를 켠 뒤 설치하고 실행합니다
 $ANDROID_HOME/platform-tools/adb install -r --user 10 yeokma-saju.apk
 $ANDROID_HOME/platform-tools/adb shell am start --user 10 -n com.yeokma.saju/.MainActivity
 ```
@@ -127,6 +124,7 @@ npx wrangler@4.162.0 dev --ip 0.0.0.0 --port 8787
 | 동승 궁합 | Virtual Console에서 조수석이나 뒷좌석을 "Occupied"로 바꾼 뒤 앱을 연다. `adb forward tcp:8088 tcp:8088` 후 `http://127.0.0.1:8088/` → Emulation Controls → Seat Occupancy |
 | 앰비언트·실내등 확인 | Virtual Console의 Ambient 화면에서 앱이 바꾼 색과 실내등 상태를 볼 수 있다 |
 | 처음 상태로 되돌리기 | `adb shell pm clear --user 10 com.yeokma.saju` (저장된 사람과 기기 번호가 지워진다) |
+| 주행 중 잠금 | Virtual Console의 Test Console에서 기어를 D로 바꾸면 앱이 잠기고, P로 돌리면 보던 화면부터 이어진다 |
 | 알려진 한계 | 공조 풍량·풍향은 에뮬레이터가 지원하지 않아 실차에서만 동작한다 |
 
 테스트용 입력 예: 이름 "임지민", 성별 "여자", 생년월일 "2000년 1월 1일", 태어난 시간 "12시", 태어난 곳 "서울", 고민 "지금 면접장에 도착했는데 긴장되네. 나 잘할 수 있을까?". LLM 키 없이 서버를 켜면 이 사람에게는 시연용 풀이가 나온다.
@@ -148,9 +146,10 @@ npx wrangler@4.162.0 dev --ip 0.0.0.0 --port 8787
 
 | 항목 | 내용 |
 |---|---|
-| 다운로드 | [GitHub Release (최신)](https://github.com/hyndai-contest-team/yeokma-saju/releases/latest) |
-| 파일 | `yeokma-saju.apk` (패키지 `com.yeokma.saju`, 버전 0.1.0, 디버그 서명) |
-| 직접 빌드한 경우 | `app/app/build/outputs/apk/debug/app-debug.apk` |
+| 저장소 안 위치 | 루트의 [`yeokma-saju.apk`](yeokma-saju.apk) |
+| GitHub Release | [최신 릴리스](https://github.com/hyndai-contest-team/yeokma-saju/releases/latest) |
+| 파일 정보 | 패키지 `com.yeokma.saju`, 버전 0.1.0, 릴리스 빌드(코드 축소), 시연용 디버그 키 서명, 약 67MB |
+| 직접 빌드한 경우 | `./gradlew :app:assembleRelease` → `app/app/build/outputs/apk/release/app-release.apk` |
 
 ## 시연 영상
 
@@ -204,6 +203,7 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 | 명식 | 서버가 직접 계산한 사주 여덟 글자를 확인 화면과 리포트에 표시(절기, 음력·윤달, 진태양시, 한국 표준시·서머타임 이력, 대운, 십신, 지장간, 12운성, 공망, 합충) |
 | 지금 고민 풀이 | 매번 "지금 고민거리가 뭐예요?"를 새로 묻고, 명식과 그날의 고민을 함께 반영해 제목과 소제목 3개로 풀이. 마지막은 "역마아씨의 예언" |
 | 동승 궁합 | 좌석 센서로 동승자를 감지하면 "혼자가 아니시군요?"로 사주 보기와 궁합 보기를 나눔. 두 사람의 명식으로 점수(38\~97)와 유형(귀인, 단짝, 동반자, 자극제, 숙제) |
+| 주행 중 잠금 | 기어가 P(주차)일 때만 쓸 수 있다. P를 벗어나면 화면을 잠그고 영상·소리·음성 입력을 멈추며, 바꿔 둔 조명과 공조를 바로 되돌린다. 다시 P에 두면 보던 화면부터 이어진다 |
 | 평소 설정으로 복귀 | 연출 전에 기존 값을 저장해 두고, 앱을 떠나면 앰비언트 라이트·실내등·공조를 원래대로 되돌림 |
 
 ## 차량 특화 기능과 사용 SDK
@@ -213,6 +213,7 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 | 앰비언트 라이트 | 대기 화면에서 무드등 금색, 탑승 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 바뀜 | Pleos Vehicle SDK 2.3.2 `Light`: `checkAmbientLightBrightnessColorCapabilities`, `getAmbientLightBrightnessColor`, `setAmbientLightBrightnessColor` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` |
 | 실내등 | 대기 화면에서 켜고, 탑승 5초에 끔 | Vehicle SDK `Light`: `getCabinLightSwitch`, `setCabinLightSwitch` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` |
 | 송풍 | 공조 전원을 켜고 AUTO·에어컨을 끈 뒤 풍량 중간, 얼굴 방향으로 잔잔한 바람 | Vehicle SDK `HVAC`: `setHvacPower`, `setHvacAuto`, `setHvacAc`, `setHvacFanSpeed`, `setHvacFanDirection` (각각 `check…Capabilities`, `get…`로 지원 범위와 원래 값 확인) | `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE` |
+| 주행 중 잠금 | 기어가 P가 아니면 화면을 잠그고 영상·소리·음성 입력을 멈춤, 조명·공조 복원 | Vehicle SDK `Gear`: `getCurrentGearSelectionState`, `registerGearSelection` | `CAR_DRIVE` |
 | 동승자 감지 | 운전석 말고 앉은 자리가 있으면 "혼자가 아니시군요?"로 궁합 보기를 엶 | Vehicle SDK `Seat`: `checkSeatOccupancyCapabilities`, `getCurrentSeatOccupancy` | `CAR_SEATS` |
 | 음성 입력 | 이름, 성별, 생년월일, 시간, 태어난 곳, 고민을 말로 입력 | Pleos SpeechToText SDK 3.3.1 (`ON_DEVICE` 모드): `initialize`, `setLocale(Locale.KOREA)`, `addListener`, `request`, `stop` | `STT_SERVICE` |
 

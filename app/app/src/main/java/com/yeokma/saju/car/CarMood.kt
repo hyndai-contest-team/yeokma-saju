@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -28,6 +30,28 @@ class CarMood(context: Context) {
     private val main = android.os.Handler(android.os.Looper.getMainLooper())
 
     private fun keep(key: String, restore: () -> Unit) { if (key !in undo) undo[key] = restore }
+
+    /**
+     * 기어가 P(주차)인지. 앱은 P일 때만 쓸 수 있다. 기어를 읽지 못하는 기기(차가 아닌 에뮬레이터 등)는 P로 본다.
+     */
+    var parked by androidx.compose.runtime.mutableStateOf(true); private set
+    private val gearListener = object : ai.pleos.playground.vehicle.listener.GearSelectionListener {
+        override fun onSelected(gear: ai.pleos.playground.vehicle.constant.control.VehicleGear?) { main.post { onGear(gear) } }
+        override fun onFailed(e: Exception) { warn(e) }
+    }
+    private fun onGear(g: ai.pleos.playground.vehicle.constant.control.VehicleGear?) {
+        val p = g == null || g == ai.pleos.playground.vehicle.constant.control.VehicleGear.GEAR_PARK || g == ai.pleos.playground.vehicle.constant.control.VehicleGear.GEAR_UNKNOWN
+        Log.i(TAG, "gear $g parked=$p")
+        if (parked && !p) restore()   // P를 벗어나면 바꿔 둔 조명·공조를 바로 되돌린다
+        parked = p
+    }
+    init {
+        runCatching {
+            val gear = vehicle.getGear()
+            gear.getCurrentGearSelectionState({ g -> main.post { onGear(g) } }, ::warn)
+            gear.registerGearSelection(gearListener)
+        }.onFailure(::warn)
+    }
     private fun SeatArea.key() = values.joinToString { it.name }
 
     /**
@@ -156,6 +180,7 @@ class CarMood(context: Context) {
     }
 
     fun release() {
+        runCatching { vehicle.getGear().unregisterGearSelection(gearListener) }
         restore()
         vehicle.release()
     }

@@ -15,11 +15,16 @@ android {
         versionName = "0.1.0"
         // 서버 주소. 에뮬레이터에서 10.0.2.2 = 이 Mac에서 켠 로컬 서버(wrangler dev)
         buildConfigField("String", "API_BASE", "\"http://10.0.2.2:8787\"")
+        ndk { abiFilters += listOf("arm64-v8a", "x86_64") }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            // 레포에 올릴 APK(100MB 제한)를 위해 코드만 줄인다. 영상과 이미지는 그대로
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            // 공모전 시연용: 디버그 키로 서명해 바로 설치되게 한다
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -194,13 +195,20 @@ fun SajuApp() {
     }
 
     val car = rememberCarMood()
+    // 기어가 P가 아니면 잠근다. 다시 P가 되면 대기 화면의 차 연출(무드등, 실내등, 송풍)을 되살린다
+    val parked = car?.parked ?: true
+    LaunchedEffect(parked) {
+        val was = com.yeokma.saju.car.DriveLock.locked
+        com.yeokma.saju.car.DriveLock.locked = !parked
+        if (parked && was) runCatching { car?.idle() }
+    }
     // "오셨군요"에 오면 좌석 센서로 동승자를 찾는다
     LaunchedEffect(screen) { if (screen == Screen.Profiles) car?.companions { companions = it } }
     val backdropBlur = remember { mutableStateOf(false) }
     CompositionLocalProvider(LocalCarMood provides car, com.yeokma.saju.ui.LocalBackdropBlur provides backdropBlur) {
     Box(Modifier.fillMaxSize().background(Ink)) {
         if (screen != Screen.Intro && screen != Screen.Report) Backdrop()
-        androidx.activity.compose.BackHandler(enabled = screen != Screen.Intro) { goBack() }
+        androidx.activity.compose.BackHandler(enabled = screen != Screen.Intro && parked) { goBack() }
         AnimatedContent(targetState = screen to step, transitionSpec = { fadeIn(tween(560)) togetherWith fadeOut(tween(400)) }, label = "screen") { (s, i) ->
             when (s) {
                 Screen.Intro -> IntroFlow(onDone = { saved = store.all(); screen = Screen.Profiles })
@@ -308,7 +316,8 @@ fun SajuApp() {
                 Screen.MatchReport -> MatchReportScreen(matchA!!, matchB!!, match!!, onHome = { matchMode = false; screen = Screen.Intro })
             }
         }
-        if (screen != Screen.Intro && (screen != Screen.Loading || failed != null)) BackButton(Modifier.align(Alignment.TopStart).padding(start = 20.dp, top = 18.dp)) { goBack() }
+        if (!parked) DriveLockScreen()
+        if (parked && screen != Screen.Intro && (screen != Screen.Loading || failed != null)) BackButton(Modifier.align(Alignment.TopStart).padding(start = 20.dp, top = 18.dp)) { goBack() }
     }
     }
 }
@@ -388,4 +397,21 @@ private fun EmailChoice(pick: (String) -> Unit) = Column(horizontalAlignment = a
         }
     }
     Text("${kotlin.math.ceil(left.value * 5).toInt()}초 뒤 받지 않는 쪽으로 넘어가요", color = Paper.copy(alpha = .7f), fontSize = 16.sp)
+}
+
+/** 기어가 P가 아닐 때 화면 전체를 덮는다. 아래 화면은 누를 수 없고, 영상·소리·음성 입력은 멈춘다 */
+@Composable
+private fun DriveLockScreen() = Box(
+    Modifier.fillMaxSize().background(Ink.copy(alpha = .96f))
+        .clickable(interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }, indication = null) {},
+    contentAlignment = androidx.compose.ui.Alignment.Center,
+) {
+    Column(horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text("P", color = Gold, fontSize = 64.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+            modifier = Modifier.size(120.dp).border(3.dp, Gold, RoundedCornerShape(24.dp)).padding(top = 14.dp),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Text("주행 중에는 잠시 멈춰요", color = Paper, fontSize = 34.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+        Text("기어를 P에 두면 보던 곳부터 이어서 볼 수 있어요", color = Paper.copy(alpha = .85f), fontSize = 21.sp)
+        Text("영상과 소리는 멈췄고, 조명과 공조는 원래대로 돌려놨어요", color = Paper.copy(alpha = .6f), fontSize = 17.sp)
+    }
 }
