@@ -10,8 +10,7 @@
   <a href="#실행-방법">실행 방법</a> ·
   <a href="#apk">APK</a> ·
   <a href="#시연-영상">시연 영상</a> ·
-  <a href="docs/proposal-4-7.md">기획서 (시나리오 · 개발 계획 · 기대효과 · 참고자료)</a> ·
-  <a href="https://github.com/hyndai-contest-team/yeokma-saju/releases/latest">APK 다운로드</a>
+  <a href="docs/proposal-4-7.md">기획서 (시나리오 · 개발 계획 · 기대효과 · 참고자료)</a>
 </p>
 
 중요한 일정이 있는 날에는 출발하기 전이나 도착한 뒤, 차 안에서 몇 분을 보내게 됩니다. 혼자 있을 수 있는 거의 유일한 공간이지만, 마음은 가장 불안한 때입니다. 역마사주는 그 몇 분을 위한 앱입니다.
