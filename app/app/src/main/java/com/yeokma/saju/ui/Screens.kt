@@ -107,7 +107,7 @@ fun ConfirmScreen(p: Profile, onEdit: (Int) -> Unit, onOk: () -> Unit) {
         "이름" to p.name, "성별" to p.gender, "생년월일" to (p.birth + if (p.lunar) " (음력)" else " (양력)"),
         "태어난 시간" to p.time, "태어난 곳" to p.place, "이메일" to p.email.ifEmpty { "받지 않음" },
     )
-    Box(Modifier.fillMaxSize().background(Ink.copy(alpha = .58f)).padding(horizontal = 64.dp, vertical = 40.dp)) {
+    Box(Modifier.fillMaxSize().background(Ink.copy(alpha = .58f)).padding(start = 64.dp, end = 64.dp, top = 92.dp, bottom = 40.dp)) {
         Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Text("이렇게 맞나요?", style = TitleOnVideo.copy(fontSize = 38.sp))
             rows.chunked(2).forEachIndexed { r, pair ->

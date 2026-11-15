@@ -56,7 +56,7 @@ private fun won(n: Int) = "%,d".format(n)
 @Composable
 fun PayScreen(worry: String, balance: Int, busy: Boolean, onPay: (Int) -> Unit, onBack: () -> Unit) {
     var sel by remember { mutableIntStateOf(1) }
-    Box(Modifier.fillMaxSize().background(Ink.copy(alpha = .58f)).padding(horizontal = 56.dp, vertical = 36.dp)) {
+    Box(Modifier.fillMaxSize().background(Ink.copy(alpha = .58f)).padding(start = 56.dp, end = 56.dp, top = 92.dp, bottom = 36.dp)) {
         Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(20.dp)) {
             Row(verticalAlignment = Alignment.Bottom) {
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {

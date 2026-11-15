@@ -57,8 +57,9 @@ object Parse {
     }
 
     /** 말한 시각을 그대로 숫자로: "13시 30분" → 13:30, "오후 1시 반" → 13:30, "0730" → 07:30 */
-    fun time(t: String): String? {
-        if (Regex("모름|몰라|모르").containsMatchIn(t)) return "모름"
+    fun time(raw: String): String? {
+        if (Regex("모름|몰라|모르").containsMatchIn(raw)) return "모름"
+        val t = koreanNumbers(raw)
         val pm = t.contains("오후") || t.contains("저녁") || t.contains("밤")
         val am = t.contains("오전") || t.contains("새벽") || t.contains("아침")
         var h: Int? = null; var mi = 0
@@ -74,6 +75,36 @@ object Parse {
         if (am && hh == 12) hh = 0
         if (hh !in 0..23 || mi !in 0..59) return null
         return "%02d:%02d".format(hh, mi)
+    }
+
+    private val SINO = mapOf('일' to 1, '이' to 2, '삼' to 3, '사' to 4, '오' to 5, '육' to 6, '칠' to 7, '팔' to 8, '구' to 9)
+    private val NATIVE = listOf(
+        "열한" to 11, "열두" to 12, "열세" to 13, "열네" to 14, "열다섯" to 15, "열여섯" to 16, "열일곱" to 17, "열여덟" to 18, "열아홉" to 19,
+        "스물한" to 21, "스물두" to 22, "스물세" to 23, "스물네" to 24, "스무" to 20,
+        "열" to 10, "한" to 1, "두" to 2, "세" to 3, "네" to 4, "다섯" to 5, "여섯" to 6, "일곱" to 7, "여덟" to 8, "아홉" to 9,
+    )
+
+    /** "십삼" → 13, "이십" → 20, "삼십오" → 35 */
+    private fun sino(w: String): Int? {
+        var total = 0; var cur = 0
+        for (c in w) when (c) {
+            '십' -> { total += (if (cur == 0) 1 else cur) * 10; cur = 0 }
+            else -> cur = SINO[c] ?: return null
+        }
+        return total + cur
+    }
+
+    /** 음성 인식이 한글로 적은 시각을 숫자로: "십삼시 삼십분" → "13시 30분", "열한시" → "11시" */
+    fun koreanNumbers(t: String): String {
+        var s = Regex("""([일이삼사오육칠팔구십]+)\s*(시|분)""").replace(t) { m -> sino(m.groupValues[1])?.let { "$it${m.groupValues[2]}" } ?: m.value }
+        for ((w, n) in NATIVE) s = Regex("""$w\s*시""").replace(s, "${n}시")
+        return s
+    }
+
+    /** "광주에서 태어났어요" → "광주" */
+    fun place(t: String): String? {
+        val s = t.replace(Regex("""\s*(에서|서)?\s*(태어났[어습]?[요니다]*|태어났어|출생(했어요|했습니다|했어)?|이에요|예요|입니다|이요|요)\s*[.!]?$"""), "").trim()
+        return s.ifEmpty { t.trim() }.takeIf { it.isNotEmpty() }
     }
 
     fun email(t: String): String? {
@@ -96,7 +127,7 @@ object Parse {
                 p.copy(birth = b, lunar = l) to (b + if (l) " (음력)" else " (양력)")
             }
             StepId.Time -> time(t)?.let { p.copy(time = it) to it }
-            StepId.Place -> t.takeIf { it.isNotEmpty() }?.let { p.copy(place = it) to it }
+            StepId.Place -> place(t)?.let { p.copy(place = it) to it }
             StepId.Email -> email(t)?.let { p.copy(email = it) to it.ifEmpty { "메일은 받지 않을게요" } }
             StepId.Worry -> null
         }
