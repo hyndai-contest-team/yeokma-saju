@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="#해결하려는-문제">해결하려는 문제</a> ·
+  <a href="#왜-차인가-몰입에는-차가-가장-중요한-환경입니다">왜 차인가</a> ·
   <a href="#실행-방법">실행 방법</a> ·
   <a href="#apk">APK</a> ·
   <a href="#시연-영상">시연 영상</a> ·
@@ -35,6 +36,20 @@ Pleos Connect(안드로이드 오토모티브) 차량용 앱입니다.
 | 입력 | 키보드 양식 | 키보드 | 질문에 말로 답하기 |
 | 함께 탄 사람 | 모름 | 모름 | 좌석 센서로 알아채 궁합으로 연결 |
 | 안전 | 해당 없음 | 해당 없음 | 기어가 P일 때만 열림, 주행 중 잠금 |
+
+## 왜 차인가: 몰입에는 차가 가장 중요한 환경입니다
+
+사주 풀이가 마음에 닿으려면 듣는 사람이 그 순간에 온전히 빠져들어야 합니다. 휴대폰은 손안의 작은 화면뿐이고 알림과 주변 소음에 쉽게 끊깁니다. 차는 다릅니다. 문을 닫으면 바깥과 분리된 나만의 공간이 되고, 화면·스피커·빛·바람이 몸 전체를 감쌉니다. 역마사주는 이 차 안을 통째로 역마아씨의 상담 공간으로 바꿉니다. **이 몰입은 차 안에서만 만들 수 있습니다.**
+
+| 근거 | 내용 |
+|---|---|
+| 사람들은 이미 차 안에서 마음을 준비한다 | 운전자 2,000명 조사에서 26%가 집이나 직장에 들어가기 전 마음을 준비하려고 차 안에서 시간을 보내고, 77%가 출발·도착 전후의 "카타임"을 즐긴다고 답했습니다[1]. 다른 조사에서는 63%가 차 안에서 5분 쉬고 나면 하루를 더 잘 준비한다고 느꼈습니다[2]. 국내 조사에서도 혼자만의 공간이 필요할 때 떠올리는 곳으로 자동차가 꼽혔습니다(16.9%)[3] |
+| 차 안의 빛은 감정을 움직인다 | 차량 실내조명의 색을 바꾸면 뇌파로 측정한 각성도가 달라졌고[4], 앰비언트 조명을 켜면 운전자의 수행이 나아졌습니다[5]. 운전자의 감정에 맞춰 조명을 바꿔 스트레스를 낮추는 연구도 진행되고 있습니다[6] |
+| 차는 감각 전체를 한꺼번에 바꿀 수 있는 유일한 개인 공간이다 | 고급차 브랜드는 이미 공조·향기·시트 마사지·음악·앰비언트 조명을 묶어 기분을 바꾸는 프로그램을 판매하고 있습니다[7]. 현대차그룹도 플레오스 커넥트 앱 마켓을 엔터테인먼트로 넓힐 계획입니다[8] |
+
+역마사주는 이 근거 위에서 차의 디스플레이·스피커(탑승 영상과 인사), 앰비언트 라이트·실내등(장면마다 바뀌는 빛), 송풍(잔잔한 바람), 좌석 센서(함께 탄 사람)를 하나의 장면으로 묶습니다.
+
+<sub>출처: [1](https://www.halfordscompany.com/news-and-media/news/brits-spend-half-a-day-a-year-in-their-cars-searching-for-peace-and-quiet/) 영국 운전자 조사(업체 의뢰), [2](https://www.nova.ie/motorists-spend-more-than-three-days-of-their-lives-looking-for-their-cars/) 아일랜드 운전자 조사, [3](https://www.openads.co.kr/content/contentDetail?contsId=1579) 국내 소비자 조사, [4](https://deepai.org/publication/affective-responses-to-chromatic-ambient-light-in-a-vehicle) Kim 외(2022), [5](https://dl.ifip.org/IFIP-LNCS-11746/hal-02544538) Hassib 외(INTERACT 2019), [6](https://openaccess.cms-conferences.org/publications/book/978-1-958651-15-5/article/978-1-958651-15-5_47) AHFE 2022, [7](https://www.mercedes-benz.co.nz/passengercars/brand/mercedes-me-magazine/innovation/articles/ergonomic-design-driving-comfort.html) 제조사 기능 소개, [8](https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system) 현대차그룹 발표</sub>
 
 ## 실행 방법
 
