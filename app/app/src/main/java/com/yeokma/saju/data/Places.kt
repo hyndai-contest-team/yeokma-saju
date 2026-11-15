@@ -5,12 +5,15 @@ import android.content.Context
 /**
  * 태어난 곳 목록(레포의 data/places.tsv, 서버와 같은 파일).
  * 말한 문장에서 앞에서부터 가장 긴 지명을 찾고, 상위 지역이 같이 나오면 그 아래로 좁힌다.
- * 결과가 하나면 확정, 여럿이면 어느 곳인지 물어본다.
+ * 특별시·광역시는 그 이름까지, 도는 시·군까지만 받는다. 결과가 하나면 확정, 여럿이면 어느 곳인지 물어본다.
  */
 class Places private constructor(private val places: List<Place>, private val keys: Map<String, List<Int>>) {
     data class Place(val full: String, val label: String, val parent: Int?)
 
     private val longest = keys.keys.maxOf { it.length }
+
+    /** 도처럼 아래에 시·군이 있는 곳의 시·군 목록 */
+    fun children(p: Place): List<Place> { val id = places.indexOf(p); return places.filter { it.parent == id } }
 
     private fun isAncestor(a: Int, x0: Int): Boolean {
         var x = places[x0].parent

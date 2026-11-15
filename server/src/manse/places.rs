@@ -104,18 +104,20 @@ mod tests {
         assert_eq!(names("경기도 광주시"), vec!["경기도 광주시"]);
         assert_eq!(names("광주에서 태어났어"), vec!["광주광역시", "경기도 광주시"]);
         assert_eq!(names("광주광역시"), vec!["광주광역시"]);
-        assert_eq!(names("광주 북구"), vec!["광주광역시 북구"]);
-        assert_eq!(names("서울 강남구"), vec!["서울특별시 강남구"]);
-        assert_eq!(names("강남"), vec!["서울특별시 강남구"]);
-        assert_eq!(names("분당"), vec!["경기도 성남시 분당구"]);
-        assert_eq!(names("경기도 성남시 분당구"), vec!["경기도 성남시 분당구"]);
+        assert_eq!(names("광주 북구"), vec!["광주광역시", "경기도 광주시"]);
+        assert_eq!(names("서울 강남구"), vec!["서울특별시"]);
+        assert_eq!(names("강남"), vec!["서울특별시"]);
+        assert_eq!(names("서울"), vec!["서울특별시"]);
+        assert_eq!(names("분당"), vec!["경기도 성남시"]);
+        assert_eq!(names("경기도 성남시 분당구"), vec!["경기도 성남시"]);
+        assert_eq!(names("경기도"), vec!["경기도"]);
         assert_eq!(names("제주"), vec!["제주특별자치도 제주시"]);
-        assert_eq!(names("고성").len(), 2);
-        assert_eq!(names("중구").len(), 6);
-        assert_eq!(names("부산 중구"), vec!["부산광역시 중구"]);
+        assert_eq!(names("고성"), vec!["강원특별자치도 고성군", "경상남도 고성군"]);
+        assert_eq!(names("강서"), vec!["서울특별시", "부산광역시"]);
+        assert_eq!(names("부산 중구"), vec!["부산광역시"]);
         assert_eq!(names("남양주"), vec!["경기도 남양주시"]);
-        assert_eq!(names("마산"), vec!["경상남도 창원시 마산합포구"]);
-        assert_eq!(names("부산 해운대"), vec!["부산광역시 해운대구"]);
+        assert_eq!(names("마산"), vec!["경상남도 창원시"]);
+        assert_eq!(names("부산 해운대"), vec!["부산광역시"]);
         assert!(names("뉴욕").is_empty());
     }
 }

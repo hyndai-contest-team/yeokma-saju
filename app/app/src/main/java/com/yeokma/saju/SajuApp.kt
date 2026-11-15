@@ -82,12 +82,27 @@ fun SajuApp() {
     var fromSaved by remember { mutableStateOf(false) }
     val places = remember { com.yeokma.saju.data.Places.get(ctx) }
     var placeOptions by remember { mutableStateOf(emptyList<com.yeokma.saju.data.Places.Place>()) }
-    var placeWord by remember { mutableStateOf("") }
+    var placeAsk by remember { mutableStateOf("") }
+    var province by remember { mutableStateOf<com.yeokma.saju.data.Places.Place?>(null) }
 
     // 태어난 곳: 목록에서 찾아 하나면 정하고, 같은 이름이 여러 곳이면 어느 곳인지 묻는다
     fun submitPlace(raw: String): String? {
         val text = Parse.place(raw) ?: return null
-        fun choose(p: com.yeokma.saju.data.Places.Place): String { placeOptions = emptyList(); profile = profile.copy(place = p.full); return p.full }
+        fun choose(p: com.yeokma.saju.data.Places.Place): String? {
+            val kids = places.children(p)
+            if (kids.isNotEmpty()) { // 도만 말했으면 시·군을 다시 묻는다
+                province = p
+                placeOptions = if (kids.size <= 6) kids else emptyList()
+                placeAsk = "${p.label} 어느 시·군인가요?"
+                return null
+            }
+            placeOptions = emptyList(); province = null; placeAsk = ""
+            profile = profile.copy(place = p.full); return p.full
+        }
+        // 도를 말한 뒤라면 그 도 안에서 먼저 찾는다
+        province?.let { pv ->
+            places.find("${pv.full} $text").second.singleOrNull()?.takeIf { it.full.startsWith(pv.full + " ") }?.let { return choose(it) }
+        }
         if (placeOptions.isNotEmpty()) {
             placeOptions.firstOrNull { it.label == raw.trim() || it.full == raw.trim() }?.let { return choose(it) }
             val said = places.find(text).second
@@ -97,15 +112,15 @@ fun SajuApp() {
         }
         val (word, found) = places.find(text)
         return when (found.size) {
-            0 -> { placeOptions = emptyList(); profile = profile.copy(place = text); text } // 목록에 없으면 말한 그대로
+            0 -> { placeOptions = emptyList(); province = null; placeAsk = ""; profile = profile.copy(place = text); text } // 목록에 없으면 말한 그대로
             1 -> choose(found[0])
-            else -> { placeOptions = found; placeWord = word; null }
+            else -> { placeOptions = found; province = null; placeAsk = "어느 ${word}인가요? 골라 주세요"; null }
         }
     }
 
     // 왼쪽 위 '이전' 버튼과 기기 뒤로 가기: 한 단계 앞 화면으로
     fun goBack() {
-        placeOptions = emptyList()
+        placeOptions = emptyList(); province = null; placeAsk = ""
         when (screen) {
             Screen.Intro -> {}
             Screen.Profiles -> screen = Screen.Intro
@@ -146,14 +161,14 @@ fun SajuApp() {
                 Screen.Profiles -> ProfilesScreen(
                     saved = saved,
                     onPick = { profile = it; worry = ""; fromSaved = true; screen = Screen.Worry },
-                    onNew = { profile = Profile(); step = 0; backToConfirm = false; fromSaved = false; placeOptions = emptyList(); screen = Screen.Input },
+                    onNew = { profile = Profile(); step = 0; backToConfirm = false; fromSaved = false; placeOptions = emptyList(); province = null; placeAsk = ""; screen = Screen.Input },
                 )
                 Screen.Input -> {
                     val st = PROFILE_STEPS[i]
                     AskScreen(
                         step = st, progress = i to PROFILE_STEPS.size, autoListen = voiceMode,
                         submit = { raw -> if (st.id == StepId.Place) submitPlace(raw) else Parse.apply(st.id, raw, profile)?.let { (p, shown) -> profile = p; shown } },
-                        rejectHint = { if (st.id == StepId.Place && placeOptions.isNotEmpty()) "어느 ${placeWord}인가요? 골라 주세요" else null },
+                        rejectHint = { if (st.id == StepId.Place && placeAsk.isNotEmpty()) placeAsk else null },
                         onNext = { usedVoice ->
                             voiceMode = usedVoice
                             if (backToConfirm || i == PROFILE_STEPS.lastIndex) screen = Screen.Confirm else step = i + 1
