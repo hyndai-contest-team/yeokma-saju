@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,11 +47,14 @@ internal fun IntroLanding(video: Int?, onStart: () -> Unit) {
             }
         }
     }
+    var settings by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(false) }
     Box(Modifier.fillMaxSize().background(Color.Black)) {
         // V1 마지막 장면을 깔아 두어, V2가 첫 장면을 그리기 전에도 화면이 끊기지 않게 한다
         PosterImage()
         if (video != null) VideoLayer(resId = video, loop = true)
         images?.let { IntroArtwork(it, onStart) }
+        com.yeokma.saju.ui.SettingsButton(Modifier.align(Alignment.TopEnd).padding(top = 20.dp, end = 24.dp)) { settings = true }
+        if (settings) com.yeokma.saju.ui.CarSettingsDialog { settings = false }
     }
 }
 

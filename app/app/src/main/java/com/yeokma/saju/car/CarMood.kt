@@ -23,6 +23,30 @@ import ai.pleos.playground.vehicle.constant.control.LightSwitch
  */
 class CarMood(context: Context) {
     private val vehicle = Vehicle(context.applicationContext).apply { initialize() }
+
+    init {
+        CarEffects.init(context)
+        // 설정에서 끄면 그 항목만 원래 값으로, 켜면 지금 장면을 다시 켠다
+        CarEffects.onChange = { kind, on -> main.post { if (on) reapply(kind) else restoreKind(kind) } }
+    }
+
+    private fun prefixes(kind: CarEffects.Kind) = when (kind) {
+        CarEffects.Kind.Ambient -> listOf("ambient:")
+        CarEffects.Kind.Cabin -> listOf("cabin")
+        CarEffects.Kind.Breeze -> listOf("power:", "auto:", "fan:")
+    }
+
+    private fun restoreKind(kind: CarEffects.Kind) {
+        if (kind == CarEffects.Kind.Breeze) main.removeCallbacksAndMessages(CAR_TASK)
+        val ps = prefixes(kind)
+        undo.keys.filter { k -> ps.any { k.startsWith(it) } }.asReversed().forEach { k -> undo.remove(k)?.let { runCatching(it).onFailure(::warn) } }
+    }
+
+    private fun reapply(kind: CarEffects.Kind) = when (kind) {
+        CarEffects.Kind.Ambient -> sceneAmbient?.let { ambient(it) }
+        CarEffects.Kind.Cabin -> sceneCabin?.let { cabin(it) }
+        CarEffects.Kind.Breeze -> if (sceneBreeze) breeze() else Unit
+    }
     private val light get() = vehicle.getLight()
     private val hvac get() = vehicle.getHVAC()
     private val undo = LinkedHashMap<String, () -> Unit>()
@@ -111,7 +135,7 @@ class CarMood(context: Context) {
 
     fun ambient(color: Int) {
         sceneAmbient = color
-        if (!parked) return
+        if (!parked || !CarEffects.allowed(CarEffects.Kind.Ambient)) return
         light.checkAmbientLightBrightnessColorCapabilities({ _, areas ->
             areas.forEach { area ->
                 light.getAmbientLightBrightnessColor(area, { old ->
@@ -124,7 +148,7 @@ class CarMood(context: Context) {
 
     fun cabin(on: Boolean) {
         sceneCabin = on
-        if (!parked) return
+        if (!parked || !CarEffects.allowed(CarEffects.Kind.Cabin)) return
         light.getCabinLightSwitch({ old ->
             if (old != null) keep("cabin") { light.setCabinLightSwitch(old, {}, ::warn) }
             light.setCabinLightSwitch(if (on) LightSwitch.ON else LightSwitch.OFF, {}, ::warn)
@@ -134,7 +158,7 @@ class CarMood(context: Context) {
     /** 송풍: 공조 전원을 켜고, AUTO면 잠시 끈 뒤 풍량을 "중"으로. 온도·에어컨·풍향은 건드리지 않는다. 항목마다 차가 지원하는 영역이 다르다. */
     fun breeze() {
         sceneBreeze = true
-        if (!parked) return
+        if (!parked || !CarEffects.allowed(CarEffects.Kind.Breeze)) return
         hvac.checkHvacPowerCapabilities({ areas ->
             var left = areas.size
             if (left == 0) autoOff()
