@@ -2,23 +2,15 @@ package com.yeokma.saju.intro
 
 import android.media.MediaPlayer
 import android.speech.tts.TextToSpeech
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -40,10 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yeokma.saju.car.CarMood
 import com.yeokma.saju.car.LocalCarMood
-import com.yeokma.saju.ui.Gold
-import com.yeokma.saju.ui.Night
 import com.yeokma.saju.ui.Paper
-import com.yeokma.saju.ui.TitleOnVideo
 import kotlinx.coroutines.delay
 import java.util.Locale
 
@@ -91,31 +80,7 @@ fun IntroFlow(onDone: () -> Unit) {
 @Composable
 private fun IdleLoop(onStart: () -> Unit) {
     val v2 = IntroMedia.v2Idle()
-    var shown by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) { shown = true }
-    Box(Modifier.fillMaxSize()) {
-        if (v2 != null) VideoLayer(resId = v2, loop = true) else PosterImage()
-        AnimatedVisibility(
-            visible = shown,
-            enter = fadeIn(tween(560, delayMillis = 300)) + slideInVertically(tween(560, delayMillis = 300)) { it / 6 },
-            modifier = Modifier.align(Alignment.BottomCenter),
-        ) {
-            Column(
-                Modifier.padding(bottom = 36.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-            ) {
-                Text("역마아씨가 기다립니다", style = TitleOnVideo)
-                Button(
-                    onClick = onStart,
-                    shape = RoundedCornerShape(30.dp),
-                    contentPadding = PaddingValues(horizontal = 44.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Night),
-                    modifier = Modifier.height(60.dp),
-                ) { Text("탑승하기", fontSize = 19.sp) }
-            }
-        }
-    }
+    IntroLanding(video = v2, onStart = onStart)
 }
 
 /**

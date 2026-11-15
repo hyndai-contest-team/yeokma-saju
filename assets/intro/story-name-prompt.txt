@@ -1,0 +1,6 @@
+Use case: logo-brand.
+Create a clean transparent PNG word strip to finish the small narrative caption of a Korean film-poster-like app screen.
+Text is exactly these four Korean syllables: 역 마 아 씨
+Typography: match the smaller GOLD Korean serif caption text in the provided reference, NOT the large ivory brush title. Slender, elegant, flat Myeongjo-style Korean lettering in muted antique gold #B89555. It should blend into the phrase "역마살의 운명을 타고난 역마아씨".
+Production layout: four equal-width columns, each full Korean syllable centered in its own column, all the same optical height and baseline. Full glyphs have generous fully transparent space between them for separate PNG export. No visible grid. Wide 3:1 canvas.
+Only these four gold text glyphs. No ornaments, no ivory lettering, no frame, no stroke outline, no gradient, no shiny effects, no glow, no shadow, no speckles, no background. Genuine alpha transparency.
