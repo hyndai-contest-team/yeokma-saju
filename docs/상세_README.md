@@ -17,7 +17,7 @@
   <a href="기획서.md">기획서 (시나리오 · 개발 계획 · 기대효과 · 참고자료)</a>
 </p>
 
-중요한 일정이 있는 날에는 출발하기 전이나 도착한 뒤, 차 안에서 몇 분을 보내게 됩니다. 혼자 있을 수 있는 거의 유일한 공간이지만, 마음은 가장 불안한 때입니다. 역마사주는 그 몇 분을 위한 앱입니다.
+중요한 일정이 있는 날에는 출발하기 전이나 도착한 뒤, 차 안에서 몇 분을 보내게 됩니다. 혼자 있을 수 있는 몇 안 되는 공간이지만, 마음은 가장 불안한 때입니다. 역마사주는 그 몇 분을 위한 앱입니다.
 
 앱을 열면 숲길을 달려온 차의 문이 열리고 역마아씨가 기다립니다. "탑승하기"를 누르는 순간 내 차의 앰비언트 라이트가 무드등 색으로 바뀌고 실내등이 켜지며, 송풍이 잔잔하게 흘러 영상 속 장면이 그대로 내 차 안으로 이어집니다. 지금의 고민을 말로 털어놓으면 역마아씨가 내 사주로 풀어 주고, 풀이를 기다리는 동안 무드등은 오행의 색으로 천천히 바뀝니다. 차는 화면이 달린 공간이 아니라, 중요한 자리에 들어가기 전 마음을 다잡게 해 주는 몰입 장치가 됩니다.
 
@@ -27,13 +27,13 @@ Pleos Connect(안드로이드 오토모티브) 차량용 앱입니다.
 
 중요한 일정을 앞둔 운전자는 출발 전이나 도착 후 차 안에서 혼자 긴장을 삭이는 몇 분을 보냅니다. 누군가에게 털어놓기엔 애매하고, 휴대폰 운세 앱은 오늘의 띠별 운세처럼 넓은 이야기만 하고 지금 이 고민에는 답하지 않습니다. 역마사주는 그 몇 분 동안 차 안 전체를 상담 공간으로 바꿔, 지금의 고민을 내 사주로 풀어 줍니다.
 
-국내 성인 1,000명 조사에서 25.1%가 "중요한 일이나 결과를 기다릴 때" 운세를 본다고 답했고, 84.4%는 운세가 마음의 위안이 된다고 했습니다([출처](https://www.openads.co.kr/content/contentDetail?contsId=2344)). 사주·타로를 본 이유로는 시험·취업·이직 같은 진로 문제가 24%로 꼽혔습니다([출처](https://hrcopinion.co.kr/archives/20672)). 자세한 근거는 [기획서 2번](기획서.md#2-기획-배경)에 있습니다.
+국내 성인 1,000명 조사(2019)에서 4명 중 1명(25.1%)이 "중요한 일이나 결과를 기다릴 때" 운세 서비스를 이용한다고 답했습니다([출처](https://www.openads.co.kr/content/contentDetail?contsId=2344)). 최근 5년 안에 점을 본 사람의 24%는 시험·취업·이직 같은 진로 문제를 이유로 들었습니다(2022, [출처](https://hrcopinion.co.kr/archives/20672)). 자세한 근거는 [기획서 2번](기획서.md#2-기획-배경)에 있습니다.
 
 | | 휴대폰 운세 앱 | 범용 AI 챗봇 | 역마사주 |
 |---|---|---|---|
 | 언제 쓰나 | 아무 때나 | 아무 때나 | 중요한 일정을 앞둔 출발 전·도착 후의 몇 분 |
-| 무엇에 답하나 | 띠별·오늘의 운세 | 묻는 대로 | 내 명식과 지금 말한 고민을 함께 |
-| 사주 계산 | 앱마다 다름 | 계산 근거가 없음 | 서버가 직접 계산(진태양시, 절기, 대운 등) |
+| 무엇에 답하나 | 대부분 띠별·오늘의 운세(일부는 AI 상담) | 묻는 대로 | 내 명식과 지금 말한 고민을 함께 |
+| 사주 계산 | 앱마다 다름 | 명식을 직접 계산하지 않고 모델 추론에 기댐 | 서버가 직접 계산(진태양시, 절기, 대운 등) |
 | 어디서 겪나 | 손안의 작은 화면 | 텍스트 | 차 디스플레이·스피커·앰비언트 라이트·실내등·송풍 |
 | 입력 | 키보드 양식 | 키보드 | 질문에 말로 답하기 |
 | 함께 탄 사람 | 모름 | 모름 | 좌석 센서로 알아채 궁합으로 연결 |
@@ -45,14 +45,14 @@ Pleos Connect(안드로이드 오토모티브) 차량용 앱입니다.
 
 | 근거 | 내용 |
 |---|---|
-| 사람들은 차를 혼자만의 공간으로 여긴다 | 국내 소비자 조사에서 혼자만의 공간이 필요할 때 떠올리는 곳으로 자동차가 꼽혔습니다(16.9%)[1]. 중요한 자리에 들어가기 전 마음을 정리할 수 있는 거의 유일한 사적 공간입니다 |
-| 차 안의 빛은 감정을 움직인다 | 차량 실내조명의 색을 바꾸면 뇌파로 측정한 각성도가 달라졌고[2], 앰비언트 조명을 켜면 운전자의 수행이 나아졌습니다[3]. 운전자의 감정에 맞춰 조명을 바꿔 스트레스를 낮추는 연구도 진행되고 있습니다[4] |
-| 차는 감각 전체를 한꺼번에 바꿀 수 있는 유일한 개인 공간이다 | 플레오스 Vehicle SDK로 한 앱이 디스플레이·스피커와 함께 앰비언트 라이트, 실내등, 공조, 좌석 정보를 다룰 수 있습니다. 현대차그룹도 플레오스 커넥트 앱 마켓을 게임·엔터테인먼트 앱으로 넓힐 계획입니다[5] |
+| 사람들은 차를 혼자만의 공간으로 여긴다 | 국내 조사(2018)에서 혼자만의 공간이 필요할 때 떠올리는 곳으로 자동차가 내 방, 걷기, 카페에 이어 4위(16.9%)였습니다[1]. 집 밖에서 문을 닫으면 바로 혼자가 될 수 있는 곳입니다 |
+| 차 안의 빛은 감정을 움직인다 | 차 안에서 앰비언트 조명을 켜면 뇌파로 잰 각성도가 높아졌습니다[2]. 부정적인 감정을 유도한 운전 시뮬레이터 실험(12명)에서는 파랑·주황 앰비언트 조명이 차선 유지를 도왔습니다[3]. 운전자의 감정에 맞춰 조명을 바꿔 스트레스를 낮추려는 연구도 진행 중입니다[4] |
+| 차는 감각 전체를 한꺼번에 바꿀 수 있는 개인 공간이다 | 플레오스 Vehicle SDK로 한 앱이 디스플레이·스피커와 함께 앰비언트 라이트, 실내등, 공조, 좌석 정보를 다룰 수 있습니다[6]. 현대차그룹도 플레오스 커넥트 앱 마켓을 게임·엔터테인먼트·차량 관리 서비스로 넓힐 계획입니다[5] |
 | 플레오스가 가려는 방향과 맞는다 | 역마사주는 차 기능을 함께 움직여 몰입을 만드는 차량 전용 엔터테인먼트 앱입니다. 앱 마켓이 엔터테인먼트로 넓어질 때 휴대폰 앱을 옮겨 온 것이 아니라 **차에서만 할 수 있는 콘텐츠**가 필요하고, 역마사주는 그 첫 사례가 될 수 있습니다. 중요한 일정이 생길 때마다 다시 여는 이유가 있어 앱 마켓의 재방문도 만듭니다 |
 
 역마사주는 이 근거 위에서 차의 디스플레이·스피커(탑승 영상과 인사), 앰비언트 라이트·실내등(장면마다 바뀌는 빛), 송풍(잔잔한 바람), 좌석 센서(함께 탄 사람)를 하나의 장면으로 묶습니다. **이 빛과 바람, 소리는 단순한 연출이 아니라 사용자가 풀이에 빠져들게 만드는 핵심 몰입 요소입니다.**
 
-<sub>출처: [1](https://www.openads.co.kr/content/contentDetail?contsId=1579) 국내 소비자 조사, [2](https://deepai.org/publication/affective-responses-to-chromatic-ambient-light-in-a-vehicle) Kim 외(2022), [3](https://dl.ifip.org/IFIP-LNCS-11746/hal-02544538) Hassib 외(INTERACT 2019), [4](https://openaccess.cms-conferences.org/publications/book/978-1-958651-15-5/article/978-1-958651-15-5_47) AHFE 2022, [5](https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system) 현대차그룹 발표</sub>
+<sub>출처: [1](https://www.openads.co.kr/content/contentDetail?contsId=1579) 국내 소비자 조사, [2](https://arxiv.org/abs/2209.10761) Kim 외(2022), [3](https://dl.ifip.org/IFIP-LNCS-11746/hal-02544538) Hassib 외(INTERACT 2019), [4](https://openaccess.cms-conferences.org/publications/book/978-1-958651-15-5/article/978-1-958651-15-5_47) AHFE 2022, [5](https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system) 현대차그룹 발표, [6](https://document.pleos.ai/en/docs/pleos-only/connect-sdk-pleos/Vehicle/intro) Pleos Vehicle SDK 문서</sub>
 
 ## 실행 방법
 
@@ -232,8 +232,8 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 |---|---|
 | 주행 중 잠금 | 기어가 P(주차)일 때만 쓸 수 있습니다. P를 벗어나면 화면을 잠그고 영상·소리·음성 입력을 멈추며, 바꿔 둔 조명과 공조를 바로 되돌립니다. 다시 P에 두면 보던 화면과 그 화면의 조명·공조가 이어집니다. 기어 값을 알 수 없으면 잠급니다 |
 | 앰비언트 라이트 · 실내등 | 대기 화면에서 무드등 금색과 실내등 켜기, 탑승 5초에 실내등 끄고 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 순환 |
-| 송풍 | 사용자가 맞춰 둔 온도·에어컨·풍향은 그대로 두고 풍량만 "중"으로 맞춘 잔잔한 바람. 앱을 떠나면 원래 풍량으로 |
-| 동승 궁합 | 좌석 센서로 동승자를 감지하면 "혼자가 아니시군요?"로 사주 보기와 궁합 보기를 나눔. 두 사람의 명식으로 점수(38\~97)와 유형(귀인, 단짝, 동반자, 자극제, 숙제) |
+| 송풍 | 공조를 켜고 풍량을 "중"으로 맞춘 잔잔한 바람. 온도·에어컨·풍향은 사용자 설정 그대로이고, 앱을 떠나면 원래대로 |
+| 동승 궁합 | 좌석 센서로 동승자를 감지하면 "혼자가 아니시군요?"로 사주 보기와 궁합 보기를 나눔. 두 사람의 명식으로 점수(39\~97)와 유형(귀인, 단짝, 동반자, 자극제, 숙제) |
 | 디스플레이 · 스피커 | 숲길을 달려온 차와 역마아씨의 탑승 영상, 차량 스피커로 들리는 "오셨군요" 인사 |
 | 음성 입력 | 이름, 성별, 생년월일, 태어난 시간("오후 한 시 반"), 태어난 곳(전국 시·군)을 질문에 따라 말로 입력. 키보드도 지원 |
 | 명식 | 서버가 직접 계산한 사주 여덟 글자를 확인 화면과 리포트에 표시(절기, 음력·윤달, 진태양시, 한국 표준시·서머타임 이력, 대운, 십신, 지장간, 12운성, 공망, 합충) |
@@ -247,7 +247,7 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 |---|---|---|---|---|
 | 앰비언트 라이트 | 대기 화면에서 무드등 금색, 탑승 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 바뀜 | Pleos Vehicle SDK 2.3.2 `Light`: `checkAmbientLightBrightnessColorCapabilities`, `getAmbientLightBrightnessColor`, `setAmbientLightBrightnessColor` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` | [CarMood.kt `ambient`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L112), [오행 순환](../app/app/src/main/java/com/yeokma/saju/ui/ReadingScreens.kt#L128) |
 | 실내등 | 대기 화면에서 켜고, 탑승 5초에 끔 | Vehicle SDK `Light`: `getCabinLightSwitch`, `setCabinLightSwitch` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` | [CarMood.kt `cabin`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L125), [탑승 5초](../app/app/src/main/java/com/yeokma/saju/intro/IntroFlow.kt#L107) |
-| 송풍 | 공조 전원을 켜고 풍량만 "중"으로. 온도·에어컨·풍향은 사용자 설정 그대로(AUTO는 풍량을 맞추려고 잠시 끔) | Vehicle SDK `HVAC`: `setHvacPower`, `setHvacAuto`, `setHvacFanSpeed` (각각 `check…Capabilities`, `get…`로 지원 범위와 원래 값을 읽어 두고 되돌림) | `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE` | [CarMood.kt `breeze`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L135) |
+| 송풍 | 공조 전원을 켜고 풍량을 "중"으로. AUTO일 때는 풍량을 맞추려고 잠시 끔. 온도·에어컨·풍향은 사용자 설정 그대로 | Vehicle SDK `HVAC`: `setHvacPower`, `setHvacAuto`, `setHvacFanSpeed` (각각 `check…Capabilities`, `get…`로 지원 범위와 원래 값을 읽어 두고 되돌림) | `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE` | [CarMood.kt `breeze`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L135) |
 | 주행 중 잠금 | 기어가 P가 아니면 화면을 잠그고 영상·소리·음성 입력을 멈춤, 조명·공조 복원 | Vehicle SDK `Gear`: `getCurrentGearSelectionState`, `registerGearSelection` | `CAR_DRIVE` | [CarMood.kt 기어 구독](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L52), [잠금 화면](../app/app/src/main/java/com/yeokma/saju/SajuApp.kt#L315) |
 | 동승자 감지 | 운전석 말고 앉은 자리가 있으면 "혼자가 아니시군요?"로 궁합 보기를 엶 | Vehicle SDK `Seat`: `checkSeatOccupancyCapabilities`, `getCurrentSeatOccupancy` | `CAR_SEATS` | [CarMood.kt `companions`](../app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L63) |
 | 음성 입력 | 이름, 성별, 생년월일, 시간, 태어난 곳, 고민을 말로 입력 | Pleos SpeechToText SDK 3.3.1 (`ON_DEVICE` 모드): `initialize`, `setLocale(Locale.KOREA)`, `addListener`, `request`, `stop`. Pleos가 아닌 기기에서는 안드로이드 `SpeechRecognizer`로 대체 | `STT_SERVICE` | [Voice.kt](../app/app/src/main/java/com/yeokma/saju/input/Voice.kt#L39) |
@@ -279,13 +279,13 @@ flowchart LR
 |---|---|
 | 시장 | 국내 점술 시장 약 **1조 4,000억 원** 추산(2024)[1] |
 | 이미 검증된 앱 수요 | 대표 운세 앱 한 곳의 누적 다운로드 **1,700만 건**, 다른 한 곳의 가입자 **750만 명**(2026)[2] |
-| 폭넓은 고객층 | 성인 응답자의 **56.4%**가 사주 서비스를 이용해 본 경험이 있음[5]. AI 사주 이용층은 30·40대 남성까지 넓어지는 중(2026)[6]. 중요한 일정을 앞둔 운전자라면 연령과 상관없이 고객입니다 |
-| AI 사주의 급성장 | 한 AI 사주 앱의 월매출 **1천만 원대(2024) → 10억 원(2025)**[3], 월 이용자 **100만 명** 돌파(2026.08)[4]. 운세 앱 월 이용자 상위 10개 중 **6개가 AI 기능**을 갖춤(2026)[3] |
+| 폭넓은 고객층 | 만 13\~69세 1,200명 중 **56.4%**가 사주 서비스를 이용해 본 경험이 있음(2025)[5]. 한 AI 사주 앱은 35\~50세 남성 이용자 비중이 늘었다고 밝힘(회사 발표)[6]. 중요한 일정을 앞둔 운전자라면 연령과 상관없이 고객입니다 |
+| AI 사주의 급성장 | 한 AI 사주 앱의 월매출 **1천만 원대(2024) → 10억 원(2025)**[3], 월 이용자 **100만 명** 돌파(2026.08)[4]. 둘 다 회사 발표. 운세 앱 월 이용자 상위 10개 중 **6개가 AI 기능**을 갖춤(2026.07, 모바일인덱스)[3] |
 | 차별화가 필요한 이유 | 범용 AI 챗봇으로 운세를 보는 사람이 늘면서, 대표 운세 앱 두 곳의 2026년 1월 월 이용자가 전년 1월보다 줄었음[8] |
 | 역마사주의 자리 | 화면 속 텍스트로는 따라 할 수 없는 **차 안의 몰입 경험**(빛·바람·소리)과 **중요한 일정을 앞둔 출발 전·도착 후**라는 분명한 사용 순간. 중요한 일정이 생길 때마다 다시 여는 이유가 됩니다 |
 | 플랫폼 방향 | 현대차그룹은 2030년까지 플레오스 커넥트 탑재 차량 약 2,000만 대를 확보하고 앱 마켓을 게임·엔터테인먼트로 넓힐 계획입니다[7]. 역마사주는 그 엔터테인먼트 영역에 들어갈 차량 전용 콘텐츠입니다 |
 | 수익 모델 | 풀이 1회 990P(990원). 9,900원 11회, 99,000원 115회 묶음. 동승 궁합도 같은 가격 |
 
-예상 MAU(2030년 국내 기본 약 8,600명, 낙관 약 3만 1,500명), 재이용률 기준치, 수수료·LLM 비용을 뺀 순수익 계산은 [기획서 6번 기대효과](기획서.md#6-기대효과-및-발전-가능성)에 있습니다.
+예상 MAU(2030년 국내 기본 약 5,100명, 낙관 약 3만 2,000명), 재이용률 기준치, 수수료·LLM 비용을 뺀 순수익 계산은 [기획서 6번 기대효과](기획서.md#6-기대효과-및-발전-가능성)에 있습니다.
 
-<sub>출처: [1](https://www.hankyung.com/article/2026021070881) 한국경제(2026.02), 혁신의숲 추산 인용, [2](https://www.hankyung.com/article/2026021070861) 한국경제(2026.02), [3](https://www.sedaily.com/article/20078817) 서울경제(2026.08), 모바일인덱스 인용, [4](https://m.etnews.com/20260807000281) 전자신문(2026.08), [5](https://blog.hanabank.com/501979) 트렌드모니터 조사 인용, [6](https://www.sentv.co.kr/article/view/sentv202610230113) 서울경제TV(2026.10), [7](https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system) 현대차그룹 발표, [8](https://biz.heraldcorp.com/article/10673880) 헤럴드경제(2026.02), 모바일인덱스 인용</sub>
+<sub>출처: [1](https://www.hankyung.com/article/2026021070881) 한국경제(2026.02), 혁신의숲 추산 인용, [2](https://www.hankyung.com/article/2026021070861) 한국경제(2026.02), [3](https://www.sedaily.com/article/20078817) 서울경제(2026.08), 모바일인덱스 인용, [4](https://m.etnews.com/20260807000281) 전자신문(2026.08), [5](https://www.trendmonitor.co.kr/tmweb/trend/allTrend/detail.do?bIdx=3239&code=0401&trendType=CKOREA) 엠브레인 트렌드모니터 원자료(2025.04), [6](https://www.sentv.co.kr/article/view/sentv202610230113) 서울경제TV(2026.10), [7](https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system) 현대차그룹 발표, [8](https://biz.heraldcorp.com/article/10673880) 헤럴드경제(2026.02), 모바일인덱스 인용</sub>

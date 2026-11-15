@@ -131,7 +131,7 @@ class CarMood(context: Context) {
         }, ::warn)
     }
 
-    /** 송풍: 전원을 먼저 켠 뒤 AUTO 끄기 → 에어컨 끄기, 풍량 중간, 얼굴 방향. 항목마다 차가 지원하는 영역이 다르다. */
+    /** 송풍: 공조 전원을 켜고, AUTO면 잠시 끈 뒤 풍량을 "중"으로. 온도·에어컨·풍향은 건드리지 않는다. 항목마다 차가 지원하는 영역이 다르다. */
     fun breeze() {
         sceneBreeze = true
         if (!parked) return
