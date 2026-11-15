@@ -58,6 +58,18 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 - 입력은 말로 합니다. Pleos SpeechToText SDK로 이름, 생년월일, "오후 1시 반" 같은 시각, 태어난 곳(전국 시·군)을 알아듣습니다
 - 만세력은 서버에서 직접 계산합니다(절기, 음력·윤달, 진태양시, 한국 표준시·서머타임 이력, 대운, 십신, 지장간, 12운성, 공망, 합충)
 
+## 차량 특화 기능과 사용 SDK
+
+| 기능 | 하는 일 | SDK · API | 권한 |
+|---|---|---|---|
+| 앰비언트 라이트 | 대기 화면에서 무드등 금색, 탑승 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 바뀜 | Pleos Vehicle SDK 2.3.2 `Light`: `checkAmbientLightBrightnessColorCapabilities`, `getAmbientLightBrightnessColor`, `setAmbientLightBrightnessColor` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` |
+| 실내등 | 대기 화면에서 켜고, 탑승 5초에 끔 | Vehicle SDK `Light`: `getCabinLightSwitch`, `setCabinLightSwitch` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` |
+| 송풍 | 공조 전원을 켜고 AUTO·에어컨을 끈 뒤 풍량 중간, 얼굴 방향으로 잔잔한 바람 | Vehicle SDK `HVAC`: `setHvacPower`, `setHvacAuto`, `setHvacAc`, `setHvacFanSpeed`, `setHvacFanDirection` (각각 `check…Capabilities`, `get…`로 지원 범위와 원래 값 확인) | `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE` |
+| 동승자 감지 | 운전석 말고 앉은 자리가 있으면 "혼자가 아니시군요?"로 궁합 보기를 엶 | Vehicle SDK `Seat`: `checkSeatOccupancyCapabilities`, `getCurrentSeatOccupancy` | `CAR_SEATS` |
+| 음성 입력 | 이름, 성별, 생년월일, 시간, 태어난 곳, 고민을 말로 입력 | Pleos SpeechToText SDK 3.3.1 (`ON_DEVICE` 모드): `initialize`, `setLocale(Locale.KOREA)`, `addListener`, `request`, `stop` | `STT_SERVICE` |
+
+권한은 모두 `pleos.car.permission.` 아래 이름입니다. 바꾼 조명과 공조는 앱을 떠날 때 원래 값으로 되돌립니다.
+
 ## 폴더
 
 | 폴더 | 내용 |
