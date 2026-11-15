@@ -14,14 +14,9 @@ Pleos Connect(안드로이드 오토모티브) 차량용 앱입니다.
 
 ## 시연 영상
 
-https://github.com/user-attachments/assets/3b224dcb-7c3e-4edb-acff-019606947723
+https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 
-2분 4초. 고화질(1080p) 원본은 [docs/demo/yeokma-demo.mp4](docs/demo/yeokma-demo.mp4)에 있습니다. 처음 설치한 상태에서 "임지민(2000.01.01 12시, 서울, 여자)"을 말로 입력하고, "지금 면접장에 도착했는데 긴장되네. 결과는 어떨까? 나 잘할 수 있을까?"라는 고민에 대한 풀이를 받는 흐름입니다.
-
-- 가운데는 앱 화면을 그대로 녹화한 것이고, 둘레는 같은 시각에 앱이 차에 보낸 명령(앰비언트 색, 실내등, 송풍)을 차 실내 도식으로 그린 것입니다.
-- 운전자의 목소리는 오픈소스 TTS [MeloTTS](https://github.com/myshell-ai/MeloTTS)로 만들어 에뮬레이터 마이크에 넣었습니다.
-- 앱 화면을 전체 화면으로 찍기 위해 1920×1080 안드로이드 에뮬레이터에서 녹화했습니다. 그래서 이 영상의 음성 인식은 안드로이드 기본 인식기이고, Pleos 차량에서는 Pleos SpeechToText가 같은 자리를 맡습니다. 동승 궁합 화면은 좌석 센서가 있는 Pleos 에뮬레이터에서 찍었습니다.
-- 풀이는 LLM 키 없이 나오는 시연용 목업 풀이입니다.
+시연용 영상입니다.
 
 ## 핵심 화면
 
