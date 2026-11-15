@@ -1,8 +1,10 @@
-# 역마사주
+<p align="center">
+  <img src="assets/brand/app/app-icon-512.png" width="140" height="140" alt="흰 배경의 驛馬四柱 도장 로고">
+</p>
 
-<img src="assets/brand/app/app-icon-512.png" width="112" height="112" alt="흰 배경의 驛馬四柱 도장 로고">
+<h1 align="center">역마사주</h1>
 
-**면접, 미팅, 소개팅 앞에서 차에 남는 몇 분, 그 고민을 사주로 풀어 주는 차량용 사주 앱**
+<p align="center"><b>면접, 미팅, 소개팅 앞에서 차에 남는 몇 분, 그 고민을 사주로 풀어 주는 차량용 사주 앱</b></p>
 
 면접, 중요한 미팅, 소개팅. 떨리는 자리에 도착하면 들어가기 전 차 안에 몇 분이 남습니다. 혼자 있을 수 있는 거의 유일한 공간이지만, 마음은 가장 불안한 때입니다. 역마사주는 그 몇 분을 위한 앱입니다.
 
@@ -21,14 +23,37 @@ Pleos Connect(안드로이드 오토모티브) 차량용 앱입니다.
 - 앱 화면을 전체 화면으로 찍기 위해 1920×1080 안드로이드 에뮬레이터에서 녹화했습니다. 그래서 이 영상의 음성 인식은 안드로이드 기본 인식기이고, Pleos 차량에서는 Pleos SpeechToText가 같은 자리를 맡습니다. 동승 궁합 화면은 좌석 센서가 있는 Pleos 에뮬레이터에서 찍었습니다.
 - 풀이는 LLM 키 없이 나오는 시연용 목업 풀이입니다.
 
-## 주요 화면
+## 핵심 화면
 
-| | | |
-|---|---|---|
-| ![인트로](docs/screenshots/01-intro.jpg)<br>인트로 대기 | ![오셨군요](docs/screenshots/02-profiles.jpg)<br>오셨군요 | ![말로 입력](docs/screenshots/03-voice-input.jpg)<br>말로 입력 |
-| ![확인과 명식](docs/screenshots/04-confirm-chart.jpg)<br>확인과 명식 | ![지금 고민](docs/screenshots/05-worry.jpg)<br>지금 고민 | ![복채](docs/screenshots/06-pay.jpg)<br>복채(포인트) |
-| ![풀이 대기](docs/screenshots/07-loading.jpg)<br>풀이 대기 | ![리포트](docs/screenshots/08-report.jpg)<br>리포트(명식과 역마아씨의 예언) | ![혼자가 아니시군요](docs/screenshots/09-together.jpg)<br>동승자 감지(좌석 센서) |
-| ![궁합 고르기](docs/screenshots/10-match-pick.jpg)<br>궁합: 두 사람 고르기 | ![궁합 결과](docs/screenshots/11-match-report.jpg)<br>궁합 결과 | |
+### 사주 보기
+
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="docs/screenshots/01-intro.jpg" alt="01 인트로 대기"><br><b>01 인트로 대기</b><br><sub>세로 한자와 함께 탑승을 기다립니다</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/02-profiles.jpg" alt="02 오셨군요"><br><b>02 오셨군요</b><br><sub>저장된 사람을 고르거나 새로 추가</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/03-voice-input.jpg" alt="03 말로 입력"><br><b>03 말로 입력</b><br><sub>이름부터 태어난 곳까지 음성으로</sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="docs/screenshots/04-confirm-chart.jpg" alt="04 확인과 명식"><br><b>04 확인과 명식</b><br><sub>서버가 계산한 사주 여덟 글자</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/05-worry.jpg" alt="05 지금 고민"><br><b>05 지금 고민</b><br><sub>고민을 말로 털어놓습니다</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/06-pay.jpg" alt="06 복채"><br><b>06 복채</b><br><sub>풀이 한 번 990P</sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="docs/screenshots/07-loading.jpg" alt="07 풀이 대기"><br><b>07 풀이 대기</b><br><sub>무드등이 오행 색으로 바뀝니다</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/08-report.jpg" alt="08 리포트"><br><b>08 리포트</b><br><sub>명식과 역마아씨의 예언</sub></td>
+    <td width="33%"></td>
+  </tr>
+</table>
+
+### 동승 궁합
+
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="docs/screenshots/09-together.jpg" alt="09 혼자가 아니시군요?"><br><b>09 혼자가 아니시군요?</b><br><sub>좌석 센서로 동승자 감지</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/10-match-pick.jpg" alt="10 두 사람 고르기"><br><b>10 두 사람 고르기</b><br><sub>운전석과 함께 탄 분</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/11-match-report.jpg" alt="11 궁합 결과"><br><b>11 궁합 결과</b><br><sub>점수, 유형, 두 사람의 명식</sub></td>
+  </tr>
+</table>
 
 ## 기능
 
