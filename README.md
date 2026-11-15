@@ -71,7 +71,7 @@ $ANDROID_HOME/platform-tools/adb shell am start --user 10 -n com.yeokma.saju/.Ma
 Android Studio에서는 `app/` 폴더를 열고 실행해도 됩니다.
 
 - 앱은 서버를 `http://10.0.2.2:8787`(에뮬레이터에서 본 이 컴퓨터)로 찾습니다.
-- 음성 입력은 Pleos SpeechToText SDK(3.3.1)의 `ON_DEVICE` 모드를 씁니다. 차 안의 인식 엔진이라 앱 등록 키가 필요 없습니다. 인식 엔진이 없는 기기에서는 키보드로 입력합니다.
+- 음성 입력은 Pleos SpeechToText SDK(3.3.1)의 `ON_DEVICE` 모드를 씁니다. 차 안의 인식 엔진이라 앱 등록 키가 필요 없습니다. Pleos 인식 엔진이 없는 기기에서는 안드로이드 기본 음성 인식기로, 그것도 없으면 키보드로 입력합니다.
 - 공조 풍량·풍향 제어는 에뮬레이터가 지원하지 않아 실차에서만 동작합니다.
 
 ### 2. 서버 켜기 (선택)
@@ -113,13 +113,13 @@ npx wrangler@4.162.0 dev --ip 0.0.0.0 --port 8787
 |---|---|
 | 에뮬레이터 실행 | Cold boot로 켠다(`-no-snapshot-load`). Quick boot로 켜면 차량 신호를 쓸 수 없다 |
 | 설치·실행 사용자 | Pleos 차량 화면은 사용자 10번이다. `adb install --user 10`, `adb shell am start --user 10`처럼 `--user 10`을 붙인다 |
-| 권한 | 차량 권한(`CAR_LIGHTS`, `CONTROL_CAR_LIGHTS`, `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE`, `CAR_SEATS`, `STT_SERVICE`)은 설치하면 허용된다. 마이크 권한은 첫 음성 입력 때 묻는다 |
+| 권한 | 차량 권한(`CAR_LIGHTS`, `CONTROL_CAR_LIGHTS`, `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE`, `CAR_SEATS`, `CAR_DRIVE`, `STT_SERVICE`)은 설치하면 허용된다. 마이크 권한은 첫 음성 입력 때 묻는다 |
 | 음성 입력 | Mac 마이크가 에뮬레이터에 들어가야 한다. 기본으로 켜져 있고, 안 되면 에뮬레이터 Extended controls → Microphone에서 "Virtual microphone uses host audio input"을 켠다. 키보드로도 입력할 수 있다 |
 | 서버 | 없어도 앱은 끝까지 동작한다(앱 안 목업 풀이). 명식, 포인트, 궁합, LLM 풀이를 보려면 아래 "서버 켜기"대로 로컬 서버를 켠다. 앱은 `http://10.0.2.2:8787`로 찾는다 |
 | 동승 궁합 | Virtual Console에서 조수석이나 뒷좌석을 "Occupied"로 바꾼 뒤 앱을 연다. `adb forward tcp:8088 tcp:8088` 후 `http://127.0.0.1:8088/` → Emulation Controls → Seat Occupancy |
 | 앰비언트·실내등 확인 | Virtual Console의 Ambient 화면에서 앱이 바꾼 색과 실내등 상태를 볼 수 있다 |
 | 처음 상태로 되돌리기 | `adb shell pm clear --user 10 com.yeokma.saju` (저장된 사람과 기기 번호가 지워진다) |
-| 주행 중 잠금 | Virtual Console의 Test Console에서 기어를 D로 바꾸면 앱이 잠기고, P로 돌리면 보던 화면부터 이어진다 |
+| 주행 중 잠금 | Virtual Console의 Test Console에서 기어를 D로 바꾸면 앱이 잠기고, P로 돌리면 보던 화면과 그 화면의 조명·공조가 이어진다. 기어 신호가 없는 일반 안드로이드 에뮬레이터에서는 잠그지 않는다 |
 | 알려진 한계 | 공조 풍량·풍향은 에뮬레이터가 지원하지 않아 실차에서만 동작한다 |
 
 테스트용 입력 예: 이름 "임지민", 성별 "여자", 생년월일 "2000년 1월 1일", 태어난 시간 "12시", 태어난 곳 "서울", 고민 "지금 면접장에 도착했는데 긴장되네. 나 잘할 수 있을까?". LLM 키 없이 서버를 켜면 이 사람에게는 시연용 풀이가 나온다.

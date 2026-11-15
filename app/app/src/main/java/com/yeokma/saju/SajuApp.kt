@@ -195,13 +195,9 @@ fun SajuApp() {
     }
 
     val car = rememberCarMood()
-    // 기어가 P가 아니면 잠근다. 다시 P가 되면 대기 화면의 차 연출(무드등, 실내등, 송풍)을 되살린다
+    // 기어가 P가 아니면 잠근다. 다시 P가 되면 CarMood가 잠기기 전 장면의 조명·공조를 다시 켠다
     val parked = car?.parked ?: true
-    LaunchedEffect(parked) {
-        val was = com.yeokma.saju.car.DriveLock.locked
-        com.yeokma.saju.car.DriveLock.locked = !parked
-        if (parked && was) runCatching { car?.idle() }
-    }
+    LaunchedEffect(parked) { com.yeokma.saju.car.DriveLock.locked = !parked }
     // "오셨군요"에 오면 좌석 센서로 동승자를 찾는다
     LaunchedEffect(screen) { if (screen == Screen.Profiles) car?.companions { companions = it } }
     val backdropBlur = remember { mutableStateOf(false) }

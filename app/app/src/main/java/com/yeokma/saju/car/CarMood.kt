@@ -32,7 +32,8 @@ class CarMood(context: Context) {
     private fun keep(key: String, restore: () -> Unit) { if (key !in undo) undo[key] = restore }
 
     /**
-     * 기어가 P(주차)인지. 앱은 P일 때만 쓸 수 있다. 기어를 읽지 못하는 기기(차가 아닌 에뮬레이터 등)는 P로 본다.
+     * 기어가 P(주차)인지. 차에서는 P일 때만 열고, 기어 값이 UNKNOWN이거나 비어 있으면 안전하게 잠근다.
+     * 기어 신호 자체가 없는 기기(차가 아닌 안드로이드 에뮬레이터 등)는 처음 값 true 그대로라 잠그지 않는다.
      */
     var parked by androidx.compose.runtime.mutableStateOf(true); private set
     private val gearListener = object : ai.pleos.playground.vehicle.listener.GearSelectionListener {
@@ -40,10 +41,12 @@ class CarMood(context: Context) {
         override fun onFailed(e: Exception) { warn(e) }
     }
     private fun onGear(g: ai.pleos.playground.vehicle.constant.control.VehicleGear?) {
-        val p = g == null || g == ai.pleos.playground.vehicle.constant.control.VehicleGear.GEAR_PARK || g == ai.pleos.playground.vehicle.constant.control.VehicleGear.GEAR_UNKNOWN
+        val p = g == ai.pleos.playground.vehicle.constant.control.VehicleGear.GEAR_PARK
         Log.i(TAG, "gear $g parked=$p")
         if (parked && !p) restore()   // P를 벗어나면 바꿔 둔 조명·공조를 바로 되돌린다
+        val back = !parked && p
         parked = p
+        if (back) resume()            // 다시 P가 되면 잠기기 전 장면의 조명·공조를 그대로 다시 켠다
     }
     init {
         runCatching {
@@ -96,7 +99,20 @@ class CarMood(context: Context) {
         breeze()
     }
 
+    // 마지막으로 켠 장면. 잠금이 풀리면 이것을 다시 켠다
+    private var sceneAmbient: Int? = null
+    private var sceneCabin: Boolean? = null
+    private var sceneBreeze = false
+
+    private fun resume() {
+        sceneAmbient?.let { ambient(it) }
+        sceneCabin?.let { cabin(it) }
+        if (sceneBreeze) breeze()
+    }
+
     fun ambient(color: Int) {
+        sceneAmbient = color
+        if (!parked) return
         light.checkAmbientLightBrightnessColorCapabilities({ _, areas ->
             areas.forEach { area ->
                 light.getAmbientLightBrightnessColor(area, { old ->
@@ -108,6 +124,8 @@ class CarMood(context: Context) {
     }
 
     fun cabin(on: Boolean) {
+        sceneCabin = on
+        if (!parked) return
         light.getCabinLightSwitch({ old ->
             if (old != null) keep("cabin") { light.setCabinLightSwitch(old, {}, ::warn) }
             light.setCabinLightSwitch(if (on) LightSwitch.ON else LightSwitch.OFF, {}, ::warn)
@@ -116,6 +134,8 @@ class CarMood(context: Context) {
 
     /** 송풍: 전원을 먼저 켠 뒤 AUTO 끄기 → 에어컨 끄기, 풍량 중간, 얼굴 방향. 항목마다 차가 지원하는 영역이 다르다. */
     fun breeze() {
+        sceneBreeze = true
+        if (!parked) return
         hvac.checkHvacPowerCapabilities({ areas ->
             var left = areas.size
             if (left == 0) autoOff()
@@ -143,7 +163,7 @@ class CarMood(context: Context) {
     }
 
     // 전원·AUTO 변경이 차에 반영될 시간을 조금 준다
-    private fun fan() = main.postDelayed(::fanNow, 800)
+    private fun fan() = main.postDelayed(::fanNow, CAR_TASK, 800)
 
     private fun fanNow() {
         hvac.checkHvacAcCapabilities({ areas ->
@@ -174,7 +194,7 @@ class CarMood(context: Context) {
     }
 
     fun restore() {
-        main.removeCallbacksAndMessages(null)
+        main.removeCallbacksAndMessages(CAR_TASK)   // 차 연출 예약만 지운다(동승자 감지 결과 같은 다른 일은 그대로)
         undo.values.toList().asReversed().forEach { runCatching(it).onFailure(::warn) }
         undo.clear()
     }
@@ -189,6 +209,7 @@ class CarMood(context: Context) {
 
     companion object {
         const val TAG = "CarMood"
+        private val CAR_TASK = Any()
         // 차는 색을 0xRRGGBB 정수로 받는다 (흰색 = 16777215)
         /** 무드등 색: 토 · 황금빛 */
         const val MOOD_GOLD = 0xD9B26A
