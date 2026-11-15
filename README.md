@@ -9,6 +9,7 @@
 <p align="center"><b>중요한 일정을 앞두고, 출발 전이나 도착 후 차 안에서 보내는 몇 분. 그 시간의 고민을 사주로 풀어 주는 차량용 사주 앱</b></p>
 
 <p align="center">
+  <a href="#해결하려는-문제">해결하려는 문제</a> ·
   <a href="#실행-방법">실행 방법</a> ·
   <a href="#apk">APK</a> ·
   <a href="#시연-영상">시연 영상</a> ·
@@ -20,6 +21,20 @@
 앱을 열면 숲길을 달려온 차의 문이 열리고 역마아씨가 기다립니다. "탑승하기"를 누르는 순간 내 차의 앰비언트 라이트가 무드등 색으로 바뀌고 실내등이 켜지며, 송풍이 잔잔하게 흘러 영상 속 장면이 그대로 내 차 안으로 이어집니다. 지금의 고민을 말로 털어놓으면 역마아씨가 내 사주로 풀어 주고, 풀이를 기다리는 동안 무드등은 오행의 색으로 천천히 바뀝니다. 차는 화면이 달린 공간이 아니라, 중요한 자리에 들어가기 전 마음을 다잡게 해 주는 몰입 장치가 됩니다.
 
 Pleos Connect(안드로이드 오토모티브) 차량용 앱입니다.
+
+## 해결하려는 문제
+
+중요한 일정을 앞둔 운전자는 출발 전이나 도착 후 차 안에서 혼자 긴장을 삭이는 몇 분을 보냅니다. 누군가에게 털어놓기엔 애매하고, 휴대폰 운세 앱은 오늘의 띠별 운세처럼 넓은 이야기만 하고 지금 이 고민에는 답하지 않습니다. 역마사주는 그 몇 분 동안 차 안 전체를 상담 공간으로 바꿔, 지금의 고민을 내 사주로 풀어 줍니다.
+
+| | 휴대폰 운세 앱 | 범용 AI 챗봇 | 역마사주 |
+|---|---|---|---|
+| 언제 쓰나 | 아무 때나 | 아무 때나 | 중요한 일정을 앞둔 출발 전·도착 후의 몇 분 |
+| 무엇에 답하나 | 띠별·오늘의 운세 | 묻는 대로 | 내 명식과 지금 말한 고민을 함께 |
+| 사주 계산 | 앱마다 다름 | 계산 근거가 없음 | 서버가 직접 계산(진태양시, 절기, 대운 등) |
+| 어디서 겪나 | 손안의 작은 화면 | 텍스트 | 차 디스플레이·스피커·앰비언트 라이트·실내등·송풍 |
+| 입력 | 키보드 양식 | 키보드 | 질문에 말로 답하기 |
+| 함께 탄 사람 | 모름 | 모름 | 좌석 센서로 알아채 궁합으로 연결 |
+| 안전 | 해당 없음 | 해당 없음 | 기어가 P일 때만 열림, 주행 중 잠금 |
 
 ## 실행 방법
 
@@ -197,29 +212,48 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 
 | 구분 | 핵심 내용 |
 |---|---|
-| 디스플레이 · 스피커 | 숲길을 달려온 차와 역마아씨의 탑승 영상, 차량 스피커로 들리는 "오셨군요" 인사 |
+| 주행 중 잠금 | 기어가 P(주차)일 때만 쓸 수 있다. P를 벗어나면 화면을 잠그고 영상·소리·음성 입력을 멈추며, 바꿔 둔 조명과 공조를 바로 되돌린다. 다시 P에 두면 보던 화면부터 이어진다 |
 | 앰비언트 라이트 · 실내등 | 대기 화면에서 무드등 금색과 실내등 켜기, 탑승 5초에 실내등 끄고 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 순환 |
 | 송풍 | 풍량 중간의 잔잔한 바람으로 몸으로도 느끼는 상담 분위기 |
+| 동승 궁합 | 좌석 센서로 동승자를 감지하면 "혼자가 아니시군요?"로 사주 보기와 궁합 보기를 나눔. 두 사람의 명식으로 점수(38\~97)와 유형(귀인, 단짝, 동반자, 자극제, 숙제) |
+| 디스플레이 · 스피커 | 숲길을 달려온 차와 역마아씨의 탑승 영상, 차량 스피커로 들리는 "오셨군요" 인사 |
 | 음성 입력 | 이름, 성별, 생년월일, 태어난 시간("오후 한 시 반"), 태어난 곳(전국 시·군)을 질문에 따라 말로 입력. 키보드도 지원 |
-| 저장된 사람 | 최대 5명까지 저장. 다시 오면 고르기만 하고 바로 고민으로 넘어가 일정 전의 짧은 시간을 아낍니다 |
 | 명식 | 서버가 직접 계산한 사주 여덟 글자를 확인 화면과 리포트에 표시(절기, 음력·윤달, 진태양시, 한국 표준시·서머타임 이력, 대운, 십신, 지장간, 12운성, 공망, 합충) |
 | 지금 고민 풀이 | 매번 "지금 고민거리가 뭐예요?"를 새로 묻고, 명식과 그날의 고민을 함께 반영해 제목과 소제목 3개로 풀이. 마지막은 "역마아씨의 예언" |
-| 동승 궁합 | 좌석 센서로 동승자를 감지하면 "혼자가 아니시군요?"로 사주 보기와 궁합 보기를 나눔. 두 사람의 명식으로 점수(38\~97)와 유형(귀인, 단짝, 동반자, 자극제, 숙제) |
-| 주행 중 잠금 | 기어가 P(주차)일 때만 쓸 수 있다. P를 벗어나면 화면을 잠그고 영상·소리·음성 입력을 멈추며, 바꿔 둔 조명과 공조를 바로 되돌린다. 다시 P에 두면 보던 화면부터 이어진다 |
+| 저장된 사람 | 최대 5명까지 저장. 다시 오면 고르기만 하고 바로 고민으로 넘어가 일정 전의 짧은 시간을 아낍니다 |
 | 평소 설정으로 복귀 | 연출 전에 기존 값을 저장해 두고, 앱을 떠나면 앰비언트 라이트·실내등·공조를 원래대로 되돌림 |
 
 ## 차량 특화 기능과 사용 SDK
 
-| 기능 | 하는 일 | SDK · API | 권한 |
-|---|---|---|---|
-| 앰비언트 라이트 | 대기 화면에서 무드등 금색, 탑승 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 바뀜 | Pleos Vehicle SDK 2.3.2 `Light`: `checkAmbientLightBrightnessColorCapabilities`, `getAmbientLightBrightnessColor`, `setAmbientLightBrightnessColor` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` |
-| 실내등 | 대기 화면에서 켜고, 탑승 5초에 끔 | Vehicle SDK `Light`: `getCabinLightSwitch`, `setCabinLightSwitch` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` |
-| 송풍 | 공조 전원을 켜고 AUTO·에어컨을 끈 뒤 풍량 중간, 얼굴 방향으로 잔잔한 바람 | Vehicle SDK `HVAC`: `setHvacPower`, `setHvacAuto`, `setHvacAc`, `setHvacFanSpeed`, `setHvacFanDirection` (각각 `check…Capabilities`, `get…`로 지원 범위와 원래 값 확인) | `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE` |
-| 주행 중 잠금 | 기어가 P가 아니면 화면을 잠그고 영상·소리·음성 입력을 멈춤, 조명·공조 복원 | Vehicle SDK `Gear`: `getCurrentGearSelectionState`, `registerGearSelection` | `CAR_DRIVE` |
-| 동승자 감지 | 운전석 말고 앉은 자리가 있으면 "혼자가 아니시군요?"로 궁합 보기를 엶 | Vehicle SDK `Seat`: `checkSeatOccupancyCapabilities`, `getCurrentSeatOccupancy` | `CAR_SEATS` |
-| 음성 입력 | 이름, 성별, 생년월일, 시간, 태어난 곳, 고민을 말로 입력 | Pleos SpeechToText SDK 3.3.1 (`ON_DEVICE` 모드): `initialize`, `setLocale(Locale.KOREA)`, `addListener`, `request`, `stop` | `STT_SERVICE` |
+| 기능 | 하는 일 | SDK · API | 권한 | 코드 |
+|---|---|---|---|---|
+| 앰비언트 라이트 | 대기 화면에서 무드등 금색, 탑승 6초에 붉은빛, 풀이를 기다리는 동안 오행 색으로 바뀜 | Pleos Vehicle SDK 2.3.2 `Light`: `checkAmbientLightBrightnessColorCapabilities`, `getAmbientLightBrightnessColor`, `setAmbientLightBrightnessColor` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` | [CarMood.kt `ambient`](app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L99), [오행 순환](app/app/src/main/java/com/yeokma/saju/ui/ReadingScreens.kt#L128) |
+| 실내등 | 대기 화면에서 켜고, 탑승 5초에 끔 | Vehicle SDK `Light`: `getCabinLightSwitch`, `setCabinLightSwitch` | `CAR_LIGHTS`, `CONTROL_CAR_LIGHTS` | [CarMood.kt `cabin`](app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L110), [탑승 5초](app/app/src/main/java/com/yeokma/saju/intro/IntroFlow.kt#L107) |
+| 송풍 | 공조 전원을 켜고 AUTO·에어컨을 끈 뒤 풍량 중간, 얼굴 방향으로 잔잔한 바람 | Vehicle SDK `HVAC`: `setHvacPower`, `setHvacAuto`, `setHvacAc`, `setHvacFanSpeed`, `setHvacFanDirection` (각각 `check…Capabilities`, `get…`로 지원 범위와 원래 값 확인) | `CAR_CLIMATE`, `CONTROL_CAR_CLIMATE` | [CarMood.kt `breeze`](app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L118) |
+| 주행 중 잠금 | 기어가 P가 아니면 화면을 잠그고 영상·소리·음성 입력을 멈춤, 조명·공조 복원 | Vehicle SDK `Gear`: `getCurrentGearSelectionState`, `registerGearSelection` | `CAR_DRIVE` | [CarMood.kt 기어 구독](app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L50), [잠금 화면](app/app/src/main/java/com/yeokma/saju/SajuApp.kt#L319) |
+| 동승자 감지 | 운전석 말고 앉은 자리가 있으면 "혼자가 아니시군요?"로 궁합 보기를 엶 | Vehicle SDK `Seat`: `checkSeatOccupancyCapabilities`, `getCurrentSeatOccupancy` | `CAR_SEATS` | [CarMood.kt `companions`](app/app/src/main/java/com/yeokma/saju/car/CarMood.kt#L61) |
+| 음성 입력 | 이름, 성별, 생년월일, 시간, 태어난 곳, 고민을 말로 입력 | Pleos SpeechToText SDK 3.3.1 (`ON_DEVICE` 모드): `initialize`, `setLocale(Locale.KOREA)`, `addListener`, `request`, `stop` | `STT_SERVICE` | [Voice.kt](app/app/src/main/java/com/yeokma/saju/input/Voice.kt#L39) |
 
 권한은 모두 `pleos.car.permission.` 아래 이름입니다. 바꾼 조명과 공조는 앱을 떠날 때 원래 값으로 되돌립니다.
+
+### 구조
+
+```mermaid
+flowchart LR
+  subgraph 차["Pleos Connect 차량"]
+    UI["역마사주 앱<br/>Kotlin · Compose"]
+    V["Vehicle SDK<br/>Light · HVAC · Seat · Gear"]
+    STT["SpeechToText SDK<br/>ON_DEVICE"]
+  end
+  S["서버 (Rust)<br/>만세력 · 궁합 · 포인트"]
+  L["LLM<br/>풀이 글"]
+  UI -- "앰비언트·실내등·송풍 제어<br/>좌석·기어 읽기" --> V
+  UI -- "말로 입력" --> STT
+  UI -- "생년월일·고민" --> S
+  S -- "포인트 차감 뒤에만" --> L
+  S -- "명식·풀이" --> UI
+```
+
 
 ## 사업성
 
