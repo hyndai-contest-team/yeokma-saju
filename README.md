@@ -10,7 +10,7 @@
   <a href="#실행-방법">실행 방법</a> ·
   <a href="#apk">APK</a> ·
   <a href="#시연-영상">시연 영상</a> ·
-  <a href="docs/proposal-4-7.md">기획서 (시나리오 · 개발 계획 · 기대효과 · 참고자료)</a>
+  <a href="docs/기획서.md">기획서 (시나리오 · 개발 계획 · 기대효과 · 참고자료)</a>
 </p>
 
 중요한 일정이 있는 날에는 출발하기 전이나 도착한 뒤, 차 안에서 몇 분을 보내게 됩니다. 혼자 있을 수 있는 거의 유일한 공간이지만, 마음은 가장 불안한 때입니다. 역마사주는 그 몇 분을 위한 앱입니다.
@@ -230,6 +230,6 @@ https://github.com/user-attachments/assets/76b15628-df0b-4d45-a509-7a91ebe3bafa
 | 역마사주의 자리 | 화면 속 텍스트로는 따라 할 수 없는 **차 안의 몰입 경험**(빛·바람·소리)과 **중요한 일정을 앞둔 출발 전·도착 후**라는 분명한 사용 순간. 중요한 일정이 생길 때마다 다시 여는 이유가 됩니다 |
 | 수익 모델 | 풀이 1회 990P(990원). 9,900원 11회, 99,000원 115회 묶음. 동승 궁합도 같은 가격 |
 
-예상 MAU와 매출 계산은 [기획서 6번 기대효과](docs/proposal-4-7.md#6-기대효과-및-발전-가능성)에 있습니다.
+예상 MAU와 매출 계산은 [기획서 6번 기대효과](docs/기획서.md#6-기대효과-및-발전-가능성)에 있습니다.
 
 <sub>출처: [1](https://www.hankyung.com/article/2026021070861), [2](https://v.daum.net/v/20250909112824410), [3](https://blog.hanabank.com/501979), [4](https://v.daum.net/v/20260213173831600), [5](https://www.sedaily.com/article/20078817), [6](https://m.etnews.com/20260807000281), [7](https://www.kmjournal.net/news/articleView.html?idxno=8593), [8](https://www.sentv.co.kr/article/view/sentv202610230113)</sub>
