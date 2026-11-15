@@ -12,7 +12,7 @@
 | 폴더 | 내용 |
 |---|---|
 | `app/` | 차량 앱. Kotlin, Jetpack Compose, Media3, Pleos Vehicle SDK 2.3.2 |
-| `server/` | 서버. Rust, Cloudflare Workers(`worker` 0.9), D1(포인트) |
+| `server/` | 서버. Rust(`worker` 0.9). 이 컴퓨터에서 로컬로 실행하고, 포인트는 로컬 DB에 저장합니다 |
 
 ## 준비물
 
@@ -41,7 +41,7 @@ source "$HOME/.cargo/env"
 rustc --version   # rustc 1.100.0 이상
 cargo --version
 
-# 5) Cloudflare Workers 빌드에 필요한 것
+# 5) 서버 빌드에 필요한 것
 rustup target add wasm32-unknown-unknown
 cargo install worker-build --version 0.9.0 --locked
 ```
@@ -50,7 +50,9 @@ cargo install worker-build --version 0.9.0 --locked
 - Node.js가 없으면 `brew install node`로 설치합니다(`npx wrangler`에 필요).
 - 나중에 Rust를 최신으로 올릴 때: `rustup update`
 
-## 1. 서버 켜기
+## 1. 서버 켜기 (로컬)
+
+공모전 시연용이라 서버는 클라우드에 배포하지 않고 이 컴퓨터에서 로컬로 실행합니다. Cloudflare 계정은 필요 없습니다.
 
 ```bash
 cd server
@@ -101,22 +103,10 @@ $ANDROID_HOME/platform-tools/adb shell am start --user 10 -n com.yeokma.saju/.Ma
 
 Android Studio에서는 `app/` 폴더를 열고 실행해도 됩니다.
 
-- 앱은 서버를 `http://10.0.2.2:8787`(에뮬레이터에서 본 이 컴퓨터)로 찾습니다. 서버를 배포했다면 `app/app/build.gradle.kts`의 `API_BASE`를 배포 주소로 바꿉니다.
+- 앱은 서버를 `http://10.0.2.2:8787`(에뮬레이터에서 본 이 컴퓨터)로 찾습니다. 앱을 쓰는 동안 1번의 로컬 서버를 켜 두세요.
 - 앱은 기어가 P일 때 쓰는 앱입니다. 에뮬레이터는 기본으로 P입니다.
 - 음성 입력은 기기에 음성 인식기가 있을 때만 켜집니다. Pleos 에뮬레이터에는 없어서 키보드로 입력합니다.
 - 공조 풍량·풍향 제어는 에뮬레이터가 지원하지 않아 실차에서만 동작합니다.
-
-## 3. (선택) 서버 배포
-
-```bash
-cd server
-npx wrangler@4.162.0 d1 create yeokma-saju          # 나온 database_id를 wrangler.toml에 넣는다
-npx wrangler@4.162.0 d1 migrations apply yeokma-saju --remote
-npx wrangler@4.162.0 secret put OPENROUTER_API_KEY   # 키는 secret으로만
-npx wrangler@4.162.0 deploy
-```
-
-Workers 배포 권한이 있는 Cloudflare 계정이 필요합니다.
 
 ## 안내
 

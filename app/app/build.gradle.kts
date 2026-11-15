@@ -13,7 +13,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "0.1.0"
-        // 서버 주소. 에뮬레이터에서 10.0.2.2 = 이 Mac (wrangler dev). 배포하면 Workers 주소로 바꾼다
+        // 서버 주소. 에뮬레이터에서 10.0.2.2 = 이 Mac에서 켠 로컬 서버(wrangler dev)
         buildConfigField("String", "API_BASE", "\"http://10.0.2.2:8787\"")
     }
 

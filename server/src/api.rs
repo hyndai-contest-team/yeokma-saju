@@ -1,4 +1,4 @@
-//! Cloudflare Workers HTTP API
+//! HTTP API (로컬 wrangler dev로 실행)
 //!  POST /api/manse    만세력 (무료, LLM 호출 없음)
 //!  GET  /api/wallet   ?device=  포인트 잔액
 //!  POST /api/charge   {device, pack}  충전 (결제 연동 전 목업)

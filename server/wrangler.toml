@@ -12,5 +12,5 @@ MODEL = "deepseek/deepseek-v4.1-flash-1017"
 [[d1_databases]]
 binding = "DB"
 database_name = "yeokma-saju"
-database_id = "00000000-0000-0000-0000-000000000000" # 배포할 때 wrangler d1 create 결과로 바꾼다
+database_id = "00000000-0000-0000-0000-000000000000" # 로컬 실행 전용이라 이 값은 쓰지 않는다
 migrations_dir = "migrations"
